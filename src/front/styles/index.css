@@ -1,3 +1,15 @@
-/* 
-    General Styles used on every website (Don't Repeat Yourself)
-*/
+:root {
+    --violeta-pastel: #D4A5E6;
+    --lavanda-suave: #C2A8E3;
+    --malva-claro: #B99ACB;
+    --celeste-pastel: #3f9dbc;
+    --turquesa-suave: #B8E0E6;
+    --azul-hielo: #CFEAF7;
+    --blanco-lila: #f2eafa;
+    --rosa-lavanda: #E6CFF1;
+  }
+
+  body {
+    background-color: var(--blanco-lila);
+    color: var(--celeste-pastel);
+  }

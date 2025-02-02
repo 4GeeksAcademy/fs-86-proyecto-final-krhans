@@ -1,0 +1,60 @@
+.sign-up_container{
+    margin: 8px;
+    
+}
+.sign-up_form{
+    width: 100%;
+    
+}
+.sign-up_input-group{
+    font-size: 0.9rem;
+    position: relative;
+}
+.sign-up_input{
+    all: unset;
+    padding: 1rem;
+    margin:0.5rem;
+    border: 1px solid var(--malva-claro);
+    border-radius: 10px;
+    transition: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    background-color: transparent;
+}
+.sign-up_label{
+    position: absolute;
+    top: 1.5rem;
+    left: 1rem;
+    pointer-events: none;
+    transition: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+.sign-up_label-birthDate{
+    padding-left: 0.7rem;
+}
+.sign-up_input:focus{
+    border: 1px solid gainsboro;
+}
+.sign-up_input:is(:focus, :valid)~ .sign-up_label{
+    transform: 
+        translateY(-120%)
+        scale(0.7);
+    background-color: var(--blanco-lila);
+    padding-inline: 0.3rem;
+}
+.sign-up_link{
+    padding-left: 0.7rem;
+}
+
+.sign-up_button {
+    padding: 15px 100px;
+    margin:10px 4px;
+    color:var(--celeste-pastel);
+    background-color: var(--violeta-pastel);
+    font-family: sans-serif;
+    text-transform: uppercase;
+    text-align: center;
+    position: relative;
+    text-decoration: none;
+    display:inline-block;
+    border-color: var(--malva-claro);
+}
+
+  
