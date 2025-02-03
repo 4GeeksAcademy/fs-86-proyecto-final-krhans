@@ -10,7 +10,6 @@ class UserRepository:
     def create_user(user_data):
         try:
             new_user = User(
-                nick=user_data["nick"],
                 user_name=user_data["user_name"],
                 email=user_data["email"],
                 phone_number=user_data.get("phone_number", ""),

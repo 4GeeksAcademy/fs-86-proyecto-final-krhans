@@ -4,7 +4,6 @@ db = SQLAlchemy()
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    nick = db.Column(db.String(120), unique=True, nullable=False)
     user_name = db.Column(db.String(120), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     phone_number = db.Column(db.String(120), nullable=True)
@@ -20,7 +19,6 @@ class User(db.Model):
     def serialize(self):
         return {
             "id": self.id,
-            "nick": self.nick,
             "user_name": self.user_name,
             "email": self.email,
             "phone_number": self.phone_number,
