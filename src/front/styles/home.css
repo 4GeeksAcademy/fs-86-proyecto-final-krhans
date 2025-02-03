@@ -1,3 +1,11 @@
+:root {
+    --bg-color: #070B1A; 
+    --text-color: #FFF8DC; 
+    --highlight-color: #FFD700; 
+    --accent-color: #4A00E0; 
+    --secondary-color: #8A2BE2; 
+}
+
 .home-container {
     display: flex;
     flex-direction: column;
@@ -5,7 +13,9 @@
     justify-content: center;
     height: 100vh;
     position: relative;
-    background-color: #BFE2E0;
+    z-index: 1;
+    background-color: var(--bg-color);
+    color: var(--text-color);
 }
 
 .avatar-container {
@@ -35,8 +45,8 @@
 }
 
 .welcome-message {
-    background-color: #C5B7E3; 
-    color: #1B4D3E;
+    color: var(--highlight-color);
+    background-color: var(--secondary-color);
     border-radius: 10px;
     padding: 10px 15px;
     font-size: 1.2rem;
@@ -48,8 +58,8 @@
 }
 
 .help-message {
-    background-color: #85C4C0;
-    color: #1B4D3E;
+    color: var(--highlight-color);
+    background-color: var(--secondary-color);
     border-radius: 10px;
     padding: 10px 15px;
     font-size: 1rem;
