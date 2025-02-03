@@ -1,15 +1,14 @@
 from flask import Flask, request, jsonify, url_for, Blueprint
+from flask_cors import CORS
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from api.models import db, User
 from api.utils import generate_sitemap, APIException
-from flask_cors import CORS
 from api.services.userService import UserService
 
 api = Blueprint('api', __name__)
 
 # Allow CORS requests to this API
 CORS(api)
-
-
 
 @api.route('/log_in', methods=['POST'])
 def log_in():
@@ -21,15 +20,14 @@ def log_in():
         if not email or not password:
             return jsonify({"error": "Email y contraseña son obligatorios"}), 400
 
-        user = UserService.log_in(email, password)
+        access_token = UserService.log_in(email, password)
 
-        if not user:
+        if not access_token:
             return jsonify({"error": "Credenciales incorrectas"}), 401
-
 
         return jsonify({
             "message": "Inicio de sesión exitoso",
-           
+            "token": access_token  
         }), 200
 
     except Exception as e:
@@ -41,7 +39,7 @@ def sign_up():
     try:
         user_data = request.get_json()
 
-        required_fields = [ "user_name", "email", "password"]
+        required_fields = ["user_name", "email", "password"]
         if not all(field in user_data for field in required_fields):
             return jsonify({"error": "Faltan campos obligatorios"}), 400
 
@@ -51,6 +49,25 @@ def sign_up():
         UserService.crear_usuario(user_data)
 
         return jsonify({"message": "Registro exitoso"}), 201
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+@api.route('/profile', methods=['GET'])
+@jwt_required() 
+def profile():
+    try:
+        user_id = get_jwt_identity() 
+        user = UserService.get_user_by_id(user_id)
+
+        if not user:
+            return jsonify({"error": "Usuario no encontrado"}), 404
+
+        return jsonify({
+            "user_name": user.user_name,
+            "email": user.email
+        }), 200
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
@@ -70,7 +87,6 @@ def about_us():
 @api.route('/home', methods=['GET']) 
 def home():
     try:
-      
         return jsonify({
             "welcome": "Bienvenido a nuestra API",
         }), 200
