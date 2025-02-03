@@ -3,11 +3,24 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import ScrollToTop from "./component/scrollToTop";
 // import { BackendURL } from "./component/backendURL";
 import { Home } from "./pages/home";
-import { About } from "./pages/about"; 
+import { About } from "./pages/about";
 import injectContext from "./store/appContext";
 import { Navbar } from "./component/navbar";
 import SignUp from "./pages/signup";
 import LogIn from "./pages/login";
+import { Session } from "./component/session";
+
+const Protected = () => {
+    return (<>
+        <h1>Hans</h1>
+    </>)
+}
+
+const ProtectedTwo = () => {
+    return (<>
+        <h1>Hans dos</h1>
+    </>)
+}
 
 //create your first component
 const Layout = () => {
@@ -26,10 +39,14 @@ const Layout = () => {
                         <Route element={<Home />} path="/" />
                         <Route element={<LogIn />} path="/login" />
                         <Route element={<SignUp />} path="/signup" />
-                        <Route element={<About />} path="/about" /> 
+                        <Route element={<About />} path="/about" />
+                        <Route element={<Session />} path="/session">
+                            <Route path='protected' element={<Protected />} />
+                            <Route path='protected-two' element={<ProtectedTwo />} />
+                        </Route>
                         <Route element={<h1>Not found!</h1>} />
                     </Routes>
-               
+
                 </ScrollToTop>
             </BrowserRouter>
         </div>
