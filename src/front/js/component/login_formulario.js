@@ -11,19 +11,19 @@ const {store, actions} = useContext(Context);
 
     return (
         <div className="log-in_container d-flex flex-column align-items-center justify-content-center">
-            <h1 className="log-in_title">Log In</h1>
+            <h1 className="log-in_title text-center">"Fuel your passion, unlock your potential."</h1>
             <form className="log-in_form">
-                <div className="log-in_input-group d-flex flex-column">
-                    <input input className="log-in_input" type="email" id="email" name="email" required value={store.email} onChange={(e) => actions.setEmail(e.target.value)} />
-                    <label className="log-in_label" htmlFor="email"><FontAwesomeIcon icon={faEnvelope} /> Email</label>
+                <div className="sign-up_input-group d-flex flex-column">
+                    <input className="sign-up_input" type="email" id="email" name="email" autoComplete="userName" required value={store.userData.email} onChange={(e) => actions.setUserData(e.target.value)} />
+                    <label className="sign-up_label" htmlFor="email"><FontAwesomeIcon icon={faEnvelope} /> Email</label>
                 </div>
-                <div className="log-in_input-group d-flex flex-column">
-                    <input className="log-in_input" type="password" id="password" name="password" required value={store.password} onChange={(e) => actions.setPassword(e.target.value)} />
-                    <label className="log-in_label" htmlFor="password"><FontAwesomeIcon icon={faLock}/> Password</label>
+                <div className="sign-up_input-group d-flex flex-column">
+                    <input className="sign-up_input" type="password" id="password" name="password" autoComplete="current-password" required value={store.userData.password} onChange={(e) => actions.setUserData(e.target.value)} />
+                    <label className="sign-up_label" htmlFor="password"><FontAwesomeIcon icon={faLock} /> Password</label>
                 </div>
             </form>
             <button className="log-in_button" onClick={() => actions.sesionInit()}>Log In</button>
-            <p className="sign-up_link align-self-start">Don't have an account?
+            <p className="sign-up_link align-self-start">Don't have an account? <b/>
                 <Link to="/signup">
                     <span>Sign Up</span>
                 </Link>

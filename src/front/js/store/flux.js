@@ -2,55 +2,27 @@ import { dispatcherUser } from "./dispatcher";
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
-			userName: "",
-			email: "",
-			phone: "",
-			city:"",
-			birthDate:"",
-			password:"",
-			
+			userData: {
+				userName: "",
+				email: "",				
+				password: "",
+				confirmPassword:""
+			}
 		},
 		actions: {
-			setUserName: (value) => {
-                setStore({ userName: value });
+			setUserData: (value) => {
+                setStore({ userData: value });
             },
-            setEmail: (value) => {
-                setStore({ email: value });
-            },
-            setPhone: (value) => {
-                setStore({ phone: value });
-            },
-            setCity: (value) => {
-                setStore({ city: value });
-            },
-            setGender: (value) => {
-                setStore({ gender: value });
-            },
-            setBirthDate: (value) => {
-                setStore({ birthDate: value });
-            },
-            setPassword: (value) => {
-                setStore({ password: value });
-            },
-            setConfirmPassword: (value) => {
-                setStore({ confirmPassword: value });
-            },
+           
+            
 			addNewUser: async (navigate) => {
 				const store = getStore();
-				if (store.password !== store.confirmPassword) {
+				if (store.userData.password !== store.userData.confirmPassword) {
 					alert("Las contraseñas no coinciden.");
 					return;
 				}
-				const userData = {
-					userName: store.userName,
-					email: store.email,
-					phone: store.phone,
-					city: store.city,
-					gender: store.gender,
-					birthDate: store.birthDate,
-					password: store.password
-				};
-				const newUser = await dispatcherUser.post(userData);
+				console.log(store.userData.password);
+				const newUser = await dispatcherUser.post(store.userData);
 				if (newUser) {
 					setStore({ ...store, newUser });
 					alert("Registro exitoso!");

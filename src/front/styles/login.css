@@ -41,13 +41,15 @@
 .log-in_button {
     padding: 15px 100px;
     margin:10px 4px;
-    color:var(--celeste-pastel);
-    background-color: var(--violeta-pastel);
+    color:var( --color-font);
+    background-color: var(--color-Button);
     font-family: sans-serif;
+    font-weight: 550;
     text-transform: uppercase;
     text-align: center;
     position: relative;
     text-decoration: none;
     display:inline-block;
-    border-color: var(--malva-claro);
+    border-color: var(--color-Button);
+    border-radius: 10px;
 }
