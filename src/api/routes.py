@@ -41,7 +41,7 @@ def sign_up():
     try:
         user_data = request.get_json()
 
-        required_fields = [ "user_name", "email", "birth_date", "password"]
+        required_fields = [ "user_name", "email", "password"]
         if not all(field in user_data for field in required_fields):
             return jsonify({"error": "Faltan campos obligatorios"}), 400
 

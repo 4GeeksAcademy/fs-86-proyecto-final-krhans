@@ -12,10 +12,6 @@ class UserRepository:
             new_user = User(
                 user_name=user_data["user_name"],
                 email=user_data["email"],
-                phone_number=user_data.get("phone_number", ""),
-                city=user_data.get("city", ""),
-                sex=user_data.get("sex", ""),
-                birth_date=user_data["birth_date"],
                 password=user_data["password"], 
                 is_active=True
             )

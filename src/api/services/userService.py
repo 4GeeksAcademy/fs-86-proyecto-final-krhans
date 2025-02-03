@@ -1,5 +1,4 @@
 
-
 from api.repositories.user_repository import UserRepository
 
 class UserService:
