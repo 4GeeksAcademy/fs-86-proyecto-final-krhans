@@ -1,0 +1,21 @@
+.loader {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 10px solid rgba(255, 255, 255, .1);
+    border-top: 10px solid #fff;
+    animation: infinitive-loop 1.5s infinite linear;
+  }
+
+  @keyframes infinitive-loop {
+    0% {
+      transform: translate(-50%, -50%) rotate(0deg);
+    }
+    100% {
+      transform: translate(-50%, -50%) rotate(360deg);
+    }
+  }
