@@ -1,4 +1,4 @@
-
+/* 
 :root {
     --bg-color: #070B1A; 
     --text-color: #FFF8DC; 
@@ -16,7 +16,7 @@ body {
     font-family: 'Arial', sans-serif;
     min-height: 100vh;
     overflow-x: hidden;
-}
+} */
 
 
 .custom-navbar {
@@ -122,8 +122,8 @@ body {
 }
 
 
-body::before {
-    content: "";
+/* body::before {
+    content: ""; 
     position: absolute;
     top: 0;
     left: 0;
@@ -132,5 +132,5 @@ body::before {
     z-index: -1;
     background: url('https://i.imgur.com/9jzZmKu.jpg') no-repeat center center fixed;
     background-size: cover;
-    opacity: 0.2; /* Más sutil */
-}
+    opacity: 0.2; 
+} */
