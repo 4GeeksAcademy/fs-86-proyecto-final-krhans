@@ -1,34 +1,28 @@
 import { dispatcherUser } from "./dispatcher";
+import UserData from "../clases/userdata";
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
-			userData: {
-				userName: "",
-				email: "",				
-				password: "",
-				confirmPassword:""
-			}
+			userData: new UserData()
 		},
 		actions: {
-			setUserData: (value) => {
-                setStore({ userData: value });
-            },
+			
            
-            
-			addNewUser: async (navigate) => {
-				const store = getStore();
-				if (store.userData.password !== store.userData.confirmPassword) {
-					alert("Las contraseñas no coinciden.");
-					return;
+			addNewUser: async (user) => {
+				try {
+					const response = await dispatcherUser.post(user);
+						console.log(response)
+					if (response && response.ok) { 
+						const newUser = await response.json();
+						setStore({ userData: newUser });
+						alert("Registro exitoso!");
+					} else {
+						throw new Error("No se pudo registrar el usuario.");
+					}
+				} catch (error) {
+					console.error("Error en el registro:", error);
+					alert("Hubo un error al registrarse.");
 				}
-				console.log(store.userData.password);
-				const newUser = await dispatcherUser.post(store.userData);
-				if (newUser) {
-					setStore({ ...store, newUser });
-					alert("Registro exitoso!");
-				}; 
-				alert("Hubo un error al registrarse.");
-				navigate('/login');			
 			},
 
 			getMessage: async () => {
