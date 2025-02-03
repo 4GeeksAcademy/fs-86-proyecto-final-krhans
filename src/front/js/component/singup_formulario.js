@@ -14,9 +14,9 @@ const SignUpOverview = () => {
     const [confirmPassword, setConfirmPassword] = useState("");
     
 
-    const navigate = useNavigate;
+    const navigate = useNavigate();
     
-    const confirmUser = () => {
+    const confirmUser =async () => {
         let message = "";
         let user = new UserData();
         if(!userName || userName === "") message = "Please insert username";
@@ -25,13 +25,21 @@ const SignUpOverview = () => {
         if(!confirmPassword || confirmPassword === "")message = "Please insert confirm password";
         if(password != confirmPassword) message = "Passwords do not match";
         if(message == ""){
-            user.userName = userName;
+            user.user_name = userName;
             user.email = email;
             user.password = password
-            actions.addNewUser(user)
-        }else{
-            alert(message);
-        };
+            
+            try {
+                const newUser = await actions.addNewUser(user.toJSON()); 
+                if (newUser) {
+                    navigate("/"); 
+                }
+            } catch (error) {
+                console.error("Error en el registro:", error);
+            }
+      
+            
+        }
     };
 
     

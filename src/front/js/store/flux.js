@@ -10,20 +10,22 @@ const getState = ({ getStore, getActions, setStore }) => {
            
 			addNewUser: async (user) => {
 				try {
-					const response = await dispatcherUser.post(user);
-						console.log(response)
-					if (response && response.ok) { 
-						const newUser = await response.json();
-						setStore({ userData: newUser });
-						alert("Registro exitoso!");
-					} else {
-						throw new Error("No se pudo registrar el usuario.");
+					const newUser = await dispatcherUser.post(user);
+			
+					if (!newUser || newUser.error) { // Verifica si la respuesta tiene un error
+						throw new Error(newUser?.error || "No se pudo registrar el usuario.");
 					}
+			
+					setStore({ userData: newUser });
+					alert("Registro exitoso!");
+			
+					return newUser;
 				} catch (error) {
-					console.error("Error en el registro:", error);
-					alert("Hubo un error al registrarse.");
+					console.error("Error en el registro:", error.message);
+					alert("Hubo un error al registrarse: " + error.message);
 				}
 			},
+			
 
 			getMessage: async () => {
 				try{

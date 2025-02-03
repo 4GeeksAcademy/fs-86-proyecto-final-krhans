@@ -1,7 +1,6 @@
 export const dispatcherUser = {
     post: async (userData) => {
         try {
-            console.log("ususrio", userData)
             const response = await fetch("https://crispy-space-system-7vr5j99v9p6j2rr7j-3001.app.github.dev/api/sign_up", {
                 method: "POST",
                 headers: {
@@ -9,14 +8,17 @@ export const dispatcherUser = {
                 },
                 body: JSON.stringify(userData)
             });
-            console.log("aqui",response)
+            
+
             if (!response.ok) {
-                throw new Error(`Error ${response.status}: ${response.statusText}`);
+                const errorData = await response.json();
+                throw new Error(`Error ${response.status}: ${errorData.error || response.statusText}`);
             }
-            const data = await response.json();
-            return data;
+
+            return await response.json();
         } catch (error) {
-            console.error("error registering user:", error);
+            console.error("Error registrando usuario:", error);
+            return { error: error.message }; 
         }
     }
 };
