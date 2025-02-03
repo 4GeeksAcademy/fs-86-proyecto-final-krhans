@@ -10,7 +10,6 @@
     font-family: "Inria Sans", serif;
     font-weight: 400;
     font-style: italic;
-    color:whitesmoke;
 }
 
 .navbar-container {
@@ -20,9 +19,9 @@
     color: var(--text-color);
     font-family: "Inria Sans", serif;
     display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    padding: 10px;
+    justify-content: center;
+    justify-content: space-between;
+    padding: 10px 20px;
 }
 
 .navbar-button {
@@ -30,7 +29,10 @@
     font-weight: bold;
     cursor: pointer;
     color: var(--highlight-color);
+    background-color: transparent;
     transition: all 0.3s ease;
+    margin: 0;
+    padding: 0;
 }
 
 .navbar-button:hover {
@@ -68,4 +70,20 @@
 .navbar-menu a:hover {
     background-color: var(--accent-color);
     color: var(--highlight-color);
+}
+
+.login-button {
+    background-color: transparent;
+    color: var(--highlight-color);
+    border: 2px solid var(--highlight-color); 
+    border-radius: 20px;
+    padding: 5px 15px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.login-button:hover {
+    background-color: var(--highlight-color);
+    color: var(--bg-color);
 }

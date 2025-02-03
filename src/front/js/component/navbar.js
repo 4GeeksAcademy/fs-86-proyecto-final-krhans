@@ -22,6 +22,9 @@ export const Navbar = () => {
                     </ul>
                 </div>
             )}
+            <div className="navbar-button">
+                <button className="login-button">Log In</button>
+            </div>
         </nav>
     );
 };
