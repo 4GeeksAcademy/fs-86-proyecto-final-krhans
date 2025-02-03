@@ -1,5 +1,7 @@
 
 from api.repositories.user_repository import UserRepository
+from flask_jwt_extended import create_access_token
+from datetime import timedelta
 
 class UserService:
     @staticmethod
@@ -18,4 +20,8 @@ class UserService:
         user = UserRepository.get_user_by_email(email)
         if not user or user.password != password:
             return None 
-        return user  
+        
+        expires = timedelta(hours=1)
+        access_token = create_access_token(identity=user.id, expires_delta=expires)
+
+        return access_token
