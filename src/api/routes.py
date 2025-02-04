@@ -1,9 +1,10 @@
 from flask import Flask, request, jsonify, url_for, Blueprint
 from flask_cors import CORS
-from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask_jwt_extended import jwt_required, get_jwt_identity,create_access_token
 from api.models import db, User
 from api.utils import generate_sitemap, APIException
 from api.services.userService import UserService
+
 
 api = Blueprint('api', __name__)
 
@@ -20,10 +21,12 @@ def log_in():
         if not email or not password:
             return jsonify({"error": "Email y contraseña son obligatorios"}), 400
 
-        access_token = UserService.log_in(email, password)
+        user = UserService.log_in(email, password)
 
-        if not access_token:
+        if not user:
             return jsonify({"error": "Credenciales incorrectas"}), 401
+
+        access_token = UserService.get_token(user)
 
         return jsonify({
             "message": "Inicio de sesión exitoso",
