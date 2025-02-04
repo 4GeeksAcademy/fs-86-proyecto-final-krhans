@@ -18,10 +18,15 @@ class UserService:
     @staticmethod
     def log_in(email, password):
         user = UserRepository.get_user_by_email(email)
-        if not user or user.password != password:
-            return None 
+        
+        if not user or password != user.password:
+            return None
+        
+        return user
+
+    @staticmethod
+    def get_token(user):
         
         expires = timedelta(hours=1)
         access_token = create_access_token(identity=user.id, expires_delta=expires)
-
         return access_token

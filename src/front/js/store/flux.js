@@ -6,13 +6,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 			userData: new UserData()
 		},
 		actions: {
-			
-           
 			addNewUser: async (user) => {
 				try {
 					const newUser = await dispatcherUser.post(user);
 			
-					if (!newUser || newUser.error) { // Verifica si la respuesta tiene un error
+					if (!newUser || newUser.error) { 
 						throw new Error(newUser?.error || "No se pudo registrar el usuario.");
 					}
 			
@@ -25,6 +23,23 @@ const getState = ({ getStore, getActions, setStore }) => {
 					alert("Hubo un error al registrarse: " + error.message);
 				}
 			},
+			login: async (email, password) => {
+				try {
+					
+					const token = await dispatcherUser.login(email, password);
+					
+				
+					if (token && typeof token === 'string' && token.trim() !== '') {
+						localStorage.setItem('token', token);
+						console.log("Se ha creado el token.", token);
+					} else {
+						console.error("No se obtuvo un token de acceso.");
+					}
+				} catch (error) {
+					
+					alert("Hubo un error al loguearse: " + error.message);
+				}
+			},			
 			
 
 			getMessage: async () => {

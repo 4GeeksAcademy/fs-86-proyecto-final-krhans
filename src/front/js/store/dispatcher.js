@@ -1,7 +1,7 @@
 export const dispatcherUser = {
     post: async (userData) => {
         try {
-            const response = await fetch("https://crispy-space-system-7vr5j99v9p6j2rr7j-3001.app.github.dev/api/sign_up", {
+            const response = await fetch(`${process.env.BACKEND_URL}/api/sign_up`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -19,6 +19,28 @@ export const dispatcherUser = {
         } catch (error) {
             console.error("Error registrando usuario:", error);
             return { error: error.message }; 
+        }
+    },
+    login: async (email, password) => {
+        try {
+            
+            const response = await fetch(`${process.env.BACKEND_URL}/api/log_in`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ email, password })
+            });
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(`Error ${response.status}: ${errorData.error || response.statusText}`);
+            }
+
+            const data = await response.json();
+            return data.token;  
+        } catch (error) {
+            console.error("Error al iniciar sesión:", error);
+            return { error: error.message };
         }
     }
 };
