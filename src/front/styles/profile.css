@@ -1,0 +1,100 @@
+:root {
+    --violeta-pastel: #D4A5E6;
+    --lavanda-suave: #C2A8E3;
+    --malva-claro: #B99ACB;
+    --celeste-pastel: #3f9dbc;
+    --turquesa-suave: #B8E0E6;
+    --azul-hielo: #CFEAF7;
+    --blanco-lila: #f2eafa;
+    --rosa-lavanda: #E6CFF1;
+}
+
+.profile-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    padding: 20px;
+}
+
+.profile-card {
+    background: var(--violeta-pastel);
+    border: 6px solid var(--azul-hielo);
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    width: 300px;
+    transition: transform 0.3s ease-in-out;
+    font-family: 'Poppins', sans-serif;
+    color: var(--azul-hielo);
+}
+
+.profile-card:hover {
+    transform: translateY(-8px);
+}
+
+.profile-name {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: var(--azul-hielo);
+    text-transform: uppercase;
+    text-shadow: 0 0 10px var(--azul-hielo);
+}
+
+.profile-image {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 6px solid var(--malva-claro);
+    margin-bottom: 12px;
+}
+
+.profile-info p {
+    font-size: 1.1rem;
+    margin: 5px 0;
+}
+
+.profile-links {
+    margin-top: 12px;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+}
+
+.profile-links a {
+    display: inline-block;
+    padding: 10px 18px;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: bold;
+    transition: background 0.3s ease-in-out;
+    font-size: 1rem;
+    background: var(--celeste-pastel);
+    color: var(--blanco-lila);
+    border: 2px solid var(--malva-claro);
+}
+
+.profile-links a:hover {
+    background: var(--turquesa-suave);
+    border: 2px solid var(--celeste-pastel);
+}
+
+.back-button {
+    margin-top: 15px;
+    padding: 12px 22px;
+    border-radius: 25px;
+    background: var(--malva-claro);
+    color: var(--blanco-lila);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    border: 2px solid var(--lavanda-suave);
+    font-weight: bold;
+}
+
+.back-button:hover {
+    background: var(--turquesa-suave);
+    color: var(--violeta-pastel);
+}
