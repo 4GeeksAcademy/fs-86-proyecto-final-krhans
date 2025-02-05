@@ -6,7 +6,7 @@ export const Loader = () => {
     return(
        <div className = "loader-container">
         <img src = {KhransAvatar} alt = "loader Avatar" className = "loader-avatar"/>
-        <span>Loading...</span>
+        <h3 className = "loader-text">Loading...</h3>
        </div>
     );
 };

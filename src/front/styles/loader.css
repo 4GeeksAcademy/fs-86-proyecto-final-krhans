@@ -28,3 +28,9 @@
         transform: rotate(360deg);
     }
 }
+
+.loader-text{
+    font-family: "Inria Sans", serif;
+    font-weight: 400;
+    font-style: italic;
+}
