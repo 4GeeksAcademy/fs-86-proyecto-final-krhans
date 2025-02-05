@@ -12,7 +12,7 @@ class UserRepository:
             new_user = User(
                 user_name=user_data["user_name"],
                 email=user_data["email"],
-                password=user_data["password"], 
+                password_hash=user_data["password_hash"], 
                 is_active=True
             )
             db.session.add(new_user)
