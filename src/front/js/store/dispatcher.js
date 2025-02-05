@@ -9,7 +9,6 @@ export const dispatcherUser = {
                 body: JSON.stringify(userData)
             });
             
-
             if (!response.ok) {
                 const errorData = await response.json();
                 throw new Error(`Error ${response.status}: ${errorData.error || response.statusText}`);

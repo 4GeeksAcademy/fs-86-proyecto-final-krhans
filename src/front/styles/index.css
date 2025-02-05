@@ -2,14 +2,9 @@
   --color-font: #084f67; 
   --color-background: #f2eafa;
   --color-Button: #DBB8F2;
-
-  --violeta-pastel: #D4A5E6;
-  --lavanda-suave: #C2A8E3;
-  --turquesa-suave: #B8E0E6;
-  --azul-hielo: #CFEAF7;
-  --rosa-lavanda: #E6CFF1;
+  --color-navbar: #5C2E91;
+  --color-emergente: #BFE3F2;
 }
-
 body {
   background-color: var(--color-background);
   color: var(--color-font);
