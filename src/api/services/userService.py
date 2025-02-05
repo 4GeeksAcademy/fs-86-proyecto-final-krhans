@@ -2,6 +2,10 @@
 from api.repositories.user_repository import UserRepository
 from flask_jwt_extended import create_access_token
 from datetime import timedelta
+from argon2 import PasswordHasher
+
+ph = PasswordHasher()
+
 
 class UserService:
     @staticmethod
@@ -11,6 +15,7 @@ class UserService:
     @staticmethod
     def crear_usuario(user_data):
         try:
+            user_data["password_hash"] = ph.hash(user_data["password_hash"])
             return UserRepository.create_user(user_data)
         except Exception as e:
             raise e
@@ -19,10 +24,12 @@ class UserService:
     def log_in(email, password):
         user = UserRepository.get_user_by_email(email)
         
-        if not user or password != user.password:
+        if not user:
             return None
-        
-        return user
+         
+        if user.check_password(password): 
+            return user
+        return None
 
     @staticmethod
     def get_token(user):

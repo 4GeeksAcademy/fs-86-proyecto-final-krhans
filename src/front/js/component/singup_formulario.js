@@ -31,6 +31,7 @@ const SignUpOverview = () => {
             
             try {
                 const newUser = await actions.addNewUser(user.toJSON()); 
+                console.log("Nuevo usuario: ",newUser)
                 if (newUser) {
                     navigate("/"); 
                 }

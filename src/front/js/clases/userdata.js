@@ -2,7 +2,7 @@ class UserData {
   constructor() {
       this._user_name = "";  
       this._email = "";
-      this._password = "";
+      this._password_ = "";
   }
 
   get user_name() {
@@ -33,7 +33,7 @@ class UserData {
       return {
           user_name: this._user_name,
           email: this._email,
-          password: this._password
+          password_hash: this._password
       };
   }
 }
