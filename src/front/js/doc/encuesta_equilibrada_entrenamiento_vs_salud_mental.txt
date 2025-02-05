@@ -1,0 +1,5 @@
+1. ¿Has dormido bien y te sientes descansado hoy? (Sí/No)
+2. ¿Tu mente está tranquila o sientes que hay preocupaciones rondando en ella? (Sí/No)
+3. Últimamente, ¿has cuidado más de tu cuerpo o de tu bienestar mental? (Sí/No)
+4. ¿Tienes ganas de mover el cuerpo o te sientes agotado? (Sí/No)
+5. Hoy, ¿sientes que necesitas liberar tu mente o distraerla con actividad? (Sí/No)
