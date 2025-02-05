@@ -1,11 +1,17 @@
 import React, { useState } from "react";
+import { useNavigate,Link } from "react-router-dom";
 import "../../styles/navbar.css";
 
 export const Navbar = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const navigate = useNavigate();
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
+    };
+
+    const handleLogin = () => {
+        navigate("/login");
     };
 
     return (
@@ -17,13 +23,13 @@ export const Navbar = () => {
             {isMenuOpen && (
                 <div className="navbar-menu">
                     <ul>
-                        <li><a href="#home">Home</a></li>
-                        <li><a href="#about-us">About us</a></li>
+                        <li><Link to="/">Home</Link></li>
+                        <li><Link to="/about">About us</Link></li>
                     </ul>
                 </div>
             )}
             <div className="navbar-button">
-                <button className="login-button">Log In</button>
+                <button className="login-button" onClick={handleLogin}>Log In</button>
             </div>
         </nav>
     );
