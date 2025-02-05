@@ -28,7 +28,6 @@ const SignUpOverview = () => {
             user.user_name = userName;
             user.email = email;
             user.password = password
-            
             try {
                 const newUser = await actions.addNewUser(user.toJSON()); 
                 if (newUser) {
@@ -36,10 +35,10 @@ const SignUpOverview = () => {
                 }
             } catch (error) {
                 console.error("Error en el registro:", error);
-            }
-      
-            
+            } 
         }
+        alert(message)
+
     };
 
     

@@ -1,10 +1,4 @@
-:root {
-    --bg-color: #070B1A; 
-    --text-color: #FFF8DC; 
-    --highlight-color: #FFD700; 
-    --accent-color: #4A00E0; 
-    --secondary-color: #8A2BE2; 
-}
+
 
 .title {
     font-family: "Inria Sans", serif;
@@ -15,8 +9,8 @@
 .navbar-container {
     position: relative;
     width: 100%;
-    background-color: #010a2d;
-    color: var(--text-color);
+    background-color: var(--color-navbar);
+    color: var(--color-navbar_font);
     font-family: "Inria Sans", serif;
     display: flex;
     align-items:center;
@@ -31,7 +25,7 @@
     font-size: 2rem;
     font-weight: bold;
     cursor: pointer;
-    color: var(--highlight-color);
+    color: var(--color-navbar_font);
     background-color: transparent;
     margin: 0;
     padding: 0;
@@ -42,6 +36,7 @@
 }
 
 .navbar-button:hover {
+
     transform: scale(1.1);
     color: var(--accent-color);
     box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.4);
@@ -51,6 +46,8 @@
     width: 150px;
     transition: all 0.7s ease;
     text-align: left;
+
+    color: var(--color-emergente);
 }
 
 .navbar-menu {
@@ -61,6 +58,8 @@
     background: rgba(138, 43, 226, 0.9);
     border-radius: 15px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+    background-color: var(--color-emergente); 
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
     z-index: 10;
     padding: 10px 0;
     animation: slideDown 0.3s ease-out;
@@ -91,22 +90,19 @@
 }
 
 .navbar-menu a {
-    color: var(--text-color);
+    color: var(--color-navbar);
     text-decoration: none;
     font-size: 1.2rem;
     display: block;
 }
 
-.navbar-menu a:hover {
-    background-color: var(--accent-color);
-    color: var(--highlight-color);
-}
-
 .login-button {
     background-color: transparent;
+
     text-align:center;
     color: var(--highlight-color);
     border: 2px solid var(--highlight-color); 
+
     border-radius: 20px;
     padding: 1px 6px;
     font-size: 1rem;
@@ -117,8 +113,9 @@
 }
 
 .login-button:hover {
-    background-color: var(--highlight-color);
-    color: var(--bg-color);
+    background-color: var(--color-navbar_font);
+    color: var(--color-navbar);
+    
 }
 
 @keyframes fadeInCascada {

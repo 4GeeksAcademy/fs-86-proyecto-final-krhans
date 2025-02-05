@@ -9,7 +9,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 			addNewUser: async (user) => {
 				try {
 					const newUser = await dispatcherUser.post(user);
-			
 					if (!newUser || newUser.error) { 
 						throw new Error(newUser?.error || "No se pudo registrar el usuario.");
 					}

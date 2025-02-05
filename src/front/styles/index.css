@@ -2,9 +2,11 @@
   --color-font: #084f67; 
   --color-background: #f2eafa;
   --color-Button: #DBB8F2;
-  --color-navbar: #5C2E91;
-  --color-emergente: #BFE3F2;
+  --color-navbar: #8A2BE2;
+  --color-navbar_font:#eaebfa;
+  --color-emergente: #d3e9f3;
 }
+
 body {
   background-color: var(--color-background);
   color: var(--color-font);

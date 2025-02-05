@@ -1,10 +1,15 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import "../../styles/about.css"; 
-import rigoImageUrl from "../../img/rigo-baby.jpg"; 
+import "../../styles/about.css";
+import rigoImageUrl from "../../img/rigo-baby.jpg";
 
 export const About = () => {
     const navigate = useNavigate();
+    const [showText, setShowText] = useState(false);
+    
+    useEffect(() => {
+        setTimeout(() => setShowText(true), 1000);
+    }, []);
 
     const teamMembers = [
         { id: "gabriel", name: "Gabriel", image: rigoImageUrl },
@@ -15,22 +20,22 @@ export const About = () => {
 
     return (
         <div className="container text-center">
-            <nav className="navbar navbar-expand-lg navbar-dark custom-navbar">
-                <div className="container-fluid">
-                    <div className="navbar-brand d-flex align-items-center">
-                        <img src={rigoImageUrl} className="mascot" alt="Mascot" />
-                        <span className="team-name">KRHANS</span>
-                    </div>
-                    <button className="btn btn-outline-light back-button" onClick={() => navigate("/")}>
-                        Volver
+            <nav className="navbar navbar-expand-lg custom-navbar">
+                <div className="container-fluid justify-content-end">
+                    <button className="home-button" onClick={() => navigate("/")}> 
+                        <i className="fas fa-home"></i>
                     </button>
                 </div>
             </nav>
 
+            <div className="about-message">
+                {showText && <h2 className="fade-in">Our journey: Dream, fight and achieve</h2>}
+            </div>
+
             <div className="row justify-content-center team-section">
                 {teamMembers.map(member => (
                     <div key={member.id} className="col-md-3">
-                        <div className="team-member-card" onClick={() => navigate(`/profile/${member.id}`)} style={{ cursor: "pointer" }}>
+                        <div className="team-member-card" onClick={() => navigate(`/profile/${member.id}`)}>
                             <img src={member.image} alt={member.name} className="member-image" />
                             <h2 className="member-name">{member.name}</h2>
                         </div>
