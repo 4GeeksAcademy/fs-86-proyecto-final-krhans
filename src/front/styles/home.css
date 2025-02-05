@@ -1,10 +1,4 @@
-:root {
-    --bg-color: #070B1A; 
-    --text-color: #FFF8DC; 
-    --highlight-color: #FFD700; 
-    --accent-color: #4A00E0; 
-    --secondary-color: #8A2BE2; 
-}
+
 
 .home-container {
     display: flex;
@@ -14,8 +8,8 @@
     height: 100vh;
     position: relative;
     z-index: 1;
-    background-color: var(--bg-color);
-    color: var(--text-color);
+    background-color: var(--color-background);
+    
 }
 
 .avatar-container {
@@ -31,7 +25,7 @@
     height: 150px;
     border-radius: 50%;
     animation: aparecer 1.5s ease-out forwards;
-    border: 5px solid #85C4C0;
+    border: 5px solid var(--color-Button);
 }
 
 .messages-container {
@@ -45,8 +39,8 @@
 }
 
 .welcome-message {
-    color: var(--highlight-color);
-    background-color: var(--secondary-color);
+    color: var(--color-font);
+    background-color: var(--color-Button);
     border-radius: 10px;
     padding: 10px 15px;
     font-size: 1.2rem;
@@ -58,8 +52,8 @@
 }
 
 .help-message {
-    color: var(--highlight-color);
-    background-color: var(--secondary-color);
+    color: var(--color-font);
+    background-color: var(--color-Button);
     border-radius: 10px;
     padding: 10px 15px;
     font-size: 1rem;
@@ -80,7 +74,7 @@
     height: 0;
     border-style: solid;
     border-width: 10px 10px 0 10px;
-    border-color: #C5B7E3 transparent transparent transparent;
+    border-color: var(--color-Button) transparent transparent transparent;
 }
 
 .help-message::after {
@@ -93,7 +87,7 @@
     height: 0;
     border-style: solid;
     border-width: 10px 10px 0 10px;
-    border-color: #85C4C0 transparent transparent transparent;
+    border-color: var(--color-Button) transparent transparent transparent;
 }
 
 /* Animaciones */

@@ -46,7 +46,7 @@
 .sign-up_button {
     padding: 15px 100px;
     margin:10px 4px;
-    color:var(--celeste-pastel);
+    color:var(--color-font);
     background-color: var(--color-Button);
     font-family: sans-serif;
     font-weight: 550;
