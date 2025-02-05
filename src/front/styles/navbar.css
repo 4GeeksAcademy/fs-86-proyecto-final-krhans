@@ -15,7 +15,7 @@
 .navbar-container {
     position: relative;
     width: 100%;
-    background-color: var(--bg-color);
+    background-color: #010a2d;
     color: var(--text-color);
     font-family: "Inria Sans", serif;
     display: flex;
