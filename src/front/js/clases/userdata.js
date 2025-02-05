@@ -2,7 +2,7 @@ class UserData {
   constructor() {
       this._user_name = "";  
       this._email = "";
-      this._password_ = "";
+      this._password= "";
   }
 
   get user_name() {
