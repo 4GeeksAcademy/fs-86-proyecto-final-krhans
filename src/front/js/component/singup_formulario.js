@@ -36,10 +36,10 @@ const SignUpOverview = () => {
                 }
             } catch (error) {
                 console.error("Error en el registro:", error);
-            }
-      
-            
+            } 
         }
+        alert(message)
+
     };
 
     
