@@ -35,12 +35,6 @@
     text-align: center;
 }
 
-.navbar-button:hover {
-
-    transform: scale(1.1);
-    color: var(--accent-color);
-    box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.4);
-}
 
 .navbar-button.is-expanded {
     width: 150px;
@@ -98,11 +92,9 @@
 
 .login-button {
     background-color: transparent;
-
     text-align:center;
-    color: var(--highlight-color);
-    border: 2px solid var(--highlight-color); 
-
+    color: var(--color-navbar_font);
+    border: 2px solid var(--color-navbar_font); 
     border-radius: 20px;
     padding: 1px 6px;
     font-size: 1rem;

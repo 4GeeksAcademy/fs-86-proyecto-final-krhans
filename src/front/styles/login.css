@@ -5,12 +5,13 @@
 }
 .log-in_form{
     width: 100%;
-
 }
+
 .log-in_input-group{
     font-size: 0.9rem;
     position: relative;
 }
+
 .log-in_input{
     all: unset;
     padding: 1rem;
