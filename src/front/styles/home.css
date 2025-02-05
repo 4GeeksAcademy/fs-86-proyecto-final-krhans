@@ -90,7 +90,6 @@
     border-color: var(--color-Button) transparent transparent transparent;
 }
 
-/* Animaciones */
 @keyframes fadeIn {
     0% {
         opacity: 0;
