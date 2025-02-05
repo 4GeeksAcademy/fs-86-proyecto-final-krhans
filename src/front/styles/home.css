@@ -96,7 +96,6 @@
     border-color: #85C4C0 transparent transparent transparent;
 }
 
-/* Animaciones */
 @keyframes fadeIn {
     0% {
         opacity: 0;
