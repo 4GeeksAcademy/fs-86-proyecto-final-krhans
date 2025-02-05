@@ -28,7 +28,7 @@ export const Home = () => {
         }, 6000);
 
         return () => {
-            clearTimeout(timer);
+            clearTimeout(welcomeTimer);
             clearTimeout(helpTimer);
         };
     }, []);
