@@ -20,7 +20,7 @@ export const Home = () => {
         }, 4000); 
 
         return () => {
-            clearTimeout(welcomeTimer);
+            clearTimeout(timer);
             clearTimeout(helpTimer);
         };
     }, []);
