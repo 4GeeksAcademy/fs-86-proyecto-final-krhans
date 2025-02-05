@@ -29,7 +29,7 @@ export const About = () => {
             </nav>
 
             <div className="about-message">
-                {showText && <h2 className="fade-in">Nuestro viaje: Sueña, lucha y consigue</h2>}
+                {showText && <h2 className="fade-in">Our journey: Dream, fight and achieve</h2>}
             </div>
 
             <div className="row justify-content-center team-section">
