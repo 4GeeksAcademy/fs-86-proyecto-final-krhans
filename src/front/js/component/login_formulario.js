@@ -11,6 +11,8 @@ const LogInOverview = () => {
     const [password, setPassword] = useState("");
     const { store, actions } = useContext(Context);
     const [isLoading, setIsLoading] = useState(false);
+    const [showPopup, setShowPopup] = useState(false);
+    const [popupMessage, setPopupMessage] = useState("");
     const navigate = useNavigate(); 
 
     const login = async () => {
@@ -19,46 +21,68 @@ const LogInOverview = () => {
         if (!password) message = "Please insert password";
 
         if (message === "") {
-            setIsLoading(true); // Mostrar el Loader
+            setIsLoading(true); 
 
             try {
                 const success = await actions.login(email, password);
                 if (success) {
-                    console.log("Navegar al Home")
-                    setIsLoading(false); 
-                    navigate("/"); 
+                    setPopupMessage("✅ Login successful! Redirecting...");
+                    setShowPopup(true);
+                    setTimeout(() => {
+                        setShowPopup(false);
+                        navigate("/"); 
+                    }, 3000);
+                } else {
+                    setPopupMessage("❌ Login failed. Please check your credentials.");
+                    setShowPopup(true);
                 }
             } catch (error) {
-                console.error("Login error:", error);
+                setPopupMessage(`❌ ${error.message || 'Try again.'}`);
+                setShowPopup(true);
             } finally {
-                setIsLoading(false); 
+                setIsLoading(false);
+                setTimeout(() => setShowPopup(false), 3000);
             }
         } else {
-            alert(message);
+            setPopupMessage(message);
+            setShowPopup(true);
+            setTimeout(() => setShowPopup(false), 3000);
         }
     };
 
-    return isLoading ? (
-        <Loader />
-    ) : (
+    return (
         <div className="log-in_container d-flex flex-column align-items-center justify-content-center">
-            <h1 className="log-in_title text-center">"Fuel your passion, unlock your potential."</h1>
-            <form className="log-in_form">
-                <div className="sign-up_input-group d-flex flex-column">
-                    <input className="sign-up_input" type="email" id="email" name="email" autoComplete="username" required value={email} onChange={(e) => setEmail(e.target.value)} />
-                    <label className="sign-up_label" htmlFor="email"><FontAwesomeIcon icon={faEnvelope} /> Email</label>
+            {isLoading && <Loader />}
+
+            {!isLoading && (
+                <>
+                    <h1 className="log-in_title text-center">"Fuel your passion, unlock your potential."</h1>
+                    <form className="log-in_form">
+                        <div className="sign-up_input-group d-flex flex-column">
+                            <input className="sign-up_input" type="email" id="email" name="email" autoComplete="username" required value={email} onChange={(e) => setEmail(e.target.value)} />
+                            <label className="sign-up_label" htmlFor="email"><FontAwesomeIcon icon={faEnvelope} /> Email</label>
+                        </div>
+                        <div className="sign-up_input-group d-flex flex-column">
+                            <input className="sign-up_input" type="password" id="password" name="password" autoComplete="current-password" required value={password} onChange={(e) => setPassword(e.target.value)} />
+                            <label className="sign-up_label" htmlFor="password"><FontAwesomeIcon icon={faLock} /> Password</label>
+                        </div>
+                    </form>
+                    <button className="log-in_button" onClick={login}>Log In</button>
+                    <p className="sign-up_link align-self-start">Don't have an account? <b/>
+                        <Link to="/signup">
+                            <span>Sign Up</span>
+                        </Link>
+                    </p>
+                </>
+            )}
+
+            {showPopup && (
+                <div className="popup-overlay">
+                    <div className="popup-content">
+                        <p>{popupMessage}</p>
+                    </div>
                 </div>
-                <div className="sign-up_input-group d-flex flex-column">
-                    <input className="sign-up_input" type="password" id="password" name="password" autoComplete="current-password" required value={password} onChange={(e) => setPassword(e.target.value)} />
-                    <label className="sign-up_label" htmlFor="password"><FontAwesomeIcon icon={faLock} /> Password</label>
-                </div>
-            </form>
-            <button className="log-in_button" onClick={login}>Log In</button>
-            <p className="sign-up_link align-self-start">Don't have an account? <b/>
-                <Link to="/signup">
-                    <span>Sign Up</span>
-                </Link>
-            </p>
+            )}
         </div>
     );
 }

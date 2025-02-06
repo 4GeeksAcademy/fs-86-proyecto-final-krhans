@@ -11,11 +11,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 					const newUser = await dispatcherUser.post(user);
 					if (!newUser || newUser.error) { 
 						throw new Error(newUser?.error || "No se pudo registrar el usuario.");
-					}
-			
-					setStore({ userData: newUser });
-					alert("Registro exitoso!");
-			
+					}			
+					setStore({ userData: newUser });			
 					return newUser;
 				} catch (error) {
 					console.error("Error en el registro:", error.message);
@@ -24,21 +21,20 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 			login: async (email, password) => {
 				try {
-					
 					const token = await dispatcherUser.login(email, password);
-					
-				
-					if (token && typeof token === 'string' && token.trim() !== '') {
-						localStorage.setItem('token', token);
-						return true
+			
+					if (token && typeof token === "string" && token.trim() !== "") {
+						localStorage.setItem("token", token);
+						return true;
 					} else {
-						return false
+						throw new Error("Invalid credentials");
 					}
 				} catch (error) {
-					
-					alert("Hubo un error al loguearse: " + error.message);
+					console.error("Login failed:", error);
+					throw error; 
 				}
-			},			
+			},
+				
 			
 
 			getMessage: async () => {
