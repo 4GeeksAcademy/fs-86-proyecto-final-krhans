@@ -65,7 +65,7 @@
     width: 0;
     overflow: hidden;
     white-space: nowrap;
-    animation: typing 2s steps(20) forwards, blink 0.6s infinite;
+    animation: typing 4s steps(20) forwards, blink 0.6s infinite;
 }
 @keyframes typing {
     to {

@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import "../../styles/login.css"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope, faLock, } from "@fortawesome/free-solid-svg-icons";
@@ -18,6 +18,7 @@ const LogInOverview = () => {
         if (message ===""){
             actions.login(email,password)
         }
+        Navigate("/dashboard");
     }
 
     return (
