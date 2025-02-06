@@ -16,6 +16,7 @@ import FitPage from "./pages/fitpage";
 import CoachingInterview from "./pages/coachingInterview";
 import CoachPage from "./pages/coachPage";
 
+
 //create your first component
 const Layout = () => {
     //the basename is used when your project is published in a subdirectory and not in the root of the domain
