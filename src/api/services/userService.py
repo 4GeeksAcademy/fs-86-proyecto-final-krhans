@@ -33,7 +33,10 @@ class UserService:
 
     @staticmethod
     def get_token(user):
-        
-        expires = timedelta(hours=1)
-        access_token = create_access_token(identity=user.id, expires_delta=expires)
+        expires = timedelta(hours=10)
+        access_token = create_access_token(identity=str(user.id), expires_delta=expires) 
         return access_token
+
+    @staticmethod
+    def get_user_by_id(user_id):
+        return UserRepository.get_user_by_id(user_id) or None

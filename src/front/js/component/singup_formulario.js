@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState,useRef,useEffect } from "react";
 import { Context } from "../store/appContext";
 import "../../styles/signup.css"
 import { useNavigate, Link } from "react-router-dom";
@@ -18,6 +18,8 @@ const SignUpOverview = () => {
     const [popupMessage, setPopupMessage] = useState("");
     
     const navigate = useNavigate();
+    const isMounted = useRef(true);
+
 
     const confirmUser = async () => {
         let message = "";
@@ -36,25 +38,34 @@ const SignUpOverview = () => {
                 user.password = password;
 
                 const newUser = await actions.addNewUser(user.toJSON());
-                if (newUser) {
-                    setPopupMessage("✅ Registration successful! Redirecting...");
-                    setShowPopup(true);
-                    setIsLoading(false);
-                    setTimeout(() => {
-                        setShowPopup(false);
-                        navigate("/");
-                    }, 3000);
-                } else {
-                    setPopupMessage("❌ Registration failed. Try again.");
-                    setShowPopup(true);
+                if (isMounted.current) {
+                    if (newUser) {
+                        setPopupMessage("✅ Registration successful! Redirecting...");
+                        setShowPopup(true);
+                        setTimeout(() => {
+                            if (isMounted.current) { 
+                                setShowPopup(false);
+                                navigate("/");
+                            }
+                        }, 3000);
+                    } else {
+                        setPopupMessage("❌ Registration failed. Try again.");
+                        setShowPopup(true);
+                    }
                 }
             } catch (error) {
                 console.error("Error en el registro:", error);
-                setPopupMessage("❌ An error occurred. Try again.");
-                setShowPopup(true);
+                if (isMounted.current) {
+                    setPopupMessage("❌ An error occurred. Try again.");
+                    setShowPopup(true);
+                }
             } finally {
                 setIsLoading(false);
-                setTimeout(() => setShowPopup(false), 3000);
+                setTimeout(() => {
+                    if (isMounted.current) { 
+                        setShowPopup(false);
+                    }
+                }, 3000);
             }
         } else {
             setPopupMessage(message);
@@ -62,6 +73,12 @@ const SignUpOverview = () => {
             setTimeout(() => setShowPopup(false), 3000);
         }
     };
+
+    useEffect(() => {
+        return () => {
+            isMounted.current = false;
+        };
+    }, []);
 
     return (
         <div className="sign-up_container d-flex flex-column align-items-center justify-content-stretch">

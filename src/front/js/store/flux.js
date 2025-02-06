@@ -24,7 +24,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 					const token = await dispatcherUser.login(email, password);
 			
 					if (token && typeof token === "string" && token.trim() !== "") {
-						localStorage.setItem("token", token);
+						localStorage.removeItem("jwt-token");
+						
+						localStorage.setItem("jwt-token", token);
+						
 						return true;
 					} else {
 						throw new Error("Invalid credentials");
@@ -33,7 +36,27 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.error("Login failed:", error);
 					throw error; 
 				}
+			},			
+			getUserData: async (token) => {
+				try {
+					if (!token) {
+						throw new Error("Token de autenticación no proporcionado.");
+					}
+
+					const user = await dispatcherUser.getUserData(token);
+			
+					if (!user) {
+						throw new Error("No se encontraron datos del usuario.");
+					}
+			
+					return user;
+			
+				} catch (error) {
+					console.error("Error al obtener los datos del usuario:", error.message);
+					return { error: error.message };
+				}
 			},
+			
 				
 			
 
