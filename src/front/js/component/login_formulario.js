@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState,useEffect,useRef } from "react";
 import { Context } from "../store/appContext";
 import { Link, useNavigate } from "react-router-dom"; 
 import "../../styles/login.css"
@@ -14,6 +14,7 @@ const LogInOverview = () => {
     const [showPopup, setShowPopup] = useState(false);
     const [popupMessage, setPopupMessage] = useState("");
     const navigate = useNavigate(); 
+    const isMounted = useRef(true);
 
     const login = async () => {
         let message = "";
@@ -21,27 +22,37 @@ const LogInOverview = () => {
         if (!password) message = "Please insert password";
 
         if (message === "") {
-            setIsLoading(true); 
+            setIsLoading(true);
 
             try {
                 const success = await actions.login(email, password);
-                if (success) {
-                    setPopupMessage("✅ Login successful! Redirecting...");
-                    setShowPopup(true);
-                    setTimeout(() => {
-                        setShowPopup(false);
-                        navigate("/"); 
-                    }, 3000);
-                } else {
-                    setPopupMessage("❌ Login failed. Please check your credentials.");
-                    setShowPopup(true);
+                if (isMounted.current) { 
+                    if (success) {
+                        setPopupMessage("✅ Login successful! Redirecting...");
+                        setShowPopup(true);
+                        setTimeout(() => {
+                            if (isMounted.current) { 
+                                setShowPopup(false);
+                                navigate("/"); 
+                            }
+                        }, 3000);
+                    } else {
+                        setPopupMessage("❌ Login failed. Please check your credentials.");
+                        setShowPopup(true);
+                    }
                 }
             } catch (error) {
-                setPopupMessage(`❌ ${error.message || 'Try again.'}`);
-                setShowPopup(true);
+                if (isMounted.current) {
+                    setPopupMessage(`❌ ${error.message || 'Try again.'}`);
+                    setShowPopup(true);
+                }
             } finally {
                 setIsLoading(false);
-                setTimeout(() => setShowPopup(false), 3000);
+                setTimeout(() => {
+                    if (isMounted.current) { 
+                        setShowPopup(false);
+                    }
+                }, 3000);
             }
         } else {
             setPopupMessage(message);
@@ -50,6 +61,11 @@ const LogInOverview = () => {
         }
     };
 
+    useEffect(() => {
+        return () => {
+            isMounted.current = false;
+        };
+    }, []);
     return (
         <div className="log-in_container d-flex flex-column align-items-center justify-content-center">
             {isLoading && <Loader />}

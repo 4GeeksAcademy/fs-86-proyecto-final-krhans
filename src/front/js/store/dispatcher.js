@@ -8,7 +8,7 @@ export const dispatcherUser = {
                 },
                 body: JSON.stringify(userData)
             });
-            
+
             if (!response.ok) {
                 const errorData = await response.json();
                 throw new Error(`Error ${response.status}: ${errorData.error || response.statusText}`);
@@ -17,12 +17,12 @@ export const dispatcherUser = {
             return await response.json();
         } catch (error) {
             console.error("Error registrando usuario:", error);
-            return { error: error.message }; 
+            return { error: error.message };
         }
     },
     login: async (email, password) => {
         try {
-            
+
             const response = await fetch(`${process.env.BACKEND_URL}/api/log_in`, {
                 method: "POST",
                 headers: {
@@ -36,9 +36,33 @@ export const dispatcherUser = {
             }
 
             const data = await response.json();
-            return data.token;  
+            console.log("Datos del usuario: ",data)
+            return data.token;
         } catch (error) {
             console.error("Error al iniciar sesión:", error);
+            return { error: error.message };
+        }
+    },
+    getUserData: async (token) => {
+        try {
+            console.log("Token: ",token)
+            const response = await fetch(`${process.env.BACKEND_URL}/api/user_profile`, {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                }
+            });
+            
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.error('Error Data:', errorData);
+                throw new Error(`Error ${response.status}: ${errorData.error || response.statusText}`);
+            }
+            
+            return await response.json();
+        } catch (error) {
+            console.error("Error obteniendo los datos del usuario:", error);
             return { error: error.message };
         }
     }
