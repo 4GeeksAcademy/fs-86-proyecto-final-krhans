@@ -30,9 +30,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 				
 					if (token && typeof token === 'string' && token.trim() !== '') {
 						localStorage.setItem('token', token);
-						console.log("Se ha creado el token.", token);
+						return true
 					} else {
-						console.error("No se obtuvo un token de acceso.");
+						return false
 					}
 				} catch (error) {
 					

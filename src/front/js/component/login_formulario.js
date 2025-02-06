@@ -1,32 +1,51 @@
 import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext";
-import { Link, Navigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom"; 
 import "../../styles/login.css"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEnvelope, faLock, } from "@fortawesome/free-solid-svg-icons";
+import { faEnvelope, faLock } from "@fortawesome/free-solid-svg-icons";
+import { Loader } from "./loader";
 
 const LogInOverview = () => {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const { store, actions } = useContext(Context);
+    const [isLoading, setIsLoading] = useState(false);
+    const navigate = useNavigate(); 
 
-    const [email,setEmail]=useState("");
-    const [password,setPassword]=useState("");
-    const {store, actions} = useContext(Context);
+    const login = async () => {
+        let message = "";
+        if (!email) message = "Please insert email";
+        if (!password) message = "Please insert password";
 
-    const login=()=>{
-        let message="";
-        if(!email || email==="") message="Please insert email";
-        if (!password || password ==="")message="Please insert password";
-        if (message ===""){
-            actions.login(email,password)
+        if (message === "") {
+            setIsLoading(true); // Mostrar el Loader
+
+            try {
+                const success = await actions.login(email, password);
+                if (success) {
+                    console.log("Navegar al Home")
+                    setIsLoading(false); 
+                    navigate("/"); 
+                }
+            } catch (error) {
+                console.error("Login error:", error);
+            } finally {
+                setIsLoading(false); 
+            }
+        } else {
+            alert(message);
         }
-        Navigate("/dashboard");
-    }
+    };
 
-    return (
+    return isLoading ? (
+        <Loader />
+    ) : (
         <div className="log-in_container d-flex flex-column align-items-center justify-content-center">
             <h1 className="log-in_title text-center">"Fuel your passion, unlock your potential."</h1>
             <form className="log-in_form">
                 <div className="sign-up_input-group d-flex flex-column">
-                    <input className="sign-up_input" type="email" id="email" name="email" autoComplete="userName" required value={email} onChange={(e) => setEmail(e.target.value)} />
+                    <input className="sign-up_input" type="email" id="email" name="email" autoComplete="username" required value={email} onChange={(e) => setEmail(e.target.value)} />
                     <label className="sign-up_label" htmlFor="email"><FontAwesomeIcon icon={faEnvelope} /> Email</label>
                 </div>
                 <div className="sign-up_input-group d-flex flex-column">
@@ -41,8 +60,7 @@ const LogInOverview = () => {
                 </Link>
             </p>
         </div>
-    )
-
+    );
 }
 
 export default LogInOverview;
