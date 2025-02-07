@@ -1,4 +1,4 @@
-import React, { useContext, useState,useRef,useEffect } from "react";
+import React, { useContext, useState, useRef, useEffect } from "react";
 import { Context } from "../store/appContext";
 import "../../styles/signup.css"
 import { useNavigate, Link } from "react-router-dom";
@@ -16,7 +16,7 @@ const SignUpOverview = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [showPopup, setShowPopup] = useState(false);
     const [popupMessage, setPopupMessage] = useState("");
-    
+
     const navigate = useNavigate();
     const isMounted = useRef(true);
 
@@ -33,9 +33,6 @@ const SignUpOverview = () => {
             setIsLoading(true);
             try {
 
-                const newUser = await actions.addNewUser(user.toJSON()); 
-                if (newUser) {
-                    navigate("/welcome"); 
 
                 let user = new UserData();
                 user.user_name = userName;
@@ -48,7 +45,7 @@ const SignUpOverview = () => {
                         setPopupMessage("✅ Registration successful! Redirecting...");
                         setShowPopup(true);
                         setTimeout(() => {
-                            if (isMounted.current) { 
+                            if (isMounted.current) {
                                 setShowPopup(false);
                                 navigate("/");
                             }
@@ -59,6 +56,8 @@ const SignUpOverview = () => {
                     }
 
                 }
+
+                navigate("/welcome");
             } catch (error) {
                 console.error("Error en el registro:", error);
                 if (isMounted.current) {
@@ -68,7 +67,7 @@ const SignUpOverview = () => {
             } finally {
                 setIsLoading(false);
                 setTimeout(() => {
-                    if (isMounted.current) { 
+                    if (isMounted.current) {
                         setShowPopup(false);
                     }
                 }, 3000);
@@ -122,7 +121,7 @@ const SignUpOverview = () => {
                         </div>
                     </form>
                     <button className="sign-up_button" onClick={confirmUser}>Sign Up</button>
-                    <p className="sign-up_link align-self-start">Have an account?  
+                    <p className="sign-up_link align-self-start">Have an account?
                         <Link to="/login">
                             <span> Log In</span>
                         </Link>
