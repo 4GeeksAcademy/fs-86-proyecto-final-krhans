@@ -44,8 +44,7 @@ export const dispatcherUser = {
         }
     },
     getUserData: async (token) => {
-        try {
-            console.log("Token: ",token)
+        try {     
             const response = await fetch(`${process.env.BACKEND_URL}/api/user_profile`, {
                 method: "GET",
                 headers: {

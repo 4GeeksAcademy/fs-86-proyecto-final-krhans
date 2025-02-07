@@ -18,7 +18,7 @@ const IsLogIn = () => {
                    const token = localStorage.getItem("jwt-token");
                    if (token) {
                        const user = await get_user(token);
-                       if (!user) {
+                       if (!user  || user.error) {
                            navigate("/login");
                        }
                        setIsLoading(false);
