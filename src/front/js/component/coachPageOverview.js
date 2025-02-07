@@ -2,8 +2,11 @@ import React from "react";
 import "../../styles/coachPageOverview.css"
 
 const CoachPageOverview = () => {
-    return(<>
-    </>)
-}
+    return(
+        <div className="coaching-container">
+            <span>funciona xd</span>
+        </div>
+    );
+};
 
 export default CoachPageOverview;

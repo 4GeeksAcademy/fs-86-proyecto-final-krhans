@@ -32,6 +32,11 @@ const SignUpOverview = () => {
         if (message === "") {
             setIsLoading(true);
             try {
+
+                const newUser = await actions.addNewUser(user.toJSON()); 
+                if (newUser) {
+                    navigate("/welcome"); 
+
                 let user = new UserData();
                 user.user_name = userName;
                 user.email = email;
@@ -52,6 +57,7 @@ const SignUpOverview = () => {
                         setPopupMessage("❌ Registration failed. Try again.");
                         setShowPopup(true);
                     }
+
                 }
             } catch (error) {
                 console.error("Error en el registro:", error);
