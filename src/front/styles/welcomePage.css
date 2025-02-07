@@ -1,0 +1,60 @@
+.welcome-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  text-align: center;
+  padding: 20px;
+  background-color: var(--color-background);
+  font-family: "Inria Sans", sans-serif;
+}
+  
+.avatar-container {
+  width: 200px; 
+  height: 200px;
+  border-radius: 50%;
+  display: flex;
+  background: var(--color-emergente);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); 
+  border: 5px solid var(--color-Button);
+}
+
+.khrans-avatar {
+  width: 180px;
+  height: 180px;
+  border: 5px solid var(--color-Button);
+  border-radius: 50%;
+  object-fit: cover;
+}
+  
+.message-container{
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: var(--color-font);
+  margin-bottom: 20px;
+}
+  
+.philosophical-quote {
+  font-size: 1.2rem;
+  font-style: italic;
+  color: var(--color-emergente);
+  margin-bottom: 40px;
+}
+  
+.welcome-button {
+  background-color: var(--color-Button);
+  color: var(--color-font);
+  border: none;
+  border-radius: 10px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+  
+.welcome-button:hover {
+  background-color: var(--color-font);
+  color: var(--color-background);
+}

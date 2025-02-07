@@ -31,7 +31,7 @@ const SignUpOverview = () => {
             try {
                 const newUser = await actions.addNewUser(user.toJSON()); 
                 if (newUser) {
-                    navigate("/"); 
+                    navigate("/welcome"); 
                 }
             } catch (error) {
                 console.error("Error en el registro:", error);
