@@ -11,11 +11,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 					const newUser = await dispatcherUser.post(user);
 					if (!newUser || newUser.error) { 
 						throw new Error(newUser?.error || "No se pudo registrar el usuario.");
-					}
-			
-					setStore({ userData: newUser });
-					alert("Registro exitoso!");
-			
+					}			
+					setStore({ userData: newUser });			
 					return newUser;
 				} catch (error) {
 					console.error("Error en el registro:", error.message);
@@ -24,21 +21,43 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 			login: async (email, password) => {
 				try {
-					
 					const token = await dispatcherUser.login(email, password);
-					
-				
-					if (token && typeof token === 'string' && token.trim() !== '') {
-						localStorage.setItem('token', token);
-						console.log("Se ha creado el token.", token);
+			
+					if (token && typeof token === "string" && token.trim() !== "") {
+						localStorage.removeItem("jwt-token");
+						
+						localStorage.setItem("jwt-token", token);
+						
+						return true;
 					} else {
-						console.error("No se obtuvo un token de acceso.");
+						throw new Error("Invalid credentials");
 					}
 				} catch (error) {
-					
-					alert("Hubo un error al loguearse: " + error.message);
+					console.error("Login failed:", error);
+					throw error; 
 				}
 			},			
+			getUserData: async (token) => {
+				try {
+					if (!token) {
+						throw new Error("Token de autenticación no proporcionado.");
+					}
+
+					const user = await dispatcherUser.getUserData(token);
+			
+					if (!user) {
+						throw new Error("No se encontraron datos del usuario.");
+					}
+			
+					return user;
+			
+				} catch (error) {
+					console.error("Error al obtener los datos del usuario:", error.message);
+					return { error: error.message };
+				}
+			},
+			
+				
 			
 
 			getMessage: async () => {

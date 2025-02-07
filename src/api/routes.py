@@ -26,11 +26,15 @@ def log_in():
         if not user:
             return jsonify({"error": "Credenciales incorrectas"}), 401
 
+        if not user.id:
+            return jsonify({"error": "ID de usuario no válido"}), 500
+        
         access_token = UserService.get_token(user)
 
         return jsonify({
             "message": "Inicio de sesión exitoso",
-            "token": access_token  
+            "token": access_token ,
+            "user_id":user.id
         }), 200
 
     except Exception as e:
@@ -56,23 +60,31 @@ def sign_up():
         return jsonify({"error": str(e)}), 500
 
 
-@api.route('/profile', methods=['GET'])
-@jwt_required() 
+@api.route('/user_profile', methods=['GET'])
+@jwt_required()
 def profile():
     try:
-        user_id = get_jwt_identity() 
-        user = UserService.get_user_by_id(user_id)
+        print(f"Iniciando")  
+        user_id = get_jwt_identity()  
+        print(f" {user_id}")  
+        user = UserService.get_user_by_id(user_id)  
 
         if not user:
-            return jsonify({"error": "Usuario no encontrado"}), 404
+            print("Usuario no encontrado. ") 
+            return jsonify({"error": "Usuario no encontrado"}), 404  
+
+        print(f"Usuario encontrado: {user.user_name}, {user.email}")  
 
         return jsonify({
             "user_name": user.user_name,
             "email": user.email
-        }), 200
+        }), 200  
 
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        print(f"Error en el endpoint de perfil: {e}") 
+        return jsonify({"error": str(e)}), 500  
+
+
 
 
 @api.route('/about_us', methods=['GET'])
