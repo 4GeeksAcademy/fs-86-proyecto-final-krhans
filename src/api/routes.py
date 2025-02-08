@@ -101,4 +101,42 @@ def user_profile():
         return jsonify({"error": str(e)}), 500
 
 
+from datetime import date
+
+
+
+# @api.route('/complete_workout', methods=['POST'])
+# def complete_workout():
+#     # Suponiendo que recibimos el ID del workout y el ID del usuario
+#     user_id = request.json.get('user_id')
+#     workout_id = request.json.get('workout_id')
+    
+#     # Obtener la instancia del workout y del usuario
+#     workout = Workout.query.get(workout_id)
+#     user = User.query.get(user_id)
+    
+#     if not workout or not user:
+#         return jsonify({"message": "Workout o usuario no encontrados"}), 404
+    
+#     # Verificar si el workout ya está marcado como completado
+#     workout_completion = WorkoutCompletion.query.filter_by(user_id=user.id, workout_id=workout.id).first()
+    
+#     if workout_completion:
+#         workout_completion.completed = True
+#         workout_completion.date_completed = date.today()  # Establecer la fecha actual al marcar como completado
+#     else:
+#         # Crear un nuevo registro si no existe
+#         workout_completion = WorkoutCompletion(
+#             user_id=user.id,
+#             workout_id=workout.id,
+#             completed=True,
+#             date_completed=date.today()  # Establecer la fecha actual
+#         )
+    
+#     db.session.add(workout_completion)
+#     db.session.commit()
+    
+#     return jsonify({"message": "Workout marcado como completado"}), 200
+
+
 
