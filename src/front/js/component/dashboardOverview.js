@@ -11,7 +11,7 @@ const DashboardOverview = () => {
   return (
     <div className="dashboard-container">
       <div className="dashboard-question">
-        <h1>"Which path will you take?"</h1>
+        <h1>"Which path will you take??"</h1>
       </div>
       <div className="dashboard-avatar">
         <img

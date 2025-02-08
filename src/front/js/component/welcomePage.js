@@ -16,7 +16,7 @@ const WelcomePage = () => {
 
     return (
         <div className="welcome-container">
-            <h2>CONGRATULATIONS!!</h2>
+            <h2>CONGRATULATIONS!!!</h2>
             <div className="message-container">
                 <h3 className="philosophical-message">
                     "The first step is always the hardest, but it's also the most important."
