@@ -1,5 +1,5 @@
 
-from api.models import db, User,User_profile
+from api.models import db, User,UserProfile
 
 class UserRepository:
     @staticmethod
@@ -33,7 +33,7 @@ class UserRepository:
     @staticmethod
     def create_profile(user_id):
         try:
-            new_profile = User_profile(user_id=user_id)
+            new_profile = UserProfile(user_id=user_id)
             db.session.add(new_profile)
             db.session.commit()
             return new_profile
