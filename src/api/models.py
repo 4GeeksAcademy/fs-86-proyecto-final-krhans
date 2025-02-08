@@ -43,7 +43,11 @@ class User(db.Model):
 class User_profile(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    
+    edad=db.Column(db.Integer,nullable=True)
+    phone_number=db.Column(db.Integer,nullable=True)
+    gender=db.Column(db.String,nullable=True)
+    description=db.Column(db.String,nullable=True)
+
     user = db.relationship(
         'User', 
         back_populates='profile',
