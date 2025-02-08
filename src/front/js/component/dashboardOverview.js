@@ -20,7 +20,6 @@ const DashboardOverview = () => {
           className="khrans-dashboard"
         />
       </div>
-      <div className="neblina"></div>
       <img
         src={BluePill}
         alt="Blue Pill"
