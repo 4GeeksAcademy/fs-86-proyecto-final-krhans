@@ -52,57 +52,53 @@ def sign_up():
         if UserService.existe(user_data):
             return jsonify({"error": "El usuario ya está registrado"}), 409
 
-        UserService.crear_usuario(user_data)
+        UserService.create_user(user_data)
 
         return jsonify({"message": "Registro exitoso"}), 201
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-
-
-@api.route('/user_profile', methods=['GET'])
+    
+@api.route('/user_profile', methods=['GET', 'POST'])
 @jwt_required()
-def profile():
+def user_profile():
     try:
-        print(f"Iniciando")  
         user_id = get_jwt_identity()  
-        print(f" {user_id}")  
         user = UserService.get_user_by_id(user_id)  
 
         if not user:
-            print("Usuario no encontrado. ") 
             return jsonify({"error": "Usuario no encontrado"}), 404  
 
-        print(f"Usuario encontrado: {user.user_name}, {user.email}")  
+        if request.method == 'GET':
+           
+            profile_data = user.profile.serialize() if user.profile else None
+            return jsonify({
+                "user_name": user.user_name,
+                "email": user.email,
+                "profile": profile_data 
+            }), 200  
 
-        return jsonify({
-            "user_name": user.user_name,
-            "email": user.email
-        }), 200  
+        elif request.method == 'POST':
+            data = request.get_json()
 
-    except Exception as e:
-        print(f"Error en el endpoint de perfil: {e}") 
-        return jsonify({"error": str(e)}), 500  
+            if not data:
+                return jsonify({"error": "Datos no proporcionados"}), 400  
 
+            updated_user = UserService.update_user(user_id, data)
+            
+            if not updated_user:
+                return jsonify({"error": "Error al actualizar el perfil"}), 500
+            
+            profile_data = updated_user.profile.serialize() if updated_user.profile else None
+            return jsonify({
+                "message": "Perfil actualizado correctamente",
+                "user_name": updated_user.user_name,
+                "email": updated_user.email,
+                "profile": profile_data
+            }), 200  
 
-
-
-@api.route('/about_us', methods=['GET'])
-def about_us():
-    try:
-        return jsonify({
-            "company": "Tamachochi",
-            "description": "Creadores del proyecto Tamachochi."
-        }), 200
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
-
-
-@api.route('/home', methods=['GET']) 
-def home():
-    try:
-        return jsonify({
-            "welcome": "Bienvenido a nuestra API",
-        }), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+
+
