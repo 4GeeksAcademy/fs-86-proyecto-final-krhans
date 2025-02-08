@@ -16,7 +16,7 @@ class UserService:
             user_data["password_hash"] = ph.hash(user_data["password_hash"])
             
             new_user = UserRepository.create_user(user_data)
-            UserRepository.create_profile(new_user.id)  # Asegurándonos de pasar el user_id
+            UserRepository.create_profile(new_user.id) 
             
             return new_user
         except Exception as e:
