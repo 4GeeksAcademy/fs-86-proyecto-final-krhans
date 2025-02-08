@@ -125,3 +125,36 @@
     transform: translate(120%, -80%);
   }
 }
+
+.pill-message {
+  position: absolute;
+  font-size: 25px;
+  font-weight: bold;
+  color: rgb(162, 11, 179);
+  text-shadow: 1px 1px 3px white;
+  opacity: 0;
+  animation: fadeInText 2s forwards ease-in-out;
+}
+
+.pill-left {
+  bottom: 42%;
+  left: 3%;
+  animation-delay: 3s;
+}
+
+.pill-right {
+  bottom: 42%;
+  right: 3%;
+  animation-delay: 3s;
+}
+
+@keyframes fadeInText {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

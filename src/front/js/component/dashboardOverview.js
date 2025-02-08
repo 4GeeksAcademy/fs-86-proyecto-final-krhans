@@ -2,8 +2,8 @@ import React from "react";
 import "../../styles/dashboard.css";
 import { useNavigate } from "react-router-dom";
 import KHRANSPregunta from "../../img/KHRANSPregunta.jpg";
-import BluePill from "../../img/blue-pill.jpg";
-import RedPill from "../../img/red-pill.jpg";
+import BluePill from "../../img/blue-pill.gif";
+import RedPill from "../../img/red-pill.gif";
 
 const DashboardOverview = () => {
   const navigate = useNavigate();
@@ -27,12 +27,14 @@ const DashboardOverview = () => {
         className="hand hand-left"
         onClick={() => navigate("/dashboard/fit-interview")}
       />
+      <div className="pill-message pill-left">Coaching</div>
       <img
         src={RedPill}
         alt="Red Pill"
         className="hand hand-right"
         onClick={() => navigate("/dashboard/coaching-interview")}
       />
+      <div className="pill-message pill-right">Training</div>
     </div>
   );
 };
