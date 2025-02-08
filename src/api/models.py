@@ -59,9 +59,12 @@ class Routine(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(120), nullable=False)
     description = db.Column(db.String(256), nullable=True)
+    days_per_week = db.Column(db.Integer, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
     user = db.relationship('User', back_populates='routines_list', lazy=True)
+    workouts = db.relationship('Workout', back_populates='routine', lazy=True)
+    
 
     def __repr__(self):
         return f'<Routine {self.name}>'
@@ -70,6 +73,7 @@ class Routine(db.Model):
 class Workout(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    routine_id = db.Column(db.Integer, db.ForeignKey('routine.id'), nullable=False)
     fitness_level = db.Column(db.String, nullable=True)  
     category = db.Column(db.String, nullable=False)   
     goal = db.Column(db.String, nullable=False)  
@@ -79,6 +83,8 @@ class Workout(db.Model):
     trainings = db.relationship('Training', back_populates='workout', lazy=True, cascade="all, delete-orphan")
     workout_completions = db.relationship('WorkoutCompletion', back_populates='workout', lazy=True, cascade="all, delete-orphan")
     user = db.relationship('User', back_populates='workouts')
+    routine = db.relationship('Routine', back_populates='workouts') 
+    
 
     def __repr__(self):
         return f'<Workout {self.id} - {self.goal}>'
