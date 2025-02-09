@@ -33,7 +33,7 @@ const LogInOverview = () => {
                         setTimeout(() => {
                             if (isMounted.current) { 
                                 setShowPopup(false);
-                                navigate("/"); 
+                                navigate("/dashboard"); 
                             }
                         }, 3000);
                     } else {

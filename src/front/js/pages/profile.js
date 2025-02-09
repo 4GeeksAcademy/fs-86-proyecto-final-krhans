@@ -1,7 +1,7 @@
 import React from "react";
 import "../../styles/profile.css";
 import { Link, useParams } from "react-router-dom";
-import gabrielImageUrl from "../../img/gabriel-foto.jpg";
+import gabrielImageUrl from "../../img/gabriel-foto.png";
 import cristianImageUrl from "../../img/cristian-foto.jpg";
 import albantaImageUrl from "../../img/albanta-foto.jpg";
 

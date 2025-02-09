@@ -1,6 +1,7 @@
 import React from "react";
 import "../../styles/dashboard.css";
 import { useNavigate } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import KHRANSPregunta from "../../img/KHRANSPregunta.jpg";
 import BluePill from "../../img/blue-pill.gif";
 import RedPill from "../../img/red-pill.gif";
@@ -35,6 +36,7 @@ const DashboardOverview = () => {
         onClick={() => navigate("/dashboard/coaching-interview")}
       />
       <div className="pill-message pill-right">Training</div>
+      <Outlet/>
     </div>
   );
 };

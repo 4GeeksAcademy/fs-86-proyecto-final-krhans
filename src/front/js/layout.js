@@ -16,6 +16,7 @@ import FitInterview from "./pages/fitinterview";
 import FitPage from "./pages/fitpage";
 import CoachingInterview from "./pages/coachingInterview";
 import CoachPage from "./pages/coachPage";
+import ProfileUser from "./pages/userProfile";
 
 //create your first component
 const Layout = () => {
@@ -42,14 +43,15 @@ const Layout = () => {
 
                         {/* <Route element={<IsLogIn />} path="/dashboard">
                             <Route element={<Dashboard />} path="">
+
                                 <Route path="fit-interview" element={<FitInterview />}>
                                     <Route path="fit-page" element={<FitPage />} />
                                 </Route>
                                 <Route path="coaching-interview" element={<CoachingInterview />}>
                                     <Route path="coach-page" element={<CoachPage />} />
-                                </Route>
-                            </Route>
-                        </Route> */}
+                                </Route> 
+                                <Route path="userprofile" element={<ProfileUser />}  />                                                      
+                        </Route>
                         <Route element={<h1>Not found!</h1>} path="*" />
                     </Routes>
                 </ScrollToTop>
