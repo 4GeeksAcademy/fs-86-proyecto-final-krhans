@@ -3,6 +3,7 @@ class UserData {
       this._user_name = "";  
       this._email = "";
       this._password= "";
+      this.profile = [];    
   }
 
   get user_name() {
@@ -28,7 +29,7 @@ class UserData {
   set password(value) {
       this._password = value;
   }
-
+  
   toJSON() {
       return {
           user_name: this._user_name,

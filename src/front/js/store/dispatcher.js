@@ -36,8 +36,7 @@ export const dispatcherUser = {
             }
 
             const data = await response.json();
-            console.log("Datos del usuario: ",data)
-            return data.token;
+            return data;
         } catch (error) {
             console.error("Error al iniciar sesión:", error);
             return { error: error.message };
@@ -58,8 +57,9 @@ export const dispatcherUser = {
                 console.error('Error Data:', errorData);
                 throw new Error(`Error ${response.status}: ${errorData.error || response.statusText}`);
             }
+
+           return await response.json();
             
-            return await response.json();
         } catch (error) {
             console.error("Error obteniendo los datos del usuario:", error);
             return { error: error.message };

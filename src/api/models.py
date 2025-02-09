@@ -36,7 +36,8 @@ class User(db.Model):
             "id": self.id,
             "user_name": self.user_name,
             "email": self.email,
-            "is_active": self.is_active
+            "is_active": self.is_active,
+            "profile": self.profile.serialize() if self.profile else None
         }
 
 
