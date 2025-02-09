@@ -190,8 +190,7 @@ const CoachingInterviewOverview = () => {
                         <div
                             key={index}
                             className={`area-button area-button${index + 1}`}
-                            onClick={() => handleButtonClick(area)}
-                        >
+                            onClick={() => handleButtonClick(area)}>
                             {area}
                         </div>
                     ))}
