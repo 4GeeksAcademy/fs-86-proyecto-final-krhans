@@ -20,14 +20,15 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 			login: async (email, password) => {
+				const store = getStore();
 				try {
-					const token = await dispatcherUser.login(email, password);
-			
-					if (token && typeof token === "string" && token.trim() !== "") {
+					const data = await dispatcherUser.login(email, password);
+
+					if (data.token && typeof data.token === "string" && data.token.trim() !== "") {
 						localStorage.removeItem("jwt-token");
 						
-						localStorage.setItem("jwt-token", token);
-						
+						localStorage.setItem("jwt-token", data.token);
+						setStore({userdata: data.user})		
 						return true;
 					} else {
 						throw new Error("Invalid credentials");
@@ -38,17 +39,19 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},			
 			getUserData: async (token) => {
+				const store = getStore();
 				try {
 					if (!token) {
 						throw new Error("Token de autenticación no proporcionado.");
 					}
-
+                    
 					const user = await dispatcherUser.getUserData(token);
-			
+			        
 					if (!user) {
 						throw new Error("No se encontraron datos del usuario.");
 					}
-			
+					setStore({userData: user})
+					console.log(store.userData);
 					return user;
 			
 				} catch (error) {
