@@ -1,8 +1,10 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
+import { Context } from "../store/appContext";
 import { useNavigate, Link } from "react-router-dom";
 import "../../styles/navbar.css";
 
 export const Navbar = () => {
+    const {store, actions} = useContext(Context);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isClosing, setIsClosing] = useState(false);
     const menuRef = useRef(null);
@@ -20,9 +22,6 @@ export const Navbar = () => {
         }
     };
 
-    const handleLogin = () => {
-        navigate("/login");
-    };
 
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -71,11 +70,29 @@ export const Navbar = () => {
                     </ul>
                 </div>
             )}
-            <div className="navbar-button">
-                <button className="login-button" onClick={handleLogin}>
+             <div className="navbar-button_login">
+            {store.userData ? (
+                <div className="">
+                    <button className="user-button dropdown-toggle" data-bs-toggle="dropdown">
+                        {store.userData.user_name}
+                    </button>
+                    <ul className="dropdown-menu">
+                        <li>
+                            <Link className="dropdown-item" to="dashboard/userprofile">Ver Perfil</Link>
+                        </li>
+                        <li>
+                            <button className="dropdown-item" onClick={() => actions.logout(navigate)}>Cerrar Sesión</button>
+                        </li>
+                    </ul>
+                </div>
+            ) : (
+                <Link to="/login">
+                <button className="login-button" >
                     Log In
                 </button>
-            </div>
+                </Link>
+            )}
+        </div>
         </nav>
     );
 };

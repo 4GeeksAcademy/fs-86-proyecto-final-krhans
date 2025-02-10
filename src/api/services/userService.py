@@ -48,8 +48,7 @@ class UserService:
         try:
             user = UserRepository.get_user_by_id(user_id)
             if not user:
-                return None  
-
+                return None
             if "user_name" in data:
                 user.user_name = data["user_name"]
             if "email" in data:
@@ -58,6 +57,7 @@ class UserService:
                 user.password_hash = ph.hash(data["password_hash"])  
             if "is_active" in data:
                 user.is_active =  data["is_active"]
+
 
             profile = UserRepository.get_profile_by_id(user_id)
             print("perfil: ",profile.age)

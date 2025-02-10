@@ -1,5 +1,6 @@
 import { dispatcherUser } from "./dispatcher";
 import UserData from "../clases/userdata";
+import { Navigate } from "react-router-dom";
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
@@ -59,13 +60,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return { error: error.message };
 				}
 			},
-			upDateUser: async (user, profileImage) => {
+			upDateUser: async (user) => {
 				try {
 					const token = localStorage.getItem("jwt-token");
 					if (!token) throw new Error("No hay token disponible.");
-			
-					const updatedUser = await dispatcherUser.upDate(token, user, profileImage);
-			
+			    
+					const updatedUser = await dispatcherUser.upDate(token, user);
+			        console.log(updatedUser)
 					if (!updatedUser || updatedUser.error) { 
 						throw new Error(updatedUser?.error || "No se pudo actualizar el usuario.");
 					} 
@@ -82,6 +83,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 					
 					return null;  
 				}
+			},
+			logout: (navigate) => {
+				setStore({ userData: null });
+				localStorage.removeItem("token");
+				navigate("/")
 			},
 			
 				

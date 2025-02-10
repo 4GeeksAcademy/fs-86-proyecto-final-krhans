@@ -3,7 +3,7 @@ class UserData {
       this._user_name = "";  
       this._email = "";
       this._password= "";
-      this.profile = [];    
+      this.profile = {};    
   }
 
   get user_name() {
@@ -29,12 +29,21 @@ class UserData {
   set password(value) {
       this._password = value;
   }
+
+  get profile() {
+    return this._profile;
+  }
+
+  set profile(value){
+    this._profile = value;
+  }
   
   toJSON() {
       return {
           user_name: this._user_name,
           email: this._email,
-          password_hash: this._password
+          password_hash: this._password,
+          profile: this._profile
       };
   }
 }

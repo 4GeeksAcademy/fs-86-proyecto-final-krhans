@@ -38,22 +38,14 @@ const Layout = () => {
                         <Route element={<WelcomePage />} path="/welcome" />
                         <Route element={<About />} path="/about" />
                         <Route element={<Profile />} path="/profile/:member" />
-
-                        <Route element={<IsLogIn />} path="/dashboard">
-                            <Route Index element={<Dashboard />} path=""/>
-
-                        
-                        <Route path="coaching-interview" element={<CoachingInterview />}/>
-
-
-                                <Route path="fit-interview" element={<FitInterview />}>
-                                    <Route path="fit-page" element={<FitPage />} />
-                                </Route>
-                                <Route path="coaching-interview" element={<CoachingInterview />}>
-                                    <Route path="coach-page" element={<CoachPage />} />
-                                </Route> 
-                                <Route path="userprofile" element={<ProfileUser />}  />                                                      
-                        </Route>
+												<Route element={<IsLogIn />} path="/dashboard">
+                            <Route Index element={<Dashboard />} path="" />
+                            <Route path="fit-interview" element={<FitInterview />}/>
+                            <Route path="fit-page" element={<FitPage />} />
+                            <Route path="coaching-interview" element={<CoachingInterview />}/>
+                            <Route path="coach-page" element={<CoachPage />} />
+                            <Route path="userprofile" element={<ProfileUser />} />
+                        </Route>				
                         <Route element={<h1>Not found!</h1>} path="*" />
                     </Routes>
                 </ScrollToTop>

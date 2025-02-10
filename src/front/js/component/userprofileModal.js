@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faEnvelope, faCakeCandles, faPhone, faPerson, faComment, faImage } from "@fortawesome/free-solid-svg-icons";
 import { Context } from "../store/appContext";
+import UserData from "../clases/userdata";
 import "../../styles/userprofileModal.css"
 
 const EditProfile = () => {
@@ -23,6 +24,21 @@ const EditProfile = () => {
         setUserGender(store.userData.profile.gender || '');
         setProfileImage(store.userData.profile.user_img || '')
     }, []);
+
+    const actualizarUsuario = async () => {
+       let newUser = new UserData();
+       newUser.user_name = userName;
+       newUser.email = userEmail;
+       let profile = {  
+        age: userAge,
+        phone_number: userPhone,
+        gender: userGender,
+        description: userDescription
+    };
+    newUser.profile = profile;
+
+       await actions.upDateUser(newUser);
+    }
     
     const handleImageChange = (event) => {
         const file = event.target.files[0];
@@ -92,14 +108,7 @@ const EditProfile = () => {
                         <button
                             type="button"
                             className="button-modal_save"
-                            onClick={() => actions.upDateUser({
-                                user_name: userName,
-                                email: userEmail,
-                                phone_number: userPhone,
-                                age: userAge,
-                                description: userDescription,
-                                gender: userGender,                          
-                            }, profileImage)}
+                            onClick={actualizarUsuario}                                          
                         >
                             Save changes
                         </button>

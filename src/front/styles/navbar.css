@@ -90,6 +90,17 @@
     display: block;
 }
 
+.user-button{
+    background-color: transparent;
+    text-align:center;
+    text-transform: uppercase;
+    color: var(--color-navbar_font);
+    border: 2px solid var(--color-navbar_font); 
+    border-radius: 20px;
+    padding: 1px 6px;
+    font-size: 1.5rem;
+} 
+
 .login-button {
     background-color: transparent;
     text-align:center;

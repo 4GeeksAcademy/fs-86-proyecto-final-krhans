@@ -68,13 +68,12 @@ def sign_up():
 @jwt_required()
 def user_profile():
     try:
+
         user_id = get_jwt_identity()  
         user = UserService.get_user_by_id(user_id)  
         if not user:
-            return jsonify({"error": "Usuario no encontrado"}), 404  
-
+            return jsonify({"error": "Usuario no encontrado"}), 404
         if request.method == 'GET':
-           
             profile_data = user.profile.serialize() if user.profile else None
             return jsonify({
                 "user_name": user.user_name,
@@ -85,15 +84,11 @@ def user_profile():
 
         elif request.method == 'PUT':
             data = request.get_json()
-
             if not data:
-                return jsonify({"error": "Datos no proporcionados"}), 400  
-
+                return jsonify({"error": "Datos no proporcionados"}), 400
             updated_user = UserService.update_user(user_id, data)
-            
             if not updated_user:
                 return jsonify({"error": "Error al actualizar el perfil"}), 500
-            
             profile_data = updated_user.profile.serialize() if updated_user.profile else None
             return jsonify({
                 "message": "Perfil actualizado correctamente",
@@ -101,8 +96,7 @@ def user_profile():
                 "email": updated_user.email,
                 "is_active":updated_user.is_active,
                 "profile": profile_data
-            }), 200  
-
+            }), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
