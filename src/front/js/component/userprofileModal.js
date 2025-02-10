@@ -4,6 +4,7 @@ import { faUser, faEnvelope, faCakeCandles, faPhone, faPerson, faComment, faImag
 import { Context } from "../store/appContext";
 import UserData from "../clases/userdata";
 import "../../styles/userprofileModal.css"
+import { Loader } from "./loader";
 
 const EditProfile = () => {
     const {store,actions} = useContext(Context);
@@ -14,6 +15,7 @@ const EditProfile = () => {
     const [userDescription, setUserDescription] = useState('');
     const [userGender, setUserGender] = useState('');
     const [profileImage, setProfileImage] = useState(); 
+    const [loading, setLoading] = useState(false);
     
     useEffect(() => {
         setUserName(store.userData.user_name || '');
@@ -26,19 +28,42 @@ const EditProfile = () => {
     }, []);
 
     const actualizarUsuario = async () => {
-       let newUser = new UserData();
-       newUser.user_name = userName;
-       newUser.email = userEmail;
-       let profile = {  
-        age: userAge,
-        phone_number: userPhone,
-        gender: userGender,
-        description: userDescription
-    };
-    newUser.profile = profile;
+        setLoading(true); 
+    
+        let newUser = new UserData();
+        newUser.user_name = userName;
+        newUser.email = userEmail;
+        let profile = {
+            age: userAge,
+            phone_number: userPhone,
+            gender: userGender,
+            description: userDescription
+        };
+        newUser.profile = profile;
 
-       await actions.upDateUser(newUser);
-    }
+        const startTime = Date.now();
+    
+        try {
+            await actions.upDateUser(newUser);
+            console.log("Usuario actualizado con éxito");
+
+            const elapsedTime = Date.now() - startTime;
+            const remainingTime = Math.max(3000 - elapsedTime, 0); 
+
+            setTimeout(() => {
+               
+                document.getElementById("exampleModal").classList.remove("show");
+                document.body.classList.remove("modal-open"); 
+                document.querySelector(".modal-backdrop").remove();
+
+                setLoading(false); 
+            }, remainingTime);
+        } catch (error) {
+            console.error("Error al actualizar el usuario:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
     
     const handleImageChange = (event) => {
         const file = event.target.files[0];
@@ -108,9 +133,10 @@ const EditProfile = () => {
                         <button
                             type="button"
                             className="button-modal_save"
-                            onClick={actualizarUsuario}                                          
+                            onClick={actualizarUsuario} 
+                            disabled={loading}                                         
                         >
-                            Save changes
+                           { loading ? <Loader/> : "Save changes" }
                         </button>
                     </div>
                 </div>

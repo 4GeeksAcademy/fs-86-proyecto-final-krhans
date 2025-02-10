@@ -41,6 +41,8 @@ class UserRepository:
         except Exception as e:
             db.session.rollback()
             raise e
+        
+
     @staticmethod
     def save(user):
         db.session.commit()

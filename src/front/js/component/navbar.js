@@ -71,17 +71,17 @@ export const Navbar = () => {
                 </div>
             )}
              <div className="navbar-button_login">
-            {store.userData ? (
+            {store.userData && store.userData.is_active ? (
                 <div className="">
                     <button className="user-button dropdown-toggle" data-bs-toggle="dropdown">
                         {store.userData.user_name}
                     </button>
                     <ul className="dropdown-menu">
                         <li>
-                            <Link className="dropdown-item" to="dashboard/userprofile">Ver Perfil</Link>
+                            <Link className="dropdown-item" to="dashboard/userprofile">Profile</Link>
                         </li>
                         <li>
-                            <button className="dropdown-item" onClick={() => actions.logout(navigate)}>Cerrar Sesión</button>
+                            <button className="dropdown-item" onClick={() => actions.logout(navigate)}>Log Out</button>
                         </li>
                     </ul>
                 </div>
