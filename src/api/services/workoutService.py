@@ -9,10 +9,23 @@ class WorkoutService:
         except Exception as e:
             raise e
             
-
+    @staticmethod
+    def get_workout_list(user_id):
+        try:
+            workout_list=WorkoutRepository.get_workout_list(user_id) 
+            return workout_list or []
+        except Exception as e:
+            raise e
            
             
-
+    @staticmethod
+    def get_workout_by_id(user_id,workout_id):
+        try:
+            workout=WorkoutRepository.get_workout_by_id(user_id,workout_id) 
+            return workout or []
+        except Exception as e:
+            raise e
+           
 
        
    

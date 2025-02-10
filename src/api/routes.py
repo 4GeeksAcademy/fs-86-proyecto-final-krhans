@@ -68,8 +68,9 @@ def sign_up():
 @jwt_required()
 def user_profile():
     try:
-        user_id = get_jwt_identity()
-        user = UserService.get_user_by_id(user_id)
+
+        user_id = get_jwt_identity()  
+        user = UserService.get_user_by_id(user_id)  
         if not user:
             return jsonify({"error": "Usuario no encontrado"}), 404
         if request.method == 'GET':
@@ -78,8 +79,9 @@ def user_profile():
                 "user_name": user.user_name,
                 "email": user.email,
                 "is_active": user.is_active,
-                "profile": profile_data
-            }), 200
+                "profile": profile_data 
+            }), 200  
+
         elif request.method == 'PUT':
             data = request.get_json()
             if not data:
@@ -100,39 +102,37 @@ def user_profile():
 
 
 
-@api.route('/routines', methods=['GET', 'POST'])
+@api.route('/routine', methods=['GET', 'POST'])
 @jwt_required()
 def handle_routines():
     user_id = get_jwt_identity()
     try:
         if request.method == 'POST':
             data = request.get_json()
-            required_fields = ["routine", "workout", "trainings"]
+            required_fields = ["routine", "workout"]
 
             if not all(field in data for field in required_fields):
                 return jsonify({"error": "Faltan campos obligatorios"}), 400
 
             routine_data = data.get('routine')
             workout_data = data.get('workout')
-            training_data = data.get('trainings')
-
             session = db.session
 
             try:
-                routine = RoutineService.create_routine(routine_data, user_id)
+                with db.session.begin(): 
+                    routine = RoutineService.create_routine(routine_data, user_id)
+                    workout_ids = []
 
-                workout_ids = [] 
-                for workout in workout_data:
-                    created_workout = WorkoutService.create_workout(workout, user_id, routine.id)
-                    workout_ids.append(created_workout.id)
+                    for workout in workout_data:
+                        created_workout = WorkoutService.create_workout(workout, user_id, routine.id)
+                        workout_ids.append(created_workout.id)
 
-                    for training in training_data:
-                        if training['workout_id'] == created_workout.id:
-                            TrainingService.create_training(training, user_id, created_workout.id)
+                        trainings = workout.get("trainings", []) 
+                        
+                        for training in trainings:
+                            TrainingService.create_training(training,created_workout.id)
 
-                    WorkoutCompletionService.create_workout_completion(user_id, created_workout.id)
-
-                session.commit()
+                        WorkoutCompletionService.create_workout_completion(user_id, created_workout.id)
 
                 return jsonify({
                     "message": "Rutina creada exitosamente",
@@ -141,7 +141,7 @@ def handle_routines():
                 }), 201
 
             except SQLAlchemyError as e:
-                session.rollback()
+                db.session.rollback()
                 return jsonify({"error": f"Error de base de datos: {str(e)}"}), 500
 
         elif request.method == 'GET':
@@ -159,44 +159,95 @@ def handle_routines():
         return jsonify({"error": f"Error inesperado: {str(e)}"}), 500
 
 
+@api.route('/routine/<int:routine_id>', methods=['GET', 'PUT'])
+@jwt_required()
+def handle_routine(routine_id):
+    user_id = get_jwt_identity()
+    try:
+        routine = RoutineService.get_routine_by_id(routine_id, user_id)
 
+        if not routine:
+            return jsonify({"error": "Rutina no encontrada"}), 404
 
+        if request.method == 'GET':
+            return jsonify(routine.serialize()), 200
 
+        elif request.method == 'PUT':
+            data = request.get_json()
+            
+            updated_routine = RoutineService.update_routine(routine_id, user_id, data)
 
+            if not updated_routine:
+                return jsonify({"error": "Error al actualizar la rutina"}), 500
 
+            return jsonify({"message": "Rutina actualizada correctamente", "routine": updated_routine.serialize()}), 200
 
-# @api.route('/complete_workout', methods=['POST'])
-# def complete_workout():
-#     # Suponiendo que recibimos el ID del workout y el ID del usuario
-#     user_id = request.json.get('user_id')
-#     workout_id = request.json.get('workout_id')
+    except Exception as e:
+        return jsonify({"error": f"Error inesperado: {str(e)}"}), 500
+
+@api.route('/workout', methods=['GET'])
+@jwt_required()
+def handle_workouts():
+    user_id = get_jwt_identity() 
+    try:
+        if request.method == 'GET':
+            workouts = WorkoutService.get_workout_list(user_id)
+
+            if not workouts:
+                return jsonify({"message": "No se encontraron workout"}), 404
+
+            return jsonify([workout.serialize() for workout in workouts]), 200
     
-#     # Obtener la instancia del workout y del usuario
-#     workout = Workout.query.get(workout_id)
-#     user = User.query.get(user_id)
-    
-#     if not workout or not user:
-#         return jsonify({"message": "Workout o usuario no encontrados"}), 404
-    
-#     # Verificar si el workout ya está marcado como completado
-#     workout_completion = WorkoutCompletion.query.filter_by(user_id=user.id, workout_id=workout.id).first()
-    
-#     if workout_completion:
-#         workout_completion.completed = True
-#         workout_completion.date_completed = date.today()  # Establecer la fecha actual al marcar como completado
-#     else:
-#         # Crear un nuevo registro si no existe
-#         workout_completion = WorkoutCompletion(
-#             user_id=user.id,
-#             workout_id=workout.id,
-#             completed=True,
-#             date_completed=date.today()  # Establecer la fecha actual
-#         )
-    
-#     db.session.add(workout_completion)
-#     db.session.commit()
-    
-#     return jsonify({"message": "Workout marcado como completado"}), 200
+    except Exception as e:
+        return jsonify({"error": f"Error inesperado: {str(e)}"}), 500
 
 
+@api.route('/workout/<int:workout_id>', methods=['GET'])
+@jwt_required()
+def handle_workout(workout_id):
+    user_id = get_jwt_identity()
+    try:
+        if request.method == 'GET':
+            workouts = WorkoutService.get_workout_by_id(user_id,workout_id)
+
+            if not workouts:
+                return jsonify({"message": "No se encontraron workouts"}), 404
+
+            return jsonify([workout.serialize() for workout in workouts]), 200
+
+    except Exception as e:
+        return jsonify({"error": f"Error inesperado: {str(e)}"}), 500
+
+@api.route('/complete_workout', methods=['GET'])
+@jwt_required()
+def complete_workout_list():
+    user_id = get_jwt_identity()
+    try:
+        
+        complete_workout=WorkoutCompletionService.get_workout_completion_list(user_id)
+        
+        
+        if not complete_workout:
+                return jsonify({"message": "No se encontraron workouts"}), 404
+
+        return jsonify([workout.serialize() for workout in complete_workout]), 200
+
+    except Exception as e:
+        return jsonify({"error": f"Error inesperado: {str(e)}"}), 500
+
+
+@api.route('/workout/<int:workout_id>/<int:workout_completion_id>', methods=['GET'])
+@jwt_required()
+def complete_workout(workout_id, workout_completion_id):
+    user_id = get_jwt_identity()
+    try:
+        complete_workout = WorkoutCompletionService.get_workout_completion_by_id(user_id, workout_id, workout_completion_id)
+        
+        if not complete_workout:
+            return jsonify({"message": "No se encontraron workouts"}), 404
+
+        return jsonify(complete_workout.serialize()), 200  
+
+    except Exception as e:
+        return jsonify({"error": f"Error inesperado: {str(e)}"}), 500
 

@@ -26,9 +26,11 @@ class UserRepository:
     @staticmethod
     def get_user_by_id(user_id):
         return User.query.filter_by(id=user_id).first() or None
+
     @staticmethod
     def get_profile_by_id(user_id):
          return UserProfile.query.filter_by(user_id=user_id).first() or None
+    
     @staticmethod
     def create_profile(user_id):
         try:

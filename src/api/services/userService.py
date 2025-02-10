@@ -54,14 +54,17 @@ class UserService:
             if "email" in data:
                 user.email = data["email"]
             if "password_hash" in data:
-                user.password_hash = ph.hash(data["password_hash"])
+                user.password_hash = ph.hash(data["password_hash"])  
             if "is_active" in data:
                 user.is_active =  data["is_active"]
+
+
             profile = UserRepository.get_profile_by_id(user_id)
             print("perfil: ",profile.age)
             if "profile" in data:
                 profile_data = data["profile"]
-                if profile is not None:
+
+                if profile is not None:  
                     if "age" in profile_data:
                         profile.age = profile_data["age"]
                     if "phone_number" in profile_data:
@@ -70,8 +73,11 @@ class UserService:
                         profile.gender = profile_data["gender"]
                     if "description" in profile_data:
                         profile.description = profile_data["description"]
+              
             UserRepository.save(user)
-            UserRepository.save(profile)
-            return user
+            UserRepository.save(profile)  
+            return user  
+
         except Exception as e:
             raise e
+

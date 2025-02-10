@@ -17,7 +17,25 @@ class RoutineService:
         except Exception as e:
             raise e
            
-            
+    @staticmethod
+    def get_routine_by_id(routine_id,user_id):
+        routine = RoutineRepository.get_routine_by_id(routine_id,user_id)
+        
+        if not routine:
+            return None
+        return routine
 
+    @staticmethod
+    def update_routine(routine_id, user_id, data):
+        routine = RoutineRepository.get_routine_by_id(routine_id, user_id)
+        if not routine:
+            return None
 
-       
+        try:
+            RoutineRepository.update_routine(routine_id,data)
+            return routine
+        except Exception as e:
+            return {"error": f"Error al actualizar la rutina: {str(e)}"}
+        
+
+        
