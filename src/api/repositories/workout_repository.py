@@ -14,9 +14,16 @@ class WorkoutRepository:
                 is_active=True
             )
             db.session.add(new_routine)
-              # db.session.commit() #El commit se hace en la session creada en la ruta
+            db.session.flush() #El commit se hace en la session creada en la ruta
             return new_routine
         except Exception as e:
             db.session.rollback()
             raise e
+        
+    @staticmethod
+    def get_workout_list(user_id):
+        return Workout.query.filter_by(user_id=user_id).all() or None
 
+    @staticmethod
+    def get_workout_by_id(user_id,workout_id):
+        return Workout.query.filter_by(user_id=user_id,id=workout_id).all() or None

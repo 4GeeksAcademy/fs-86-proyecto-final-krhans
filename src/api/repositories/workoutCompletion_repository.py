@@ -13,7 +13,7 @@ class WorkoutCompletionRepository:
               
             )
             db.session.add(new_workoutCompletion)
-             # db.session.commit() #El commit se hace en la session creada en la ruta
+            db.session.flush() #El commit se hace en la session creada en la ruta
             return new_workoutCompletion
         except Exception as e:
             db.session.rollback()

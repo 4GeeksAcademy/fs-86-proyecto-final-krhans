@@ -57,22 +57,25 @@ class UserService:
             if "password_hash" in data:
                 user.password_hash = ph.hash(data["password_hash"])  
 
+            profile = UserRepository.get_profile_by_id(user_id)
+            print("perfil: ",profile.age)
             if "profile" in data:
                 profile_data = data["profile"]
-                if user.profile:  
-                    if "edad" in profile_data:
-                        user.profile.edad = profile_data["edad"]
-                    if "phone_number" in profile_data:
-                        user.profile.phone_number = profile_data["phone_number"]
-                    if "gender" in profile_data:
-                        user.profile.gender = profile_data["gender"]
-                    if "description" in profile_data:
-                        user.profile.description = profile_data["description"]
-                else:
-                    UserRepository.create_profile(user.id) 
 
-            UserRepository.save(user) 
+                if profile is not None:  
+                    if "age" in profile_data:
+                        profile.age = profile_data["age"]
+                    if "phone_number" in profile_data:
+                        profile.phone_number = profile_data["phone_number"]
+                    if "gender" in profile_data:
+                        profile.gender = profile_data["gender"]
+                    if "description" in profile_data:
+                        profile.description = profile_data["description"]
+              
+            UserRepository.save(user)
+            UserRepository.save(profile)  
             return user  
 
         except Exception as e:
             raise e
+

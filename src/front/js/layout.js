@@ -45,8 +45,6 @@ const Layout = () => {
                         
                         <Route path="coaching-interview" element={<CoachingInterview />}/>
 
-                      
-
 
                                 <Route path="fit-interview" element={<FitInterview />}>
                                     <Route path="fit-page" element={<FitPage />} />
