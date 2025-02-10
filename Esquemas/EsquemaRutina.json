@@ -1,0 +1,46 @@
+{
+    "routine": {
+        "name": "Rutina para perder peso con Yoga",
+        "description": "Una rutina fácil para perder peso con yoga, realizada 2 días a la semana.",
+        "days_per_week": 2
+    },
+    "workout": [
+        {
+            "fitness_level": "Básico",
+            "category": "Yoga",
+            "goal": "Perder peso",
+            "difficulty": "Fácil",
+            "trainings": [
+                {
+                    "name": "Posturas básicas de yoga",
+                    "mode": "duration",
+                    "duration": 30
+                },
+                {
+                    "name": "Respiración y relajación",
+                    "mode": "duration",
+                    "duration": 20
+                }
+            ]
+        },
+        {
+            "fitness_level": "Básico",
+            "category": "Yoga",
+            "goal": "Tonificar",
+            "difficulty": "Fácil",
+            "trainings": [
+                {
+                    "name": "Posturas de flexibilidad",
+                    "mode": "duration",
+                    "duration": 30
+                },
+                {
+                    "name": "Yoga para tonificar el cuerpo",
+                    "mode": "duration",
+                    "duration": 25
+                }
+            ]
+        }
+    ]
+  }
+  

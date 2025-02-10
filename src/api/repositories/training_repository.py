@@ -2,22 +2,39 @@ from api.models import db, Training
 
 class TrainingRepository:
     @staticmethod
-    def Create_training(training_data):
+    def create_training(training_data, workout_id):
+        name = training_data.get("name")
+        mode = training_data.get("mode", "duration") 
+        
+        duration = training_data.get("duration")
+        repetitions = training_data.get("repetitions")
+        sets = training_data.get("sets")
+        rest = training_data.get("rest")
+
+        if mode == "reps":
+            if repetitions is None or sets is None or rest is None:
+                return {"error": "Faltan campos obligatorios para entrenamientos basados en repeticiones"}, 400
+        elif mode == "duration":
+            if duration is None:
+                return {"error": "Falta el campo 'duration' para entrenamientos por tiempo"}, 400
+
+        training = Training(
+            name=name,
+            mode=mode,
+            duration=duration,
+            repetitions=repetitions,
+            sets=sets,
+            rest=rest,
+            workout_id=workout_id
+        )
+
+        db.session.add(training)
+        
         try:
-            new_routine = Training(
-                name=training_data["name"],
-                mode=training_data["mode"],
-                duration=training_data["duration"],
-                repetitions=training_data["repetitions"],
-                sets=training_data["sets"],
-                rest=training_data["rest"],
-              
-            )
-            db.session.add(new_routine)
-              # db.session.commit() #El commit se hace en la session creada en la ruta
-            return new_routine
+            db.session.flush()
+            return training
         except Exception as e:
             db.session.rollback()
-            raise e
+            return {"error": f"Error inesperado: {str(e)}"}, 500
 
 
