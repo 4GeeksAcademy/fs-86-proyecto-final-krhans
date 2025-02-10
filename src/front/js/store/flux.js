@@ -59,6 +59,30 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return { error: error.message };
 				}
 			},
+			upDateUser: async (user, profileImage) => {
+				try {
+					const token = localStorage.getItem("jwt-token");
+					if (!token) throw new Error("No hay token disponible.");
+			
+					const updatedUser = await dispatcherUser.upDate(token, user, profileImage);
+			
+					if (!updatedUser || updatedUser.error) { 
+						throw new Error(updatedUser?.error || "No se pudo actualizar el usuario.");
+					} 
+			
+					console.log("Usuario actualizado correctamente:", updatedUser);
+			
+					// Guardar los nuevos datos en el store
+					setStore({ userData: updatedUser });
+			
+					return updatedUser;
+				} catch (error) {
+					console.error("Error en la actualización:", error.message);
+					alert("Hubo un error al actualizar el usuario: " + error.message);
+					
+					return null;  
+				}
+			},
 			
 				
 			
