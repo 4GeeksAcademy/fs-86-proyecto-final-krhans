@@ -70,7 +70,6 @@ def user_profile():
     try:
         user_id = get_jwt_identity()  
         user = UserService.get_user_by_id(user_id)  
-
         if not user:
             return jsonify({"error": "Usuario no encontrado"}), 404  
 
@@ -80,6 +79,7 @@ def user_profile():
             return jsonify({
                 "user_name": user.user_name,
                 "email": user.email,
+                "is_active": user.is_active,
                 "profile": profile_data 
             }), 200  
 
@@ -99,6 +99,7 @@ def user_profile():
                 "message": "Perfil actualizado correctamente",
                 "user_name": updated_user.user_name,
                 "email": updated_user.email,
+                "is_active":updated_user.is_active,
                 "profile": profile_data
             }), 200  
 
@@ -199,7 +200,7 @@ def handle_workouts():
             workouts = WorkoutService.get_workout_list(user_id)
 
             if not workouts:
-                return jsonify({"message": "No se encontraron rutinas"}), 404
+                return jsonify({"message": "No se encontraron workout"}), 404
 
             return jsonify([workout.serialize() for workout in workouts]), 200
     
@@ -207,7 +208,7 @@ def handle_workouts():
         return jsonify({"error": f"Error inesperado: {str(e)}"}), 500
 
 
-@api.route('/workout/<int:workout_id>', methods=['GET', 'PUT'])
+@api.route('/workout/<int:workout_id>', methods=['GET'])
 @jwt_required()
 def handle_workout(workout_id):
     user_id = get_jwt_identity()
@@ -216,62 +217,43 @@ def handle_workout(workout_id):
             workouts = WorkoutService.get_workout_by_id(user_id,workout_id)
 
             if not workouts:
-                return jsonify({"message": "No se encontraron rutinas"}), 404
+                return jsonify({"message": "No se encontraron workouts"}), 404
 
             return jsonify([workout.serialize() for workout in workouts]), 200
 
-        #TODO:ACABAR
-        # elif request.method == 'PUT':
-        #     data = request.get_json()
-        #     if not data:
-        #         return jsonify({"error": "No se proporcionaron datos para actualizar"}), 400
+    except Exception as e:
+        return jsonify({"error": f"Error inesperado: {str(e)}"}), 500
 
-        #     updated_workout = WorkoutService.update_workout(workout_id, data)
+@api.route('/complete_workout', methods=['GET'])
+@jwt_required()
+def complete_workout_list():
+    user_id = get_jwt_identity()
+    try:
+        
+        complete_workout=WorkoutCompletionService.get_workout_completion_list(user_id)
+        
+        
+        if not complete_workout:
+                return jsonify({"message": "No se encontraron workouts"}), 404
 
-        #     if not updated_workout:
-        #         return jsonify({"error": "No se encontró la rutina o no se pudo actualizar"}), 404
-
-        #     return jsonify({"message": "Rutina actualizada correctamente", "workout": updated_workout.serialize()}), 200
+        return jsonify([workout.serialize() for workout in complete_workout]), 200
 
     except Exception as e:
         return jsonify({"error": f"Error inesperado: {str(e)}"}), 500
 
 
+@api.route('/workout/<int:workout_id>/<int:workout_completion_id>', methods=['GET'])
+@jwt_required()
+def complete_workout(workout_id, workout_completion_id):
+    user_id = get_jwt_identity()
+    try:
+        complete_workout = WorkoutCompletionService.get_workout_completion_by_id(user_id, workout_id, workout_completion_id)
+        
+        if not complete_workout:
+            return jsonify({"message": "No se encontraron workouts"}), 404
 
+        return jsonify(complete_workout.serialize()), 200  
 
-
-# @api.route('/complete_workout', methods=['POST'])
-# def complete_workout():
-#     # Suponiendo que recibimos el ID del workout y el ID del usuario
-#     user_id = request.json.get('user_id')
-#     workout_id = request.json.get('workout_id')
-    
-#     # Obtener la instancia del workout y del usuario
-#     workout = Workout.query.get(workout_id)
-#     user = User.query.get(user_id)
-    
-#     if not workout or not user:
-#         return jsonify({"message": "Workout o usuario no encontrados"}), 404
-    
-#     # Verificar si el workout ya está marcado como completado
-#     workout_completion = WorkoutCompletion.query.filter_by(user_id=user.id, workout_id=workout.id).first()
-    
-#     if workout_completion:
-#         workout_completion.completed = True
-#         workout_completion.date_completed = date.today()  # Establecer la fecha actual al marcar como completado
-#     else:
-#         # Crear un nuevo registro si no existe
-#         workout_completion = WorkoutCompletion(
-#             user_id=user.id,
-#             workout_id=workout.id,
-#             completed=True,
-#             date_completed=date.today()  # Establecer la fecha actual
-#         )
-    
-#     db.session.add(workout_completion)
-#     db.session.commit()
-    
-#     return jsonify({"message": "Workout marcado como completado"}), 200
-
-
+    except Exception as e:
+        return jsonify({"error": f"Error inesperado: {str(e)}"}), 500
 

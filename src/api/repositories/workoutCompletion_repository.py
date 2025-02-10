@@ -19,3 +19,14 @@ class WorkoutCompletionRepository:
             db.session.rollback()
             raise e
 
+
+    @staticmethod
+    def get_workout_completion_list(user_id):
+        return WorkoutCompletion.query.filter_by(user_id=user_id).all() or None
+        
+    @staticmethod
+    def get_workout_completion_by_id( workout_completion_id):
+        return WorkoutCompletion.query.filter_by(id=workout_completion_id).first() or None
+
+        
+    
