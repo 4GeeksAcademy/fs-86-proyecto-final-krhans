@@ -65,27 +65,16 @@ export const dispatcherUser = {
             return { error: error.message };
         }
     },
-    upDate: async (token, updatedData, profileImage) => {
+    upDate: async (token, updateData) => {
         try {
-            const formData = new FormData();
-
-            
-            for (const key in updatedData) {
-                formData.append(key, updatedData[key]);
-            }
-
-            
-            if (profileImage) {
-                formData.append("profile_image", profileImage);
-            }
-
+            console.log("datos enviados al backend", updateData);
             const response = await fetch(`${process.env.BACKEND_URL}/api/user_profile`, {
                 method: "PUT",
                 headers: {
-                    "Authorization": `Bearer ${token}`
-                    // NO agregamos "Content-Type": "multipart/form-data" porque FormData lo maneja solo
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json" 
                 },
-                body: formData
+                body: JSON.stringify(updateData)
             });
 
             if (!response.ok) {
@@ -93,8 +82,10 @@ export const dispatcherUser = {
                 console.error("Error Data:", errorData);
                 throw new Error(`Error ${response.status}: ${errorData.error || response.statusText}`);
             }
+            const responseData = await response.json();
+            console.log("Respuesta de la API:", responseData);
+            return responseData;
 
-            return await response.json();
         } catch (error) {
             console.error("Error obteniendo los datos del usuario:", error);
             return { error: error.message };

@@ -48,31 +48,30 @@ class UserService:
         try:
             user = UserRepository.get_user_by_id(user_id)
             if not user:
-                return None  
-
+                return None
             if "user_name" in data:
                 user.user_name = data["user_name"]
             if "email" in data:
                 user.email = data["email"]
             if "password_hash" in data:
-                user.password_hash = ph.hash(data["password_hash"])  
-
+                user.password_hash = ph.hash(data["password_hash"])
+            if "is_active" in data:
+                user.is_active =  data["is_active"]
+            profile = UserRepository.get_profile_by_id(user_id)
+            print("perfil: ",profile.age)
             if "profile" in data:
                 profile_data = data["profile"]
-                if user.profile:  
-                    if "edad" in profile_data:
-                        user.profile.edad = profile_data["edad"]
+                if profile is not None:
+                    if "age" in profile_data:
+                        profile.age = profile_data["age"]
                     if "phone_number" in profile_data:
-                        user.profile.phone_number = profile_data["phone_number"]
+                        profile.phone_number = profile_data["phone_number"]
                     if "gender" in profile_data:
-                        user.profile.gender = profile_data["gender"]
+                        profile.gender = profile_data["gender"]
                     if "description" in profile_data:
-                        user.profile.description = profile_data["description"]
-                else:
-                    UserRepository.create_profile(user.id) 
-
-            UserRepository.save(user) 
-            return user  
-
+                        profile.description = profile_data["description"]
+            UserRepository.save(user)
+            UserRepository.save(profile)
+            return user
         except Exception as e:
             raise e
