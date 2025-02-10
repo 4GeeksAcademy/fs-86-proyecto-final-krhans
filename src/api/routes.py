@@ -64,6 +64,32 @@ def sign_up():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
     
+@api.route('/logout', methods=['POST'])
+@jwt_required()
+def logout():
+    try:
+        user_id = get_jwt_identity()  
+        user = UserService.get_user_by_id(user_id)  
+
+        if not user:
+            return jsonify({"error": "Usuario no encontrado"}), 404
+
+        if not user.is_active:
+            return jsonify({"msg": "El usuario ya estaba inactivo"}), 200  
+
+        updated_user = UserService.desactivate_user(user_id)  
+
+        if not updated_user:
+            return jsonify({"error": "Error al cerrar sesión"}), 500
+
+        return jsonify({
+            "message": "Sesión cerrada correctamente",
+            "is_active": updated_user.is_active
+        }), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
 @api.route('/user_profile', methods=['GET', 'PUT'])
 @jwt_required()
 def user_profile():
@@ -250,4 +276,6 @@ def complete_workout(workout_id, workout_completion_id):
 
     except Exception as e:
         return jsonify({"error": f"Error inesperado: {str(e)}"}), 500
+    
+
 

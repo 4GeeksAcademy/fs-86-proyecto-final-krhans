@@ -73,7 +73,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			
 					console.log("Usuario actualizado correctamente:", updatedUser);
 			
-					// Guardar los nuevos datos en el store
+					
 					setStore({ userData: updatedUser });
 			
 					return updatedUser;
@@ -84,10 +84,27 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return null;  
 				}
 			},
-			logout: (navigate) => {
-				setStore({ userData: null });
-				localStorage.removeItem("token");
-				navigate("/")
+
+			logout: async (navigate) => {
+			try{
+                const token = localStorage.getItem("jwt-token");
+					if (!token) throw new Error("No hay token disponible.");                
+				const newState = await dispatcherUser.isActive(token);
+
+				if (!newState || newState.error ) {
+					throw new Error(newState?.error || "No se pudo actualizar el estado del usuario.");
+				} 
+					
+				navigate("/");
+				localStorage.removeItem("jwt-token");						    
+				setStore({ userData: null});
+				
+				
+			}catch(error) {
+				console.error("Error en la actualización:", error.message);
+				alert("Hubo un error al actualizar el estado del usuario: " + error.message);				
+				return null;  
+			}
 			},
 			
 				

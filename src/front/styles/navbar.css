@@ -94,32 +94,42 @@
     background-color: transparent;
     text-align:center;
     text-transform: uppercase;
+    font-weight: 600;
     color: var(--color-navbar_font);
-    border: 2px solid var(--color-navbar_font); 
+    border: 3px solid var(--color-navbar_font); 
     border-radius: 20px;
     padding: 1px 6px;
     font-size: 1.5rem;
 } 
+.dropdown-menu{
+    background-color: var(--color-emergente);
+    color: var(--color-navbar);
+    border-radius: 15px;
+    border: 3px solid var(--color-navbar);
+    box-shadow: 0 4px 8px var(--color-font);
+}
+.dropdown-item{
+    color: var(--color-navbar);
+    font-size:1.3rem;
+    border-bottom: 2px solid var(--color-navbar);
+    border-radius: 15px;    
+}
 
 .login-button {
     background-color: transparent;
     text-align:center;
     color: var(--color-navbar_font);
-    border: 2px solid var(--color-navbar_font); 
+    border: 3px solid var(--color-navbar_font); 
     border-radius: 20px;
     padding: 1px 6px;
-    font-size: 1rem;
+    font-size: 1.3rem;
+    font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
     margin-left: auto;
     white-space:nowrap;
 }
 
-.login-button:hover {
-    background-color: var(--color-navbar_font);
-    color: var(--color-navbar);
-    
-}
 
 @keyframes fadeInCascada {
     from {

@@ -67,7 +67,7 @@ export const dispatcherUser = {
     },
     upDate: async (token, updateData) => {
         try {
-            console.log("datos enviados al backend", updateData);
+            
             const response = await fetch(`${process.env.BACKEND_URL}/api/user_profile`, {
                 method: "PUT",
                 headers: {
@@ -77,6 +77,33 @@ export const dispatcherUser = {
                 body: JSON.stringify(updateData)
             });
 
+            if (!response.ok) {
+                const errorData = await response.json();
+                
+                throw new Error(`Error ${response.status}: ${errorData.error || response.statusText}`);
+            }
+            const responseData = await response.json();
+            
+            return responseData;
+
+        } catch (error) {
+            
+            return { error: error.message };
+        }
+    },
+
+    isActive: async (token) => {
+        try {
+            
+            const response = await fetch(`${process.env.BACKEND_URL}/api/logout`, {
+                method: "POST",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json" 
+                },
+               
+            });
+            console.log("Respuesta de la API (cruda):", response);
             if (!response.ok) {
                 const errorData = await response.json();
                 console.error("Error Data:", errorData);

@@ -25,13 +25,30 @@ class UserService:
     @staticmethod
     def log_in(email, password):
         user = UserRepository.get_user_by_email(email)
-        
+        user.is_active = True
         if not user:
             return None
          
-        if user.check_password(password): 
+        if user.check_password(password):
+            UserRepository.save(user) 
             return user
         return None
+    
+    @staticmethod
+    def desactivate_user(user_id):
+        try:
+            user = UserRepository.get_user_by_id(user_id)
+            if not user:
+                return None
+            if hasattr(user, 'is_active') and user.is_active:
+                user.is_active = False
+
+            UserRepository.save(user)
+            return user
+        except Exception as e:
+            raise e
+
+       
 
     @staticmethod
     def get_token(user):
