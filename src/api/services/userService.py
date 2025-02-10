@@ -56,6 +56,8 @@ class UserService:
                 user.email = data["email"]
             if "password_hash" in data:
                 user.password_hash = ph.hash(data["password_hash"])  
+            if "is_active" in data:
+                user.is_active =  data["is_active"]
 
             profile = UserRepository.get_profile_by_id(user_id)
             print("perfil: ",profile.age)
