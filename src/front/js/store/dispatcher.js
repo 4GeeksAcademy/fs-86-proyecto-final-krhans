@@ -43,7 +43,7 @@ export const dispatcherUser = {
         }
     },
     getUserData: async (token) => {
-        try {     
+        try {
             const response = await fetch(`${process.env.BACKEND_URL}/api/user_profile`, {
                 method: "GET",
                 headers: {
@@ -51,18 +51,55 @@ export const dispatcherUser = {
                     "Content-Type": "application/json"
                 }
             });
-            
+
             if (!response.ok) {
                 const errorData = await response.json();
                 console.error('Error Data:', errorData);
                 throw new Error(`Error ${response.status}: ${errorData.error || response.statusText}`);
             }
 
-           return await response.json();
+            return await response.json();
+
+        } catch (error) {
+            console.error("Error obteniendo los datos del usuario:", error);
+            return { error: error.message };
+        }
+    },
+    upDate: async (token, updatedData, profileImage) => {
+        try {
+            const formData = new FormData();
+
             
+            for (const key in updatedData) {
+                formData.append(key, updatedData[key]);
+            }
+
+            
+            if (profileImage) {
+                formData.append("profile_image", profileImage);
+            }
+
+            const response = await fetch(`${process.env.BACKEND_URL}/api/user_profile`, {
+                method: "PUT",
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                    // NO agregamos "Content-Type": "multipart/form-data" porque FormData lo maneja solo
+                },
+                body: formData
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.error("Error Data:", errorData);
+                throw new Error(`Error ${response.status}: ${errorData.error || response.statusText}`);
+            }
+
+            return await response.json();
         } catch (error) {
             console.error("Error obteniendo los datos del usuario:", error);
             return { error: error.message };
         }
     }
+    
 };
+

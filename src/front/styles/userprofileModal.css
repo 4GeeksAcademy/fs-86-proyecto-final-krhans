@@ -1,0 +1,24 @@
+.modal-content{
+    background-color: var(--color-background)
+}
+.modal-header{
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+.button-modal_image{
+    background-color: var(--color-navbar_font);
+    color: var(--color-navbar);
+    font-size: 1rem;
+    font-weight: 600;
+    border: 3px solid var(--color-navbar);
+    border-radius: 10px;
+}
+.button-modal_save{
+    background-color: var(--color-Button);
+    color: var(--color-font);
+    font-size: 1.5rem;
+    font-weight: 600;
+    border: 3px solid var(--color-font);
+    border-radius: 15px;
+}
