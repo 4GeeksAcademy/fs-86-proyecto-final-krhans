@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 // import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import { Context } from "../store/appContext";
 import EditProfile from "./userprofileModal";
-
+import "../../styles/userprofileOverview.css"
 
 
 const UserProfile = () => {
@@ -10,22 +10,21 @@ const UserProfile = () => {
   
  
   return (
-    <div className="user-profile_container">
-      <div className="user-profile card p-4 ">
+    <div className="user-profile_container ">
+      <div className="user-profile_card ">
         
-        <header className="mb-4 text-center">
-          <h2 className="mb-3 ">User Profile</h2>
+        <header className="user-profile_title">
+          <h1 className="mb-3 ">{store.userData.user_name || ''}</h1>
           <img
             src="https://i.pinimg.com/236x/15/a1/5e/15a15ee5f2b88071ec438ea93857443b.jpg"
-            alt="Foto de perfil"
-            className="profile-image rounded-circle mb-3"
+            alt={store.userData.user_name || ''}
+            className="user-profile_image"
             
           />
         </header>
 
         
-        <div className="user-details">
-          <h2 className="mb-2"><strong>{store.userData.user_name || ''}</strong></h2>
+        <div className="user-profile_details">
           <p><strong>Age:</strong>{ store.userData.profile.age || ''}</p>
           <p><strong>Email:</strong> {store.userData.email || ''}</p>
           <p><strong>Phone:</strong> {store.userData.profile.phone_number || ''}</p>
@@ -34,7 +33,7 @@ const UserProfile = () => {
         </div>
 
 
-        <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        <button type="button" className="user-profile_button" data-bs-toggle="modal" data-bs-target="#exampleModal">
           Edit Profile
         </button>
         <EditProfile />

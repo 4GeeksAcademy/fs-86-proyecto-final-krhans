@@ -1,18 +1,28 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faEnvelope, faCakeCandles, faPhone, faPerson, faComment, faImage } from "@fortawesome/free-solid-svg-icons";
 import { Context } from "../store/appContext";
+import "../../styles/userprofileModal.css"
 
 const EditProfile = () => {
     const {store,actions} = useContext(Context);
-    const [userName, setUserName] = useState(store.userData.user_name);
+    const [userName, setUserName] = useState('');
     const [userEmail, setUserEmail] = useState('');
     const [userPhone, setUserPhone] = useState('');
     const [userAge, setUserAge] = useState('');
     const [userDescription, setUserDescription] = useState('');
     const [userGender, setUserGender] = useState('');
     const [profileImage, setProfileImage] = useState(); 
-
+    
+    useEffect(() => {
+        setUserName(store.userData.user_name || '');
+        setUserEmail(store.userData.email || '');
+        setUserPhone(store.userData.profile.phone_number || '');
+        setUserAge(store.userData.profile.age || '');
+        setUserDescription(store.userData.profile.description || '');
+        setUserGender(store.userData.profile.gender || '');
+        setProfileImage(store.userData.profile.user_img || '')
+    }, []);
     
     const handleImageChange = (event) => {
         const file = event.target.files[0];
@@ -35,13 +45,13 @@ const EditProfile = () => {
                         <div className="text-center mb-3">
                             <img
                                 src={profileImage}
-                                alt="Foto de perfil"
+                                alt={userName}
                                 className="rounded-circle"
                                 style={{ width: "100px", height: "100px", objectFit: "cover" }}
                             />
                             <div className="mt-2">
-                                <label className="btn btn-outline-secondary">
-                                    <FontAwesomeIcon icon={faImage} /> Cambiar Imagen
+                                <label className="button-modal_image btn btn-outline">
+                                    <FontAwesomeIcon icon={faImage} /> Change image
                                     <input
                                         type="file"
                                         accept="image/*"
@@ -79,8 +89,20 @@ const EditProfile = () => {
                         </div>
                     </div>
                     <div className="modal-footer">
-                        <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" className="btn btn-primary" onClick={() => actions.upDateUser()}>Save changes</button>
+                        <button
+                            type="button"
+                            className="button-modal_save"
+                            onClick={() => actions.upDateUser({
+                                user_name: userName,
+                                email: userEmail,
+                                phone_number: userPhone,
+                                age: userAge,
+                                description: userDescription,
+                                gender: userGender,                          
+                            }, profileImage)}
+                        >
+                            Save changes
+                        </button>
                     </div>
                 </div>
             </div>
