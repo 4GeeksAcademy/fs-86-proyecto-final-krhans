@@ -17,3 +17,24 @@ class UserImageService:
             raise e
 
         
+    
+    @staticmethod
+    def update_img(user_id, filename):
+        try:
+            image = UserImageRepository.get_user_by_id(user_id)
+            if image is None:
+                raise ValueError("No se encontró la imagen de usuario.")
+            image.img = filename
+            UserImageRepository.save(image)
+            
+            return {
+                "message": "Imagen de perfil actualizada exitosamente.",
+                "image_url": filename  
+            }
+        except ValueError as ve:
+            raise ve
+        except Exception as e:
+            raise Exception(f"Error al actualizar la imagen: {str(e)}")
+
+
+        

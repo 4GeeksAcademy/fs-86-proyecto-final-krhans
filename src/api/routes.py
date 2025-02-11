@@ -12,9 +12,7 @@ from api.services.userImageService import UserImageService
 from sqlalchemy.exc import SQLAlchemyError
 import os
 from werkzeug.utils import secure_filename
-
-
-
+from flask import send_from_directory
 
 api = Blueprint('api', __name__)
 
@@ -23,7 +21,7 @@ CORS(api)
 
 
 #Todo lo necesario para insertar imagenes
-UPLOAD_FOLDER = "uploads/profile_images"
+UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__), '../../public/uploads/profile_images')
 ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif"}
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
@@ -128,7 +126,7 @@ def user_profile():
 
         elif request.method == 'PUT':
             data = request.get_json()
-
+    
             if not data:
                 return jsonify({"error": "Datos no proporcionados"}), 400
             updated_user = UserService.update_user(user_id, data)
@@ -146,7 +144,7 @@ def user_profile():
             }), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-
+    
 
 @api.route("/user_profile/image", methods=["PUT"])
 @jwt_required()
@@ -154,8 +152,7 @@ def update_profile_image():
     try:
         user_id = get_jwt_identity()
         user = UserService.get_user_by_id(user_id)
-
-        file = request.files["image"]
+      
         if not user:
             return jsonify({"error": "Usuario no encontrado"}), 404
 
@@ -163,7 +160,6 @@ def update_profile_image():
             return jsonify({"error": "No se ha enviado ninguna imagen"}), 400
 
         file = request.files["image"]
-
         if file.filename == "":
             return jsonify({"error": "Nombre de archivo vacío"}), 400
 
@@ -172,24 +168,20 @@ def update_profile_image():
             filepath = os.path.join(UPLOAD_FOLDER, filename)
             file.save(filepath)
 
-            user_image=UserImageService.get_user_by_id(user_id)
-            print("acceder al", updated_user)
-            updated_user = UserService.update_user(user_id, user, filepath)
-            if not updated_user:
-                return jsonify({"error": "Error al actualizar el perfil"}), 500
-          
-
+            img_updated = UserImageService.update_img(user_id, filename)
+            
+            if not img_updated:
+                return jsonify({"error": "Error al actualizar la imagen de perfil"}), 500
+           
             return jsonify({
                 "message": "Imagen de perfil actualizada",
-                "user": updated_user                
+                "user_image": filename  
             }), 200
 
         return jsonify({"error": "Formato de imagen no permitido"}), 400
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-
-
 
 
 @api.route('/routine', methods=['GET', 'POST'])
@@ -341,5 +333,18 @@ def complete_workout(workout_id, workout_completion_id):
     except Exception as e:
         return jsonify({"error": f"Error inesperado: {str(e)}"}), 500
     
-
-
+@api.route("/uploads/<path:filename>")
+def get_uploaded_file(filename):
+    filepath = os.path.join(UPLOAD_FOLDER, filename)
+    if os.path.exists(filepath):
+        mimetype = 'application/octet-stream'  # Default MIME type
+        if filename.lower().endswith('.png'):
+            mimetype = 'image/png'
+        elif filename.lower().endswith(('.jpg', '.jpeg')):
+            mimetype = 'image/jpeg'
+        elif filename.lower().endswith('.gif'):
+            mimetype = 'image/gif'
+        
+        return send_from_directory(UPLOAD_FOLDER, filename, mimetype=mimetype)
+    else:
+        return jsonify({"error": "Imagen no encontrada"}), 404

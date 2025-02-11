@@ -60,45 +60,40 @@ class UserService:
     def get_user_by_id(user_id):
         return UserRepository.get_user_by_id(user_id) or None
 
+    
     @staticmethod
-    def update_user(user_id, data, image=None):
+    def update_user(user_id, data, filepath=None):
         try:
             user = UserRepository.get_user_by_id(user_id)
             if not user:
                 return None
-            if "user_name" in data:
-                user.user_name = data["user_name"]
-            if "email" in data:
-                user.email = data["email"]
-            if "password_hash" in data:
-                user.password_hash = ph.hash(data["password_hash"])  
-            if "is_active" in data:
-                user.is_active =  data["is_active"]
 
+            if "user_name" in data and data["user_name"] != "":
+                user.user_name = data["user_name"]
+            if "email" in data and data["email"] != "":
+                user.email = data["email"]
+            if "password_hash" in data and data["password_hash"] != "":
+                user.password_hash = ph.hash(data["password_hash"])
+            if "is_active" in data:
+                user.is_active = data["is_active"]
 
             profile = UserRepository.get_profile_by_id(user_id)
-            
             if "profile" in data:
                 profile_data = data["profile"]
-
-                if profile is not None:  
-                    if "age" in profile_data:
+                if profile is not None:
+                    if "age" in profile_data and profile_data["age"] != "":
                         profile.age = profile_data["age"]
-                    if "phone_number" in profile_data:
+                    if "phone_number" in profile_data and profile_data["phone_number"] != "":
                         profile.phone_number = profile_data["phone_number"]
-                    if "gender" in profile_data:
+                    if "gender" in profile_data and profile_data["gender"] != "":
                         profile.gender = profile_data["gender"]
                     if "description" in profile_data:
                         profile.description = profile_data["description"]
 
-            if image is not None:
-                image=UserRepository.get_user_image_by_id(user_id)
-                image.img = image
-                UserRepository.save(image)
-
             UserRepository.save(user)
-            UserRepository.save(profile) 
-             
+            if profile:
+                UserRepository.save(profile)
+
             return user  
 
         except Exception as e:
