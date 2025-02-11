@@ -18,6 +18,8 @@ import CoachingInterview from "./pages/coachingInterview";
 import CoachPage from "./pages/coachPage";
 import ProfileUser from "./pages/userProfile";
 import FitPageOverview from "./component/fitPageOverview";
+import AppSpotify from "./component/AppSpotify";
+import LoginSpotify from "./component/LoginSpotify";
 
 //create your first component
 const Layout = () => {
@@ -39,7 +41,7 @@ const Layout = () => {
                         <Route element={<WelcomePage />} path="/welcome" />
                         <Route element={<About />} path="/about" />
                         <Route element={<Profile />} path="/profile/:member" />
-												<Route element={<IsLogIn />} path="/dashboard">
+						<Route element={<IsLogIn />} path="/dashboard">
                             <Route Index element={<Dashboard />} path="" />
                             <Route path="fit-interview" element={<FitInterview />}/>
                             <Route path="fit-page" element={<FitPage />} />
@@ -47,6 +49,8 @@ const Layout = () => {
                             <Route path="coach-page" element={<CoachPage />} />
                             <Route path="userprofile" element={<ProfileUser />} />
                             <Route path="fitpageoverview" element={<FitPageOverview />}/>
+                            <Route path="appspotify" element={<AppSpotify />} />
+                            <Route path="loginspotify" element={<LoginSpotify />} />
                         </Route>				
                         <Route element={<h1>Not found!</h1>} path="*" />
                     </Routes>

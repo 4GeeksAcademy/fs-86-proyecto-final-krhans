@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "../../styles/fitPageOverview.css";
 import KhransAvatar from "../../img/Khrans-avatar.webp";
-import { getAccessToken } from "./get_spotify_token";
+import { getAccessToken } from "../component/get_spotify_token.js"
 
 const FitPageOverview = () => {
     const [motivationalPhrase, setMotivationalPhrase] = useState("Today is a great day to make progress!");

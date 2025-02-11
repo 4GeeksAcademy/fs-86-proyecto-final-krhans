@@ -12,4 +12,3 @@ import Layout from "./layout";
 ReactDOM.render(<Layout />, document.querySelector("#app"));
 
 
-ReactDOM.render(<AppSpotify />, document.getElementById('root'));

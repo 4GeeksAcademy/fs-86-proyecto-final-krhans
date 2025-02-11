@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import WebPlaybackSpotify from './components/WebPlaybackSpotify';
-import LoginSpotify from './components/LoginSpotify';
+import WebPlaybackSpotify from '../component/WebPlaybackSpotify';
+import LoginSpotify from '../component/LoginSpotify';
 import '../../styles/AppSpotify.css';
 
 

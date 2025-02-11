@@ -9,7 +9,7 @@ let accessToken = null;
 let tokenExpirationTime = null;
 
 // Obtén el token de acceso
-async function getAccessToken() {
+export const getAccessToken = async () => {
     const currentTime = new Date().getTime();
 
     // Verifica si el token es válido y no ha expirado
@@ -40,4 +40,3 @@ async function getAccessToken() {
     }
 }
 
-module.exports = { getAccessToken };

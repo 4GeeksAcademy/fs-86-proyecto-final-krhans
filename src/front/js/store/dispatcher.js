@@ -8,7 +8,7 @@ export const dispatcherUser = {
                 },
                 body: JSON.stringify(userData)
             });
-
+            console.log(response);
             if (!response.ok) {
                 const errorData = await response.json();
                 throw new Error(`Error ${response.status}: ${errorData.error || response.statusText}`);
@@ -23,7 +23,7 @@ export const dispatcherUser = {
     login: async (email, password) => {
         try {
 
-            const response = await fetch(`${process.env.BACKEND_URL}/api/log_in`, {
+            const response = await fetch(`https://refactored-space-waffle-x594gqgpg4gj3pgjq-3001.app.github.dev/api/log_in`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -72,7 +72,7 @@ export const dispatcherUser = {
                 method: "PUT",
                 headers: {
                     "Authorization": `Bearer ${token}`,
-                    "Content-Type": "application/json" 
+                    "Content-Type": "application/json"
                 },
                 body: JSON.stringify(updateData)
             });
@@ -91,6 +91,6 @@ export const dispatcherUser = {
             return { error: error.message };
         }
     }
-    
+
 };
 
