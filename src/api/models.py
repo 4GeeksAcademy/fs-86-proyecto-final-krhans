@@ -46,7 +46,6 @@ class User(db.Model):
 class UserProfile(db.Model): 
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    user_img = db.Column(db.String, nullable=True)
     age = db.Column(db.Integer, nullable=True)
     phone_number = db.Column(db.String, nullable=True)  
     gender = db.Column(db.String, nullable=True)
@@ -61,7 +60,6 @@ class UserProfile(db.Model):
         return {
             "id": self.id,
             "user_id": self.user_id,
-            "user_img": self.user_img,
             "age": self.age,
             "phone_number": self.phone_number,
             "gender": self.gender,

@@ -17,7 +17,7 @@ class UserService:
             
             new_user = UserRepository.create_user(user_data)
             UserRepository.create_profile(new_user.id) 
-            
+            UserRepository.create_user_img(new_user.id)
             return new_user
         except Exception as e:
             raise e

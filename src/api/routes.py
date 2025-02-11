@@ -8,13 +8,29 @@ from api.services.routineService import RoutineService
 from api.services.workoutService import WorkoutService
 from api.services.trainingService import TrainingService
 from api.services.workoutCompletionService import WorkoutCompletionService
+from api.services.userImageService import UserImageService
 from sqlalchemy.exc import SQLAlchemyError
+import os
+from werkzeug.utils import secure_filename
+
+
 
 
 api = Blueprint('api', __name__)
 
 # Allow CORS requests to this API
 CORS(api)
+
+
+#Todo lo necesario para insertar imagenes
+UPLOAD_FOLDER = "uploads/profile_images"
+ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif"}
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
 
 @api.route('/log_in', methods=['POST'])
 def log_in():
@@ -125,6 +141,50 @@ def user_profile():
             }), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+
+@api.route("/user_profile/image", methods=["PUT"])
+@jwt_required()
+def update_profile_image():
+    try:
+        user_id = get_jwt_identity()
+        user = UserService.get_user_by_id(user_id)
+
+        file = request.files["image"]
+        if not user:
+            return jsonify({"error": "Usuario no encontrado"}), 404
+
+        if "image" not in request.files:
+            return jsonify({"error": "No se ha enviado ninguna imagen"}), 400
+
+        file = request.files["image"]
+
+        if file.filename == "":
+            return jsonify({"error": "Nombre de archivo vacío"}), 400
+
+        if file and allowed_file(file.filename):
+            filename = secure_filename(f"user_{user_id}.{file.filename.rsplit('.', 1)[1].lower()}")
+            filepath = os.path.join(UPLOAD_FOLDER, filename)
+            file.save(filepath)
+
+            user_image=UserImageService.get_user_by_id(user_id)
+
+            if user_image:
+                user_image.img = filepath
+            else:
+                user_image=UserImageService.create_user_image(user_id,filepath)
+               
+
+            return jsonify({
+                "message": "Imagen de perfil actualizada",
+                "image_url": filepath
+            }), 200
+
+        return jsonify({"error": "Formato de imagen no permitido"}), 400
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 
 
 
