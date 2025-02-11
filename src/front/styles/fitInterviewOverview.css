@@ -1,59 +1,113 @@
 :root {
-    --color-font: #084f67;
+    --color-font: #1c3a4f;
     --color-background: #f2eafa;
-    --color-button: #DBB8F2;
-    --color-navbar: #5C2E91;
-    --color-navbar-font:#eaebfa;
+    --color-button: #e3cfff;
+    --color-navbar: #41009c;
+    --color-navbar-font: #ffffff;
     --color-highlight: #BFE3F2;
 }
-
-
 
 .fitinterview-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     height: 100vh;
     text-align: center;
     padding: 20px;
+    background: var(--color-background);
+}
+
+
+.fitinterview-question {
+    background: var(--color-button);
+    border: 2px solid var(--color-navbar);
+    border-radius: 20px;
+    padding: 15px;
+    margin-bottom: 30px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .fitinterview-question h2 {
-    font-size: 1.8rem;
+    font-size: 1.6rem;
     font-weight: bold;
-    color: var(--color-navbar);
-    margin-bottom: 20px;
-    text-shadow: 0px 0px 8px var(--color-button);
+    color: var(--color-font);
+    margin: 0;
 }
+
+.avatar-container {
+    margin: 50px 0 30px;
+}
+
+.khrans-image {
+    width: 160px;
+    height: auto;
+}
+
 
 .fitinterview-options {
     display: flex;
-    flex-direction: column;
+    justify-content: center;
     gap: 15px;
     width: 100%;
-    max-width: 400px;
+    max-width: 500px;
+    position: relative;
 }
 
+
+.top-option-0 {
+    position: absolute;
+    top: 22%;
+    left: 10%;
+}
+
+.top-option-1 {
+    position: absolute;
+    top: 22%;
+    right: 10%;
+}
+
+
+.bottom-option-0 {
+    position: absolute;
+    bottom: 16%; 
+    left: 6%; 
+}
+
+.bottom-option-1 {
+    position: absolute;
+    bottom: 16%;
+    right: 6%;
+}
+
+
 .fitinterview-button {
-    background: var(--color-button);
-    color: var(--color-navbar-font);
-    border: 2px solid var(--color-navbar);
+    background: #fff;
+    color: var(--color-font);
+    border: 2px solid var(--color-button);
     font-size: 1.2rem;
     font-weight: bold;
-    padding: 12px;
-    border-radius: 10px;
+    padding: 14px;
+    border-radius: 20px;
     cursor: pointer;
     transition: all 0.3s ease-in-out;
     text-transform: uppercase;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-    width: 100%;
+    width: 160px;
+    height: 55px;
     opacity: 0;
     transform: translateY(10px);
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
+
 .fitinterview-button.fade-in {
-    animation: fadeIn 0.5s ease-in-out forwards;
+    animation: fadeIn 1s ease-in-out forwards;
 }
 
 @keyframes fadeIn {
@@ -65,8 +119,4 @@
         opacity: 1;
         transform: translateY(0);
     }
-}
-
-.fitinterview-button.hidden {
-    display: none;
 }
