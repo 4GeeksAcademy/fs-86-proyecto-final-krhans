@@ -1,5 +1,5 @@
 
-from api.models import db, User,UserProfile
+from api.models import db, User,UserProfile,UserImage
 
 class UserRepository:
     @staticmethod
@@ -41,7 +41,20 @@ class UserRepository:
         except Exception as e:
             db.session.rollback()
             raise e
-        
+    
+    @staticmethod
+    def create_user_img(user_id):
+        try:
+            new_user_img = UserImage(
+                user_id=user_id,
+                img=""
+            )
+            db.session.add(new_user_img)
+            db.session.commit()
+            return new_user_img
+        except Exception as e:
+            db.session.rollback()
+            raise e
 
     @staticmethod
     def save(user):
