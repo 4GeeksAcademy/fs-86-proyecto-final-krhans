@@ -55,6 +55,10 @@ class UserRepository:
         except Exception as e:
             db.session.rollback()
             raise e
+        
+    @staticmethod
+    def get_user_image_by_id(user_id):
+        return UserImage.query.filter_by(user_id=user_id).first() or None
 
     @staticmethod
     def save(user):

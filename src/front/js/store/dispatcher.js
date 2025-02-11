@@ -91,6 +91,31 @@ export const dispatcherUser = {
             return { error: error.message };
         }
     },
+    upDateImage:async (token, formData) => {
+        try {
+
+            const response = await fetch(`${process.env.BACKEND_URL}/api/user_profile/image`, {
+                method: "PUT",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                },
+                body: formData
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                
+                throw new Error(`Error ${response.status}: ${errorData.error || response.statusText}`);
+            }
+            const responseData = await response.json();
+            
+            return responseData;
+
+        } catch (error) {
+            
+            return { error: error.message };
+        }
+    },
 
     isActive: async (token) => {
         try {

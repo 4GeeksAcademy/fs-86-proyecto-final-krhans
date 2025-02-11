@@ -1,9 +1,13 @@
 .sign-up_container{
-    margin: 8px;
-
+    width: 100%;
+    
+}
+.sing-up_card{
+   width: 90%;
 }
 .sign-up_form{
     width: 100%;
+   
 
 }
 .sign-up_input-group{
@@ -58,23 +62,39 @@
     border-color: var(--color-button);
     border-radius: 10px;
 }
-.sign-up_title{
+.sign-up_title {
     font-size: 2rem;
     font-weight: bold;
-    color: var(--color-font); 
-    width: 0;
+    text-align: center;
+    color: var(--color-font);
+    width: 90%;
     overflow: hidden;
     white-space: nowrap;
     animation: typing 4s steps(20) forwards, blink 0.6s infinite;
 }
-@keyframes typing {
-    to {
-      width: 100%;
-    }
-  }
 
-  @keyframes blink {
-    50% {
-      border-color: transparent;
+
+@keyframes typing {
+    from { width: 0; }
+    to { width: 100%; }
+}
+
+
+@keyframes blink {
+    50% { border-color: transparent; }
+}
+
+
+@media (max-width: 600px) {
+    .sign-up_title {
+        font-size: 2rem; 
+        white-space: normal; 
+        text-align: center;
+        text-overflow: initial; 
+        animation: typing-small 4s steps(15) forwards, blink 0.6s infinite;
     }
-  }
+}
+@keyframes typing-small {
+    from { width: 0; }
+    to { width: 15ch; } 
+}

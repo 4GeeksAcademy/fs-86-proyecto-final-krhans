@@ -14,7 +14,8 @@ const EditProfile = () => {
     const [userAge, setUserAge] = useState('');
     const [userDescription, setUserDescription] = useState('');
     const [userGender, setUserGender] = useState('');
-    const [profileImage, setProfileImage] = useState(); 
+    const [profileImage, setProfileImage] = useState(null); 
+    const [previewImage, setPreviewImage] = useState(null);
     const [loading, setLoading] = useState(false);
     
     useEffect(() => {
@@ -24,8 +25,16 @@ const EditProfile = () => {
         setUserAge(store.userData.profile.age || '');
         setUserDescription(store.userData.profile.description || '');
         setUserGender(store.userData.profile.gender || '');
-        setProfileImage(store.userData.profile.user_img || '')
+        setProfileImage( '')
     }, []);
+
+    const handleImageChange = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            setProfileImage(file); // Guardamos el archivo (File)
+            setPreviewImage(URL.createObjectURL(file)); 
+        }
+    };
 
     const actualizarUsuario = async () => {
         setLoading(true); 
@@ -37,7 +46,7 @@ const EditProfile = () => {
             age: userAge,
             phone_number: userPhone,
             gender: userGender,
-            description: userDescription
+            description: userDescription,
         };
         newUser.profile = profile;
 
@@ -45,7 +54,15 @@ const EditProfile = () => {
     
         try {
             await actions.upDateUser(newUser);
-            console.log("Usuario actualizado con éxito");
+
+            if (profileImage instanceof File) {
+                const formData = new FormData();
+                formData.append("image", profileImage);                
+                await actions.upDateImagenProfile(formData);
+            }else{
+                console.log("esta entrando por el else");
+            }
+
 
             const elapsedTime = Date.now() - startTime;
             const remainingTime = Math.max(3000 - elapsedTime, 0); 
@@ -65,13 +82,7 @@ const EditProfile = () => {
         }
     };
     
-    const handleImageChange = (event) => {
-        const file = event.target.files[0];
-        if (file) {
-            const imageUrl = URL.createObjectURL(file);
-            setProfileImage(imageUrl);
-        }
-    };
+    
 
     return (
         <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -85,8 +96,8 @@ const EditProfile = () => {
 
                         <div className="text-center mb-3">
                             <img
-                                src={profileImage}
-                                alt={userName}
+                                src={previewImage}
+                                alt={store.userData.user_name}
                                 className="rounded-circle"
                                 style={{ width: "100px", height: "100px", objectFit: "cover" }}
                             />
