@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "../../styles/fitInterviewOverview.css";
+import KhransAvatar from "../../img/Khrans-avatar.webp";
 
 const getQuestions = (answers) => [
     { 
@@ -42,12 +43,12 @@ const FitInterviewOverview = () => {
         setVisibleOptions([]);
         const filteredOptions = questions[index].options;
 
-        setCurrentQuestion({...questions[index], options: filteredOptions});
+        setCurrentQuestion({ ...questions[index], options: filteredOptions });
 
         filteredOptions.forEach((_, i) => {
             setTimeout(() => {
                 setVisibleOptions(prev => [...prev, i]);
-            }, (i + 1) * 300);
+            }, (i + 1) * 1000); // 🔹 Se retrasa 1s cada botón para que aparezcan de uno en uno
         });
     }, [index, questions]);
 
@@ -79,10 +80,24 @@ const FitInterviewOverview = () => {
                 <h2>{currentQuestion.question}</h2>
             </div>
             <div className="fitinterview-options">
-                {currentQuestion.options.map((option, idx) => (
+                {currentQuestion.options.slice(0, 2).map((option, idx) => (
                     <button 
                         key={idx} 
-                        className={`fitinterview-button ${visibleOptions.includes(idx) ? "fade-in" : "hidden"}`} 
+                        className={`fitinterview-button ${visibleOptions.includes(idx) ? "fade-in" : "hidden"} top-option-${idx}`} 
+                        onClick={() => handleAnswer(option)}
+                    >
+                        {option}
+                    </button>
+                ))}
+            </div>
+            <div className="avatar-container">
+                <img src={KhransAvatar} alt="Khrans Avatar" className="khrans-image" />
+            </div>
+            <div className="fitinterview-options">
+                {currentQuestion.options.slice(2).map((option, idx) => (
+                    <button 
+                        key={idx + 2} 
+                        className={`fitinterview-button ${visibleOptions.includes(idx + 2) ? "fade-in" : "hidden"} bottom-option-${idx}`} 
                         onClick={() => handleAnswer(option)}
                     >
                         {option}
@@ -92,6 +107,7 @@ const FitInterviewOverview = () => {
         </div>
     );
 };
+
 
 export default FitInterviewOverview;
 
