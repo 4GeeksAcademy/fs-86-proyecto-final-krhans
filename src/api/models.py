@@ -17,6 +17,7 @@ class User(db.Model):
     routines_list = db.relationship('Routine', back_populates='user', lazy=True)
     workout_completions = db.relationship('WorkoutCompletion', back_populates='user', lazy=True, cascade="all, delete-orphan")
     workouts = db.relationship('Workout', back_populates='user', lazy=True, cascade="all, delete-orphan") 
+    user_image = db.relationship('UserImage', uselist=False, back_populates='user', cascade="all, delete-orphan")
 
 
     def set_password(self, password):
@@ -37,7 +38,8 @@ class User(db.Model):
             "user_name": self.user_name,
             "email": self.email,
             "is_active": self.is_active,
-            "profile": self.profile.serialize() if self.profile else None
+            "profile": self.profile.serialize() if self.profile else None,
+            "user_image": self.user_image.serialize() if self.user_image else None
         }
 
 
@@ -181,4 +183,22 @@ class WorkoutCompletion(db.Model):
             "completed": self.completed,
             "description_mood": self.description_mood,
             "date_completed": self.date_completed.isoformat() if self.date_completed else None
+        }
+
+
+class UserImage(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), unique=True, nullable=False)
+    img = db.Column(db.String, nullable=True)  
+
+    user = db.relationship('User', back_populates='user_image')
+
+    def __repr__(self):
+        return f'<UserImage {self.user_id}>'
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "user_id": self.user_id,
+            "img": self.img
         }
