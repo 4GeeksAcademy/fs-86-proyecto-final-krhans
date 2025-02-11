@@ -90,10 +90,11 @@ const SignUpOverview = () => {
             {isLoading && <Loader />}
 
             {!isLoading && (
-                <>
+                <div className="sing-up_card d-flex flex-column align-items-center justify-content-stretch">
                     <h1 className="sign-up_title text-center">
                         "Create action, motivation and grit. Bringing out the best in everyone"
                     </h1>
+
                     <form className="sign-up_form">
                         <div className="sign-up_input-group d-flex flex-column">
                             <input className="sign-up_input" type="text" id="userName" name="userName" autoComplete="username" required value={userName} onChange={(e) => setUserName(e.target.value)} />
@@ -126,7 +127,7 @@ const SignUpOverview = () => {
                             <span> Log In</span>
                         </Link>
                     </p>
-                </>
+                </div>
             )}
 
             {showPopup && (

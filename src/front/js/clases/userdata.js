@@ -3,7 +3,8 @@ class UserData {
       this._user_name = "";  
       this._email = "";
       this._password= "";
-      this.profile = {};    
+      this.profile = {};  
+      this.user_image = {};  
   }
 
   get user_name() {
@@ -36,6 +37,14 @@ class UserData {
 
   set profile(value){
     this._profile = value;
+  }
+
+  get user_image() {
+    return this._user_image;
+  }
+
+  set user_image(value) {
+    this._user_image = value;
   }
   
   toJSON() {

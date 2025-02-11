@@ -117,27 +117,32 @@ def user_profile():
             return jsonify({"error": "Usuario no encontrado"}), 404
         if request.method == 'GET':
             profile_data = user.profile.serialize() if user.profile else None
+            user_image = user.user_image.serialize() if user.user_image else None
             return jsonify({
                 "user_name": user.user_name,
                 "email": user.email,
                 "is_active": user.is_active,
-                "profile": profile_data 
+                "profile": profile_data, 
+                "user_image": user_image
             }), 200  
 
         elif request.method == 'PUT':
             data = request.get_json()
+
             if not data:
                 return jsonify({"error": "Datos no proporcionados"}), 400
             updated_user = UserService.update_user(user_id, data)
             if not updated_user:
                 return jsonify({"error": "Error al actualizar el perfil"}), 500
             profile_data = updated_user.profile.serialize() if updated_user.profile else None
+            user_image = user.user_image.serialize() if user.user_image else None
             return jsonify({
                 "message": "Perfil actualizado correctamente",
                 "user_name": updated_user.user_name,
                 "email": updated_user.email,
                 "is_active":updated_user.is_active,
-                "profile": profile_data
+                "profile": profile_data,
+                "user_image": user_image
             }), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
@@ -168,16 +173,15 @@ def update_profile_image():
             file.save(filepath)
 
             user_image=UserImageService.get_user_by_id(user_id)
-
-            if user_image:
-                user_image.img = filepath
-            else:
-                user_image=UserImageService.create_user_image(user_id,filepath)
-               
+            print("acceder al", updated_user)
+            updated_user = UserService.update_user(user_id, user, filepath)
+            if not updated_user:
+                return jsonify({"error": "Error al actualizar el perfil"}), 500
+          
 
             return jsonify({
                 "message": "Imagen de perfil actualizada",
-                "image_url": filepath
+                "user": updated_user                
             }), 200
 
         return jsonify({"error": "Formato de imagen no permitido"}), 400

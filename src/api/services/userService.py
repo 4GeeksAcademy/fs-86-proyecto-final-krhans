@@ -61,7 +61,7 @@ class UserService:
         return UserRepository.get_user_by_id(user_id) or None
 
     @staticmethod
-    def update_user(user_id, data):
+    def update_user(user_id, data, image=None):
         try:
             user = UserRepository.get_user_by_id(user_id)
             if not user:
@@ -77,7 +77,7 @@ class UserService:
 
 
             profile = UserRepository.get_profile_by_id(user_id)
-            print("perfil: ",profile.age)
+            
             if "profile" in data:
                 profile_data = data["profile"]
 
@@ -90,9 +90,15 @@ class UserService:
                         profile.gender = profile_data["gender"]
                     if "description" in profile_data:
                         profile.description = profile_data["description"]
-              
+
+            if image is not None:
+                image=UserRepository.get_user_image_by_id(user_id)
+                image.img = image
+                UserRepository.save(image)
+
             UserRepository.save(user)
-            UserRepository.save(profile)  
+            UserRepository.save(profile) 
+             
             return user  
 
         except Exception as e:

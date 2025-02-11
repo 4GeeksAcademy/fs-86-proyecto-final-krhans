@@ -54,26 +54,40 @@
     border-color: var(--color-Button);
     border-radius: 10px;
 }
-.log-in_title{
+.log-in_title {
     font-size: 2rem;
     font-weight: bold;
-    color: var(--color-font); 
-    width: 0;
+    color: var(--color-font);
+    width: 90%;
     overflow: hidden;
     white-space: nowrap;
-    animation: typing 3s steps(20) forwards, blink 0.6s infinite;
+    animation: typing 4s steps(20) forwards, blink 0.6s infinite;
 }
-@keyframes typing {
-    to {
-      width: 100%;
-    }
-  }
 
-  @keyframes blink {
-    50% {
-      border-color: transparent;
+
+@keyframes typing {
+    from { width: 0; }
+    to { width: 100%; }
+}
+
+
+@keyframes blink {
+    50% { border-color: transparent; }
+}
+
+
+@media (max-width: 600px) {
+    .log-in_title {
+        font-size: 2rem; 
+        white-space: pre-wrap; 
+        text-align: center; 
+        animation: typing-small 3s steps(15) forwards, blink 0.6s infinite;
     }
-  }
+}
+@keyframes typing-small {
+    from { width: 0; }
+    to { width: 15ch; } 
+}
 .popup-content{
     color: var(--color-navbar_font);
     background: rgba(138, 43, 226, 0.9);

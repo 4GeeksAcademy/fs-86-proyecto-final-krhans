@@ -24,12 +24,17 @@ const getState = ({ getStore, getActions, setStore }) => {
 				const store = getStore();
 				try {
 					const data = await dispatcherUser.login(email, password);
-
 					if (data.token && typeof data.token === "string" && data.token.trim() !== "") {
 						localStorage.removeItem("jwt-token");
 						
 						localStorage.setItem("jwt-token", data.token);
-						setStore({userdata: data.user})		
+						setStore({
+							userData: {
+								...data.user,    // Asegúrate de que 'user' tiene 'user_image'
+								user_image: data.user.user_image  // Si no está incluido, añádelo manualmente
+							}
+						});
+						console.log("datos guardados",store.userData)	
 						return true;
 					} else {
 						throw new Error("Invalid credentials");
@@ -52,7 +57,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 						throw new Error("No se encontraron datos del usuario.");
 					}
 					setStore({userData: user})
-					console.log(store.userData);
+					console.log("esta haciendo la llamada a user data", store.userData);
 					return user;
 			
 				} catch (error) {
@@ -69,10 +74,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			        console.log(updatedUser)
 					if (!updatedUser || updatedUser.error) { 
 						throw new Error(updatedUser?.error || "No se pudo actualizar el usuario.");
-					} 
-			
-					console.log("Usuario actualizado correctamente:", updatedUser);
-			
+					} 		
 					
 					setStore({ userData: updatedUser });
 			
@@ -80,6 +82,33 @@ const getState = ({ getStore, getActions, setStore }) => {
 				} catch (error) {
 					console.error("Error en la actualización:", error.message);
 					alert("Hubo un error al actualizar el usuario: " + error.message);
+					
+					return null;  
+				}
+			},
+			upDateImagenProfile: async (user) => {
+				const store = getStore();
+				try {
+					const token = localStorage.getItem("jwt-token");
+					if (!token) throw new Error("No hay token disponible.");
+			    
+					const updateImage = await dispatcherUser.upDateImage(token, user);
+			        
+					if (!updateImage|| updateImage.error) { 
+						throw new Error(updateImage?.error || "No se pudo actualizar la imagen del usuario.");
+					} 
+					console.log("Usuario actualizado correctamente:", updateImage);
+			
+					setStore((prevStore) => ({
+						...prevStore,
+						userData: { ...prevStore.userData, user_image: updateImage.user_image } }
+					));
+					
+			        console.log("datos del store", store.userData);
+					return updateImage;
+				} catch (error) {
+					console.error("Error en la actualización:", error.message);
+					alert("Hubo un error al actualizar la imagen del usuario: " + error.message);
 					
 					return null;  
 				}
