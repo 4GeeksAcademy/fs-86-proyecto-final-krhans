@@ -57,7 +57,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 						throw new Error("No se encontraron datos del usuario.");
 					}
 					setStore({userData: user})
-					console.log("esta haciendo la llamada a user data", store.userData);
 					return user;
 			
 				} catch (error) {
@@ -65,13 +64,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return { error: error.message };
 				}
 			},
-			upDateUser: async (user) => {
+			updateUser: async (user) => {
 				try {
 					const token = localStorage.getItem("jwt-token");
 					if (!token) throw new Error("No hay token disponible.");
-			    
-					const updatedUser = await dispatcherUser.upDate(token, user);
-			        console.log(updatedUser)
+					
+					const updatedUser = await dispatcherUser.update(token, user);
+					
 					if (!updatedUser || updatedUser.error) { 
 						throw new Error(updatedUser?.error || "No se pudo actualizar el usuario.");
 					} 		
@@ -86,25 +85,25 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return null;  
 				}
 			},
-			upDateImagenProfile: async (user) => {
+			updateImagenProfile: async (user) => {
 				const store = getStore();
 				try {
 					const token = localStorage.getItem("jwt-token");
 					if (!token) throw new Error("No hay token disponible.");
+					
 			    
-					const updateImage = await dispatcherUser.upDateImage(token, user);
+					const updateImage = await dispatcherUser.updateImage(token, user);
 			        
+
 					if (!updateImage|| updateImage.error) { 
 						throw new Error(updateImage?.error || "No se pudo actualizar la imagen del usuario.");
 					} 
-					console.log("Usuario actualizado correctamente:", updateImage);
-			
+					
 					setStore((prevStore) => ({
 						...prevStore,
 						userData: { ...prevStore.userData, user_image: updateImage.user_image } }
 					));
-					
-			        console.log("datos del store", store.userData);
+					console.log("Imagen: ",updateImage.user_image)
 					return updateImage;
 				} catch (error) {
 					console.error("Error en la actualización:", error.message);
@@ -135,10 +134,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 				return null;  
 			}
 			},
-			
-				
-			
-
 			getMessage: async () => {
 				try{
 					// fetching data from the backend
@@ -157,3 +152,5 @@ const getState = ({ getStore, getActions, setStore }) => {
 };
 
 export default getState;
+
+

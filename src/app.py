@@ -11,8 +11,8 @@ from flask_jwt_extended import JWTManager
 
 
 ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
-static_file_dir = os.path.join(os.path.dirname(
-    os.path.realpath(__file__)), '../public/')
+static_file_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../public'))
+
 app = Flask(__name__)
 app.url_map.strict_slashes = False
 
@@ -50,11 +50,29 @@ def sitemap():
 
 @app.route('/<path:path>', methods=['GET'])
 def serve_any_other_file(path):
-    if not os.path.isfile(os.path.join(static_file_dir, path)):
-        path = 'index.html'
-    response = send_from_directory(static_file_dir, path)
-    response.cache_control.max_age = 0  
-    return response
+    file_path = os.path.abspath(os.path.join(static_file_dir, path))
+    
+    print(f"Buscando archivo en: {file_path}")  
+
+    if not os.path.isfile(file_path):
+        return jsonify({"error": "Archivo no encontrado"}), 404
+
+    return send_from_directory(static_file_dir, path)
+
+
+@app.route('/uploads/profile_images/<filename>')
+def get_profile_image(filename):
+    directory = os.path.abspath(os.path.join(os.path.dirname(__file__), '../public/uploads/profile_images'))
+    file_path = os.path.join(directory, filename)
+
+    print(f"Buscando imagen en: {file_path}")  
+
+    if not os.path.isfile(file_path):
+        return jsonify({"error": "Archivo no encontrado"}), 404
+
+    return send_from_directory(directory, filename)
+
+
 
 if __name__ == '__main__':
     PORT = int(os.environ.get('PORT', 3001))

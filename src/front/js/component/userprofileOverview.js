@@ -1,15 +1,24 @@
-import React, { useContext, useEffect, useState } from "react";
-// import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
+import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext";
 import EditProfile from "./userprofileModal";
-import "../../styles/userprofileOverview.css"
-
+import "../../styles/userprofileOverview.css";
 
 const UserProfile = () => {
   const { store, actions } = useContext(Context);
+  const [showModal, setShowModal] = useState(false); 
+
+  const userImage = store.userData?.user_image?.img
+  ? `${process.env.BACKEND_URL}/uploads/profile_images/${store.userData.user_image.img}?${new Date().getTime()}`
+  : store.userData?.profile?.profile_image || "https://i.pinimg.com/236x/af/3f/b8/af3fb80ea32ddfe2df0440b37f99514a.jpg";
 
 
-  const userImage = store.userData?.user_image?.img || 'https://i.pinimg.com/236x/af/3f/b8/af3fb80ea32ddfe2df0440b37f99514a.jpg';  // Fallback a cadena vacía si no hay imagen
+  const handleEditProfileClick = () => {
+    setShowModal(true); 
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false); 
+  };
 
   return (
     <div className="user-profile_container">
@@ -17,7 +26,7 @@ const UserProfile = () => {
         <header className="user-profile_title">
           <h1 className="mb-3">{store.userData?.user_name || ''}</h1>
           <img
-            src={userImage}  
+            src={userImage}
             alt={store.userData?.user_name || ''}
             className="user-profile_image"
           />
@@ -29,15 +38,13 @@ const UserProfile = () => {
           <p><strong>Gender:</strong> {store.userData?.profile?.gender || ''}</p>
           <p><strong>Description:</strong> {store.userData?.profile?.description || ''}</p>
         </div>
-        <button type="button" className="user-profile_button" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        <button type="button" className="user-profile_button" onClick={handleEditProfileClick}>
           Edit Profile
         </button>
-        <EditProfile />
+        {/* Pasamos el estado y la función de cierre al modal */}
+        <EditProfile showModal={showModal} onClose={handleCloseModal} />
       </div>
     </div>
-
-
-
   );
 };
 

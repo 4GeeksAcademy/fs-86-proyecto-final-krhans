@@ -65,7 +65,7 @@ export const dispatcherUser = {
             return { error: error.message };
         }
     },
-    upDate: async (token, updateData) => {
+    update: async (token, updateData) => {
         try {
             
             const response = await fetch(`${process.env.BACKEND_URL}/api/user_profile`, {
@@ -91,9 +91,8 @@ export const dispatcherUser = {
             return { error: error.message };
         }
     },
-    upDateImage:async (token, formData) => {
+    updateImage:async (token, formData) => {
         try {
-
             const response = await fetch(`${process.env.BACKEND_URL}/api/user_profile/image`, {
                 method: "PUT",
                 headers: {

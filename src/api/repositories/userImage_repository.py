@@ -6,15 +6,20 @@ class UserImageRepository:
         return UserImage.query.filter_by(user_id=user_id).first() or None
 
     @staticmethod
-    def create_user_image(user_id,filepaht):
+    def create_user_image(user_id, filename):
         try:
-            new_userImage = UserImage(
+            new_user_image = UserImage(
                 user_id=user_id,
-               img=filepaht
+                img=filename  
             )
-            db.session.add(new_userImage)
+            db.session.add(new_user_image)
             db.session.commit()
-            return new_userImage
+            return new_user_image
         except Exception as e:
             db.session.rollback()
             raise e
+
+    
+    @staticmethod
+    def save(user):
+        db.session.commit()
