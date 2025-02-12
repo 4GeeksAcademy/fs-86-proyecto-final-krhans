@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
 import "../../styles/coachingInterviewOverview.css";
 import KhransCoach from "../../img/khrans-coach.png";
-import questionsData from "../Questions/trainingQuestions";
+import questionsData from "./trainingQuestions";
 
 const CoachingInterviewOverview = () => {
-
     const [selectedArea, setSelectedArea] = useState(null);
-    const [currentQuestion, setCurrentQuestion] = useState(0)
+    const [currentQuestion, setCurrentQuestion] = useState(0);
     const [sliderValue, setSliderValue] = useState(3);
+    const [hiddenAreas, setHiddenAreas] = useState([]);
+    const [responses, setResponses] = useState({});
+
 
     const handleButtonClick = (area) => {
         setSelectedArea(area);
@@ -15,11 +17,22 @@ const CoachingInterviewOverview = () => {
     };
 
     const handleNextQuestion = () => {
+        setResponses((prevResponses) => ({
+            ...prevResponses,
+            [selectedArea]: {
+                ...prevResponses[selectedArea],
+                [questionsData[selectedArea][currentQuestion].question]: sliderValue,
+            },
+        }));
+    
         if (currentQuestion + 1 < questionsData[selectedArea].length) {
             setCurrentQuestion(currentQuestion + 1);
-        } return ;
+        } else {
+            setHiddenAreas((prev) => [...prev, selectedArea]);
+            setSelectedArea(null);
+        }
     };
-    console.log("Cuestionario Finalizado");
+    
 
     const handleSliderChange = (event) => {
         setSliderValue(event.target.value);
@@ -43,28 +56,35 @@ const CoachingInterviewOverview = () => {
 
     return (
         <div className="coachingInterview-container">
-
             {step === 1 && <p className="fade-text">"Choosing to delve into yourself is one of the wisest decisions you can make."</p>}
             {step === 2 && <p className="fade-text">"It will be an honor to guide you on a path to a different and better life."</p>}
 
             {step === 3 && <p className="area-message">"Select an area to explore"</p>}
 
             <div className={`coachingInterview-avatar ${step >= 0 ? "fade-in" : ""}`}>
-                <img src={KhransCoach} alt="Khrans Coach" className="KhransCoach"/>
+                <img src={KhransCoach} alt="Khrans Coach" className="KhransCoach" />
             </div>
-
             {step === 3 && !selectedArea && (
                 <div className="area-options">
                     {Object.keys(questionsData).map((area, index) => (
                         <div
                             key={index}
-                            className={`area-button area-button${index + 1}`}
-                            onClick={() => handleButtonClick(area)}>
+                            className={`area-button area-button${index + 1} ${hiddenAreas.includes(area) ? "hidden-area" : ""}`}
+                            onClick={() => !hiddenAreas.includes(area) && handleButtonClick(area)}
+                        >
                             {area}
                         </div>
                     ))}
                 </div>
             )}
+
+            {step === 3 && hiddenAreas.length === Object.keys(questionsData).length && (
+                <button className="continue-button" onClick={() => console.log("Continuar al siguiente paso", responses)}>
+                    Continue
+                </button>
+            )}
+
+
             {selectedArea && (
                 <>
                     <div className="question-text">

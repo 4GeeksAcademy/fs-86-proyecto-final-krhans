@@ -265,3 +265,27 @@
     color: white;
     transition: background-color 0.3s ease;
 }
+
+.hidden-area {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease-in-out; 
+}
+
+.continue-button {
+    padding: 12px 24px;
+    font-size: 18px;
+    font-weight: bold;
+    background-color: #6a0dad;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+    position: absolute;
+    bottom: 80px;
+}
+
+.continue-button:hover {
+    background-color: #41009c;
+}
