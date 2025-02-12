@@ -1,17 +1,15 @@
-:root {
+.fitinterview-container {
     --color-font: #1c3a4f;
     --color-background: #f2eafa;
     --color-button: #e3cfff;
     --color-navbar: #41009c;
     --color-navbar-font: #ffffff;
     --color-highlight: #BFE3F2;
-}
 
-.fitinterview-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: center;
     height: 100vh;
     text-align: center;
     padding: 20px;
@@ -23,80 +21,79 @@
     background: var(--color-button);
     border: 2px solid var(--color-navbar);
     border-radius: 20px;
-    padding: 15px;
-    margin-bottom: 30px;
+    padding: 10px;
+    margin-bottom: 90px; /* 🔹 Se subió más */
     width: 90%;
     max-width: 400px;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .fitinterview-question h2 {
-    font-size: 1.6rem;
+    font-size: 1.2rem;
     font-weight: bold;
     color: var(--color-font);
     margin: 0;
 }
 
 .avatar-container {
-    margin: 50px 0 30px;
+    margin: 30px 0 50px; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .khrans-image {
-    width: 160px;
+    width: 150px;
     height: auto;
 }
-
 
 .fitinterview-options {
     display: flex;
     justify-content: center;
-    gap: 15px;
-    width: 100%;
-    max-width: 500px;
+    gap: 35px;
+    width: 350%;
+    max-width: 420px;
     position: relative;
 }
 
-
 .top-option-0 {
     position: absolute;
-    top: 22%;
-    left: 10%;
+    top: 42%; 
+    left: 8%;
 }
 
 .top-option-1 {
     position: absolute;
-    top: 22%;
-    right: 10%;
+    top: 42%;
+    right: 8%;
 }
-
 
 .bottom-option-0 {
     position: absolute;
-    bottom: 16%; 
-    left: 6%; 
+    bottom: 10%; 
+    left: 8%;
 }
 
 .bottom-option-1 {
     position: absolute;
-    bottom: 16%;
-    right: 6%;
+    bottom: 10%;
+    right: 8%;
 }
-
 
 .fitinterview-button {
     background: #fff;
     color: var(--color-font);
     border: 2px solid var(--color-button);
-    font-size: 1.2rem;
+    font-size: 1rem;
     font-weight: bold;
-    padding: 14px;
+    padding: 12px;
     border-radius: 20px;
     cursor: pointer;
     transition: all 0.3s ease-in-out;
     text-transform: uppercase;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-    width: 160px;
-    height: 55px;
+    width: 130px;
+    height: 50px;
     opacity: 0;
     transform: translateY(10px);
     text-align: center;
@@ -104,7 +101,6 @@
     align-items: center;
     justify-content: center;
 }
-
 
 .fitinterview-button.fade-in {
     animation: fadeIn 1s ease-in-out forwards;

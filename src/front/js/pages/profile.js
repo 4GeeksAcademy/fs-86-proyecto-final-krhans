@@ -4,11 +4,12 @@ import { Link, useParams } from "react-router-dom";
 import gabrielImageUrl from "../../img/gabriel-foto.png";
 import cristianImageUrl from "../../img/cristian-foto.jpg";
 import albantaImageUrl from "../../img/albanta-foto.jpg";
+import marcoImageUrl from "../../img/marco-foto.jpg";
 
 
 const profiles = {
     gabriel: { image: gabrielImageUrl, name: "Gabriel", age: "25 años", role: "Full Stack Developer", bio: "Soy un developer que vengo de Montserrat...", github: "https://github.com/gabriel-jimenez93", linkedin: "https://www.linkedin.com/in/gabriel-angel-jim%C3%A9nez-montoya-b9b6a1320/" },
-    marco: { name: "Marco", age: "25 años",role: "Full Stack Developer", bio: "Me encanta diseñar experiencias interactivas...", github: "https://github.com", linkedin: "https://linkedin.com" },
+    marco: { image: marcoImageUrl, name: "Marco", age: "25 años",role: "Full Stack Developer", bio: "Me encanta diseñar experiencias interactivas...", github: "https://github.com", linkedin: "https://linkedin.com" },
     cristian: { image: cristianImageUrl, name: "Cristian", age: "25 años", role: "Super Back-End Developer", bio: "Apasionado del Backend...", github: "https://github.com/Cristian-svg598", linkedin: "https://www.linkedin.com/in/cristian-guirao-espin-5b5a77310/" },
     albanta: { image: albantaImageUrl, name: "Albanta", age: "40 años", role: "Full Stack Developer", bio: "Deseando cambiar de vida...", github: "https://github.com/Albanta22", linkedin: "https://www.linkedin.com/in/albanta-leon-delgado-521407316/" }
 };

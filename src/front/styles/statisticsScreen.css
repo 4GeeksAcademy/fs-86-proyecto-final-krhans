@@ -1,0 +1,114 @@
+.statistics-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    height: 100vh;
+    padding: 20px;
+    background-color: #f2eafa;
+    font-family: sans-serif;
+}
+
+.motivational-phrase {
+    background-color: #B8E0E6;
+    border: 4px solid #f2eafa;
+    border-radius: 20px;
+    padding: 15px;
+    margin-bottom: 20px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+.motivational-phrase h2 {
+    color: #D4A5E6;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+    font-weight: bold;
+}
+
+.motivational-phrase img {
+    width: 80px;
+    height: auto;
+    border-radius: 50%;
+}
+
+.progress-container {
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    max-width: 500px;
+}
+
+.progress-chart {
+    background-color: #3f9dbc;
+    border: 4px solid #f2eafa;
+    border-radius: 20px;
+    padding: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+.progress-chart h3 {
+    color: #D4A5E6;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+    font-weight: bold;
+}
+
+.exercise-info {
+    background-color: #B8E0E6;
+    border: 4px solid #f2eafa;
+    border-radius: 20px;
+    padding: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+.exercise-info h3 {
+    color: #D4A5E6;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+    font-weight: bold;
+}
+
+.exercise-graph {
+    background-color: #CFEAF7;
+    border: 2px solid #f2eafa;
+    border-radius: 10px;
+    height: 150px;
+    margin-bottom: 10px;
+}
+
+
+.exercise-stats {
+    display: flex;
+    justify-content: space-around;
+    opacity: 0; 
+    transform: translateX(150px); 
+    transition: transform 0.8s ease-out, opacity 0.8s ease-out;
+}
+
+.exercise-stats.show {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+
+.stat-item {
+    text-align: center;
+}
+
+.stat-item h4 {
+    color: #D4A5E6;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.stat-value {
+    background-color: #3f9dbc;
+    border: 2px solid #f2eafa;
+    border-radius: 10px;
+    padding: 5px;
+    color: #f2eafa;
+}
