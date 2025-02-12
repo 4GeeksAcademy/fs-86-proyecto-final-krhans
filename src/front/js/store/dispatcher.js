@@ -23,7 +23,7 @@ export const dispatcherUser = {
     login: async (email, password) => {
         try {
 
-            const response = await fetch(`https://refactored-space-waffle-x594gqgpg4gj3pgjq-3001.app.github.dev/api/log_in`, {
+            const response = await fetch(`${process.env.BACKEND_URL}/api/log_in`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
