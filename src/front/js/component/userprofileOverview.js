@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Context } from "../store/appContext";
 import EditProfile from "./userprofileModal";
 import "../../styles/userprofileOverview.css";
@@ -7,10 +7,10 @@ const UserProfile = () => {
   const { store, actions } = useContext(Context);
   const [showModal, setShowModal] = useState(false); 
 
-  const userImage = store.userData?.user_image?.img
-  ? `${process.env.BACKEND_URL}/uploads/profile_images/${store.userData.user_image.img}?${new Date().getTime()}`
-  : store.userData?.profile?.profile_image || "https://i.pinimg.com/236x/af/3f/b8/af3fb80ea32ddfe2df0440b37f99514a.jpg";
 
+  const userImage = store.userData?.user_image?.img && store.userData.user_image.img !== ""
+    ? store.userData.user_image.img
+    : "https://i.pinimg.com/236x/af/3f/b8/af3fb80ea32ddfe2df0440b37f99514a.jpg";
 
   const handleEditProfileClick = () => {
     setShowModal(true); 
@@ -19,6 +19,14 @@ const UserProfile = () => {
   const handleCloseModal = () => {
     setShowModal(false); 
   };
+
+  useEffect(() => {
+  
+    const token = localStorage.getItem("jwt-token");
+    if (token) {
+      actions.getUserData(token); 
+    }
+  }, [store.userData?.user_image?.img, actions]);
 
   return (
     <div className="user-profile_container">
@@ -41,7 +49,7 @@ const UserProfile = () => {
         <button type="button" className="user-profile_button" onClick={handleEditProfileClick}>
           Edit Profile
         </button>
-        {/* Pasamos el estado y la función de cierre al modal */}
+
         <EditProfile showModal={showModal} onClose={handleCloseModal} userImage={userImage}/>
       </div>
     </div>

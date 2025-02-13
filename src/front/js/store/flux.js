@@ -4,7 +4,19 @@ import { Navigate } from "react-router-dom";
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
-			userData: new UserData()
+			userData: {
+				user_name: "",
+				email: "",
+				user_image:{},
+				profile: {
+				  phone_number: "",
+				  age: "",
+				  gender: "",
+				  description: "",
+				  profile_image: "",
+				}
+			  },
+			
 		},
 		actions: {
 			addNewUser: async (user) => {
@@ -30,11 +42,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 						localStorage.setItem("jwt-token", data.token);
 						setStore({
 							userData: {
-								...data.user,    // Asegúrate de que 'user' tiene 'user_image'
-								user_image: data.user.user_image  // Si no está incluido, añádelo manualmente
+								...data.user,  
+								user_image: data.user.user_image  
 							}
 						});
-						console.log("datos guardados",store.userData)	
 						return true;
 					} else {
 						throw new Error("Invalid credentials");
@@ -76,7 +87,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					} 		
 					
 					setStore({ userData: updatedUser });
-			
+
 					return updatedUser;
 				} catch (error) {
 					console.error("Error en la actualización:", error.message);
@@ -85,15 +96,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return null;  
 				}
 			},
-			updateImagenProfile: async (user) => {
+			updateUserImage: async (newImage) => {
 				const store = getStore();
 				try {
 					const token = localStorage.getItem("jwt-token");
 					if (!token) throw new Error("No hay token disponible.");
 					
-			    
-					const updateImage = await dispatcherUser.updateImage(token, user);
-			        
+					const updateImage = await dispatcherUser.updateImage(token, newImage);
 
 					if (!updateImage|| updateImage.error) { 
 						throw new Error(updateImage?.error || "No se pudo actualizar la imagen del usuario.");
@@ -103,7 +112,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 						...prevStore,
 						userData: { ...prevStore.userData, user_image: updateImage.user_image } }
 					));
-					console.log("Imagen: ",updateImage.user_image)
 					return updateImage;
 				} catch (error) {
 					console.error("Error en la actualización:", error.message);
