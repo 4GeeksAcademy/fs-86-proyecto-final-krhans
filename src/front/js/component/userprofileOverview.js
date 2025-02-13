@@ -42,7 +42,7 @@ const UserProfile = () => {
           Edit Profile
         </button>
         {/* Pasamos el estado y la función de cierre al modal */}
-        <EditProfile showModal={showModal} onClose={handleCloseModal} />
+        <EditProfile showModal={showModal} onClose={handleCloseModal} userImage={userImage}/>
       </div>
     </div>
   );

@@ -44,14 +44,12 @@ const Layout = () => {
 						<Route element={<IsLogIn />} path="/dashboard">
                             <Route Index element={<Dashboard />} path="" />
                             <Route path="fit-interview" element={<FitInterview />}/>
-                            <Route path="fit-page" element={<FitPage />} />
+                            <Route path="fit-page" element={<FitPage />}/>
+                            <Route element={<StatisticsScreen />} path="statisticsscreen" />                             
                             <Route path="coaching-interview" element={<CoachingInterview />}/>
                             <Route path="coach-page" element={<CoachPage />} />
                             <Route path="userprofile" element={<ProfileUser />} />
-                        </Route>		
-                        <Route element={<FitInterviewOverview />} path="/fitinterviewoverview" />	
-                        <Route element={<FitPageOverview />} path="/fitpageoverview" />		
-                        <Route element={<StatisticsScreen />} path="/statisticsscreen" />	
+                        </Route>                     	
                         <Route element={<h1>Not found!</h1>} path="*" />
                     </Routes>
                 </ScrollToTop>

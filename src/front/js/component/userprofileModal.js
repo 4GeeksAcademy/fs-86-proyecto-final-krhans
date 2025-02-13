@@ -6,7 +6,7 @@ import UserData from "../clases/userdata";
 import { useNavigate } from "react-router-dom"; // Para la navegación
 import "../../styles/userprofileModal.css";
 
-const EditProfile = ({ showModal, onClose }) => {
+const EditProfile = ({ showModal, onClose , userImage}) => {
   const { store, actions } = useContext(Context);
   const [userName, setUserName] = useState('');
   const [userEmail, setUserEmail] = useState('');
@@ -101,7 +101,7 @@ const EditProfile = ({ showModal, onClose }) => {
           <div className="modal-body">
             <div className="text-center mb-3">
               <img
-                src={previewImage}
+                src={userImage}
                 alt={store.userData.user_name}
                 className="rounded-circle"
                 style={{ width: "100px", height: "100px", objectFit: "cover" }}

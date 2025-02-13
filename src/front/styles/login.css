@@ -60,34 +60,23 @@
     color: var(--color-font);
     width: 90%;
     overflow: hidden;
-    white-space: nowrap;
-    animation: typing 4s steps(20) forwards, blink 0.6s infinite;
+    white-space: normal;
+    animation: move-up-to-down 4s 1 forwards;
 }
 
 
-@keyframes typing {
-    from { width: 0; }
-    to { width: 100%; }
-}
+@keyframes move-up-to-down {
+    from {
+        transform: translateY(-150px);
+        opacity: 0;
+    }
 
-
-@keyframes blink {
-    50% { border-color: transparent; }
-}
-
-
-@media (max-width: 600px) {
-    .log-in_title {
-        font-size: 2rem; 
-        white-space: pre-wrap; 
-        text-align: center; 
-        animation: typing-small 3s steps(15) forwards, blink 0.6s infinite;
+    to {
+        transform: translateY(-10px);
+        opacity: 1;
     }
 }
-@keyframes typing-small {
-    from { width: 0; }
-    to { width: 15ch; } 
-}
+
 .popup-content{
     color: var(--color-navbar_font);
     background: rgba(138, 43, 226, 0.9);
