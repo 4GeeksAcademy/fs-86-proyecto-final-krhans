@@ -3,6 +3,7 @@ import "../../styles/fitPageOverview.css";
 import KhransAvatar from "../../img/Khrans-avatar.webp";
 
 
+
 const FitPageOverview = () => {
     const [motivationalPhrase, setMotivationalPhrase] = useState("Today is a great day to make progress!");
     const [todayDate, setTodayDate] = useState(""); 
@@ -43,7 +44,9 @@ const FitPageOverview = () => {
                     <button className="start-routine-button">Start Routine</button>
                 </div>
             </div>
+           
         </div>
+        
     );
 };
 
