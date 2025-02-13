@@ -20,6 +20,7 @@ import ProfileUser from "./pages/userProfile";
 import FitInterviewOverview from "./component/fitInterviewOverview";
 import FitPageOverview from "./component/fitPageOverview";
 import StatisticsScreen from "./component/statisticsScreen";
+import FitPage from "./component/fitPage";
 
 
 const Layout = () => {
