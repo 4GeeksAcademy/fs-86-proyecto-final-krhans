@@ -48,7 +48,7 @@ const FitInterviewOverview = () => {
         filteredOptions.forEach((_, i) => {
             setTimeout(() => {
                 setVisibleOptions(prev => [...prev, i]);
-            }, (i + 1) * 1000); // 🔹 Se retrasa 1s cada botón para que aparezcan de uno en uno
+            }, (i + 1) * 1000); 
         });
     }, [index, questions]);
 
@@ -81,9 +81,9 @@ const FitInterviewOverview = () => {
             </div>
             <div className="fitinterview-options">
                 {currentQuestion.options.slice(0, 2).map((option, idx) => (
-                    <button 
-                        key={idx} 
-                        className={`fitinterview-button ${visibleOptions.includes(idx) ? "fade-in" : "hidden"} top-option-${idx}`} 
+                    <button
+                        key={idx}
+                        className={`fitinterview-button ${visibleOptions.includes(idx) ? "fade-in" : "hidden"} top-option-${idx}`}
                         onClick={() => handleAnswer(option)}
                     >
                         {option}
@@ -95,9 +95,9 @@ const FitInterviewOverview = () => {
             </div>
             <div className="fitinterview-options">
                 {currentQuestion.options.slice(2).map((option, idx) => (
-                    <button 
-                        key={idx + 2} 
-                        className={`fitinterview-button ${visibleOptions.includes(idx + 2) ? "fade-in" : "hidden"} bottom-option-${idx}`} 
+                    <button
+                        key={idx + 2}
+                        className={`fitinterview-button ${visibleOptions.includes(idx + 2) ? "fade-in" : "hidden"} bottom-option-${idx}`}
                         onClick={() => handleAnswer(option)}
                     >
                         {option}
@@ -107,7 +107,6 @@ const FitInterviewOverview = () => {
         </div>
     );
 };
-
 
 export default FitInterviewOverview;
 
