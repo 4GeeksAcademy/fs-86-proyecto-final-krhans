@@ -29,7 +29,7 @@ const IsLogIn = () => {
         };
 
         checkProfile();
-    }, [navigate]); // Solo depende de navigate
+    }, [navigate]);
 
     const get_user = async (token) => {
         return await actions.getUserData(token) || null;
