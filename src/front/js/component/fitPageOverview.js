@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "../../styles/fitPageOverview.css";
 import KhransAvatar from "../../img/Khrans-avatar.webp";
-import { Outlet } from "react-router-dom";
+
 
 
 const FitPageOverview = () => {
@@ -44,7 +44,7 @@ const FitPageOverview = () => {
                     <button className="start-routine-button">Start Routine</button>
                 </div>
             </div>
-            <Outlet/>
+           
         </div>
         
     );
