@@ -142,7 +142,51 @@ export const dispatcherUser = {
             console.error("Error obteniendo los datos del usuario:", error);
             return { error: error.message };
         }
-    }
+    },
+    postRoutine: async (userData) => {
+        try {
+            const response = await fetch(`${process.env.BACKEND_URL}/api/routine`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(userData)
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(`Error ${response.status}: ${errorData.error || response.statusText}`);
+            }
+
+            return await response.json();
+        } catch (error) {
+            console.error("Error registrando usuario:", error);
+            return { error: error.message };
+        }
+    },
+    getRoutine: async (token) => {
+        try {
+            const response = await fetch(`${process.env.BACKEND_URL}/api/routine`, {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                }
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.error('Error Data:', errorData);
+                throw new Error(`Error ${response.status}: ${errorData.error || response.statusText}`);
+            }
+
+            return await response.json();
+
+        } catch (error) {
+            console.error("Error obteniendo los datos del usuario:", error);
+            return { error: error.message };
+        }
+    },
     
 };
 

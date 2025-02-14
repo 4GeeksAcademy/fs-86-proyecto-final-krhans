@@ -165,4 +165,47 @@ def update_profile_image():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+@api.route('/routine', methods=['GET', 'POST'])
+@jwt_required()
+def handle_routines():
+    user_id = get_jwt_identity()
+    try:
+        if request.method == 'POST':
+            data = request.get_json()
+            required_fields = ["routine", "workout"]
+            if not all(field in data for field in required_fields):
+                return jsonify({"error": "Faltan campos obligatorios"}), 400
+            routine_data = data.get('routine')
+            workout_data = data.get('workout')
+            session = db.session
+            try:
+                with db.session.begin():
+                    routine = RoutineService.create_routine(routine_data, user_id)
+                    workout_ids = []
+                    for workout in workout_data:
+                        created_workout = WorkoutService.create_workout(workout, user_id, routine.id)
+                        workout_ids.append(created_workout.id)
+                        trainings = workout.get("trainings", [])
+                        for training in trainings:
+                            TrainingService.create_training(training,created_workout.id)
+                        WorkoutCompletionService.create_workout_completion(user_id, created_workout.id)
+                return jsonify({
+                    "message": "Rutina creada exitosamente",
+                    "routine_id": routine.id,
+                    "workout_ids": workout_ids
+                }), 201
+            except SQLAlchemyError as e:
+                db.session.rollback()
+                return jsonify({"error": f"Error de base de datos: {str(e)}"}), 500
+        elif request.method == 'GET':
+            routines = RoutineService.get_routine_list(user_id)
+            return jsonify([{
+                "id": routine.id,
+                "name": routine.name,
+                "description": routine.description,
+                "days_per_week": routine.days_per_week
+            } for routine in routines]), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": f"Error inesperado: {str(e)}"}), 500
 
