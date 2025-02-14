@@ -2,12 +2,9 @@ import React, { useState, useEffect } from "react";
 import "../../styles/fitPageOverview.css";
 import KhransAvatar from "../../img/Khrans-avatar.webp";
 
-
-
 const FitPageOverview = () => {
     const [motivationalPhrase, setMotivationalPhrase] = useState("Today is a great day to make progress!");
     const [todayDate, setTodayDate] = useState(""); 
-    const [clientName, setClientName] = useState("Name ALIAS");
 
     useEffect(() => {
         const today = new Date().toLocaleDateString();
@@ -16,10 +13,6 @@ const FitPageOverview = () => {
 
     return (
         <div className="fit-page-container">
-            <div className="avatar-profile">
-                <h2 className="animated-name">{clientName}</h2>
-                <img src={KhransAvatar} alt="Khrans Avatar" className="khrans-image" />
-            </div>
             <div className="motivational-phrase">
                 <p><b>{motivationalPhrase}</b></p>
             </div>
@@ -38,15 +31,13 @@ const FitPageOverview = () => {
             </div>
             <div className="bottom-container">
                 <div className="spotify-api">
-                    <p>Spotify API</p>
+                    <p>SOUND CLOUD</p>
                 </div>
                 <div className="exercise-table">
                     <button className="start-routine-button">Start Routine</button>
                 </div>
             </div>
-           
         </div>
-        
     );
 };
 

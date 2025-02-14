@@ -19,10 +19,11 @@ import CoachPage from "./pages/coachPage";
 import ProfileUser from "./pages/userProfile";
 import StatisticsScreen from "./component/statisticsScreen";
 import GenerateRoutine from "./component/geminiResponseSurvy";
-//create your first component
+
+
+
 const Layout = () => {
-    //the basename is used when your project is published in a subdirectory and not in the root of the domain
-    // you can set the basename on the .env file located at the root of this project, E.g: BASENAME=/react-hello-webapp/
+
     const basename = process.env.BASENAME || "";
 
     // if(!process.env.BACKEND_URL || process.env.BACKEND_URL == "") return <BackendURL/ >;
@@ -39,7 +40,7 @@ const Layout = () => {
                         <Route element={<WelcomePage />} path="/welcome" />
                         <Route element={<About />} path="/about" />
                         <Route element={<Profile />} path="/profile/:member" />
-						<Route element={<IsLogIn />} path="/dashboard">
+						            <Route element={<IsLogIn />} path="/dashboard">
                             <Route Index element={<Dashboard />} path="" />
                             <Route path="fit-interview" element={<FitInterview />}/>
                             <Route path="generate-routine" element={<GenerateRoutine />}/>

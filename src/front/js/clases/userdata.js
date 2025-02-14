@@ -52,6 +52,7 @@ class UserData {
           user_name: this._user_name,
           email: this._email,
           password_hash: this._password,
+          user_image:this._user_image,
           profile: this._profile
       };
   }

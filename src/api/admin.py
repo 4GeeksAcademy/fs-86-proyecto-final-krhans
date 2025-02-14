@@ -1,7 +1,7 @@
   
 import os
 from flask_admin import Admin
-from .models import db, User,UserProfile,Routine,Workout,WorkoutCompletion,Training
+from .models import db, User,UserProfile,Routine,Workout,WorkoutCompletion,Training,UserImage
 from flask_admin.contrib.sqla import ModelView
 
 def setup_admin(app):
@@ -17,6 +17,7 @@ def setup_admin(app):
     admin.add_view(ModelView(Workout, db.session))
     admin.add_view(ModelView(Training, db.session))
     admin.add_view(ModelView(WorkoutCompletion, db.session))
+    admin.add_view(ModelView(UserImage, db.session))
 
     # You can duplicate that line to add mew models
     # admin.add_view(ModelView(YourModelName, db.session))
