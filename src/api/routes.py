@@ -208,4 +208,73 @@ def handle_routines():
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": f"Error inesperado: {str(e)}"}), 500
+    
+@jwt_required()
+def handle_routine(routine_id):
+    user_id = get_jwt_identity()
+    try:
+        routine = RoutineService.get_routine_by_id(routine_id, user_id)
+        if not routine:
+            return jsonify({"error": "Rutina no encontrada"}), 404
+        if request.method == 'GET':
+            return jsonify(routine.serialize()), 200
+        elif request.method == 'PUT':
+            data = request.get_json()
+            updated_routine = RoutineService.update_routine(routine_id, user_id, data)
+            if not updated_routine:
+                return jsonify({"error": "Error al actualizar la rutina"}), 500
+            return jsonify({"message": "Rutina actualizada correctamente", "routine": updated_routine.serialize()}), 200
+    except Exception as e:
+        return jsonify({"error": f"Error inesperado: {str(e)}"}), 500
+
+
+@api.route('/workout', methods=['GET'])
+@jwt_required()
+def handle_workouts():
+    user_id = get_jwt_identity()
+    try:
+        if request.method == 'GET':
+            workouts = WorkoutService.get_workout_list(user_id)
+            if not workouts:
+                return jsonify({"message": "No se encontraron workout"}), 404
+            return jsonify([workout.serialize() for workout in workouts]), 200
+    except Exception as e:
+        return jsonify({"error": f"Error inesperado: {str(e)}"}), 500
+
+@api.route('/workout/<int:workout_id>', methods=['GET'])
+@jwt_required()
+def handle_workout(workout_id):
+    user_id = get_jwt_identity()
+    try:
+        if request.method == 'GET':
+            workouts = WorkoutService.get_workout_by_id(user_id,workout_id)
+            if not workouts:
+                return jsonify({"message": "No se encontraron workouts"}), 404
+            return jsonify([workout.serialize() for workout in workouts]), 200
+    except Exception as e:
+        return jsonify({"error": f"Error inesperado: {str(e)}"}), 500
+
+@api.route('/complete_workout', methods=['GET'])   
+@jwt_required()
+def complete_workout_list():
+    user_id = get_jwt_identity()
+    try:
+        complete_workout=WorkoutCompletionService.get_workout_completion_list(user_id)
+        if not complete_workout:
+                return jsonify({"message": "No se encontraron workouts"}), 404
+        return jsonify([workout.serialize() for workout in complete_workout]), 200
+    except Exception as e:
+        return jsonify({"error": f"Error inesperado: {str(e)}"}), 500
+    
+@api.route('/workout/<int:workout_id>/<int:workout_completion_id>', methods=['GET'])
+@jwt_required()
+def complete_workout(workout_id, workout_completion_id):
+    user_id = get_jwt_identity()
+    try:
+        complete_workout = WorkoutCompletionService.get_workout_completion_by_id(user_id, workout_id, workout_completion_id)
+        if not complete_workout:
+            return jsonify({"message": "No se encontraron workouts"}), 404
+        return jsonify(complete_workout.serialize()), 200
+    except Exception as e:
+        return jsonify({"error": f"Error inesperado: {str(e)}"}), 500
 
