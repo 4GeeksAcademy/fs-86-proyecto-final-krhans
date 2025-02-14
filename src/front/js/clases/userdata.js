@@ -4,7 +4,9 @@ class UserData {
       this._email = "";
       this._password= "";
       this.profile = {};  
-      this.user_image = {};  
+      this.user_image = {}; 
+      this.routine = {};
+      this.workout = {};
   }
 
   get user_name() {
@@ -45,6 +47,21 @@ class UserData {
 
   set user_image(value) {
     this._user_image = value;
+  }
+
+  get routine() {
+    return this._routine;
+  }
+
+  set routine(value) {
+    this._routine = value
+  }
+  get workout() {
+    return this._workout;
+  }
+
+  set workout(value) {
+    this._workout = value
   }
   
   toJSON() {
