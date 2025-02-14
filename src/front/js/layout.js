@@ -17,10 +17,9 @@ import FitPage from "./pages/fitpage";
 import CoachingInterview from "./pages/coachingInterview";
 import CoachPage from "./pages/coachPage";
 import ProfileUser from "./pages/userProfile";
-import FitInterviewOverview from "./component/fitInterviewOverview";
-import FitPageOverview from "./component/fitPageOverview";
 import StatisticsScreen from "./component/statisticsScreen";
-import FitPage from "./component/fitPage";
+import GenerateRoutine from "./component/geminiResponseSurvy";
+
 
 
 const Layout = () => {
@@ -41,9 +40,10 @@ const Layout = () => {
                         <Route element={<WelcomePage />} path="/welcome" />
                         <Route element={<About />} path="/about" />
                         <Route element={<Profile />} path="/profile/:member" />
-						<Route element={<IsLogIn />} path="/dashboard">
+						            <Route element={<IsLogIn />} path="/dashboard">
                             <Route Index element={<Dashboard />} path="" />
                             <Route path="fit-interview" element={<FitInterview />}/>
+                            <Route path="generate-routine" element={<GenerateRoutine />}/>
                             <Route path="fit-page" element={<FitPage />}/>
                             <Route element={<StatisticsScreen />} path="statisticsscreen" />                             
                             <Route path="coaching-interview" element={<CoachingInterview />}/>

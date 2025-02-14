@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "../../styles/fitInterviewOverview.css";
 import KhransAvatar from "../../img/Khrans-avatar.webp";
+import { useNavigate } from "react-router-dom";
 
 const getQuestions = (answers) => [
     { 
@@ -38,6 +39,8 @@ const FitInterviewOverview = () => {
     const [visibleOptions, setVisibleOptions] = useState([]);
     const [questions, setQuestions] = useState(getQuestions({}));
     const [currentQuestion, setCurrentQuestion] = useState(questions[0]);
+    
+    const navigate = useNavigate();
 
     useEffect(() => {
         setVisibleOptions([]);
@@ -71,7 +74,9 @@ const FitInterviewOverview = () => {
             setIndex(index + 1);
         } else {
             console.log("Completed answers:", newAnswers);
+            navigate('/dashboard/generate-routine', { state: { answers: newAnswers } });
         }
+        
     };
 
     return (
