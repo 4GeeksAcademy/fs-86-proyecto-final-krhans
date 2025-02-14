@@ -143,14 +143,14 @@ export const dispatcherUser = {
             return { error: error.message };
         }
     },
-    postRoutine: async (userData) => {
+    postRoutine: async (rutinaGenerada) => {
         try {
             const response = await fetch(`${process.env.BACKEND_URL}/api/routine`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify(userData)
+                body: JSON.stringify(rutinaGenerada)
             });
 
             if (!response.ok) {
@@ -166,7 +166,7 @@ export const dispatcherUser = {
     },
     getRoutine: async (token) => {
         try {
-            const response = await fetch(`${process.env.BACKEND_URL}/api/routine`, {
+            const response = await fetch(`${process.env.BACKEND_URL}/api/routine/<int:routine_id>`, {
                 method: "GET",
                 headers: {
                     "Authorization": `Bearer ${token}`,

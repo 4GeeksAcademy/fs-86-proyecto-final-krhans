@@ -209,6 +209,7 @@ def handle_routines():
         db.session.rollback()
         return jsonify({"error": f"Error inesperado: {str(e)}"}), 500
     
+@api.route('/routine/<int:routine_id>', methods=['GET', 'PUT'])   
 @jwt_required()
 def handle_routine(routine_id):
     user_id = get_jwt_identity()
