@@ -4,6 +4,7 @@ import "../../styles/home.css";
 import KhransAvatar from "../../img/Khrans-avatar.webp";
 import {Loader} from "../component/loader.js";
 
+
 export const Home = () => {
 	const { store, actions } = useContext(Context);
     const [isLoading, setIsLoading] = useState(true);
@@ -46,6 +47,7 @@ export const Home = () => {
             <div className="avatar-container">
                 <img src={KhransAvatar} alt="Khrans Avatar" className="khrans-image" />
             </div>
+            
         </div>
 	);
 };

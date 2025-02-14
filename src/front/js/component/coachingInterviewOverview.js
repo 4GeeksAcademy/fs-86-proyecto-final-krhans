@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "../../styles/coachingInterviewOverview.css";
 import KhransCoach from "../../img/khrans-coach.png";
 import questionsData from "./trainingQuestions";
+import { useNavigate } from "react-router-dom";
 
 const CoachingInterviewOverview = () => {
     const [selectedArea, setSelectedArea] = useState(null);
@@ -9,6 +10,8 @@ const CoachingInterviewOverview = () => {
     const [sliderValue, setSliderValue] = useState(3);
     const [hiddenAreas, setHiddenAreas] = useState([]);
     const [responses, setResponses] = useState({});
+
+    const navigate = useNavigate();
 
 
     const handleButtonClick = (area) => {
@@ -77,9 +80,16 @@ const CoachingInterviewOverview = () => {
                     ))}
                 </div>
             )}
-
+               
             {step === 3 && hiddenAreas.length === Object.keys(questionsData).length && (
-                <button className="continue-button" onClick={() => console.log("Continuar al siguiente paso", responses)}>
+                
+                <button className="continue-button" onClick={() => {
+                    setResponses((prevResponses) => {
+                        console.log("Responses finales antes de navegar:", prevResponses);
+                        navigate('/dashboard/generate-routine', { state: { responses: prevResponses } });
+                        return prevResponses;
+                    });
+                }}>
                     Continue
                 </button>
             )}
