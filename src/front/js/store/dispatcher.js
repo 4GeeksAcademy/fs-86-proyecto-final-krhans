@@ -165,13 +165,37 @@ export const dispatcherUser = {
             return { error: error.message };
         }
     },
-    getRoutine: async (token) => {
+    getRoutineList: async (token) => {
         try {
-            const response = await fetch(`${process.env.BACKEND_URL}/api/routine/<int:routine_id>`, {
+            const response = await fetch(`${process.env.BACKEND_URL}/api/routine`, {
                 method: "GET",
                 headers: {
                     "Authorization": `Bearer ${token}`,
-                    "Content-Type": "application/json"
+                   
+                }
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.error('Error Data:', errorData);
+                throw new Error(`Error ${response.status}: ${errorData.error || response.statusText}`);
+            }
+
+            return await response.json();
+
+        } catch (error) {
+            console.error("Error obteniendo los datos del usuario:", error);
+            return { error: error.message };
+        }
+    },
+
+    getRoutineById: async (token, id) => {
+        try {
+            const response = await fetch(`${process.env.BACKEND_URL}/api/routine/${id}`, {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                   
                 }
             });
 
