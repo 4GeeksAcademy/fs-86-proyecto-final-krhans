@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState, useContext } from 'react';
 import { Context } from '../store/appContext';
+import "../../styles/userprofileModal.css";
 
 const UploadWidget = ({ onUploadSuccess }) => {
   const cloudinaryRef = useRef(null);
@@ -45,7 +46,7 @@ const UploadWidget = ({ onUploadSuccess }) => {
   }, [isCloudinaryLoaded]); 
 
   return (
-    <button onClick={() => widgetRef.current?.open()} disabled={!isCloudinaryLoaded}>
+    <button className="button-modal_image" onClick={() => widgetRef.current?.open()} disabled={!isCloudinaryLoaded}>
       {isCloudinaryLoaded ? 'UPLOAD' : 'Cargando...'}
     </button>
   );

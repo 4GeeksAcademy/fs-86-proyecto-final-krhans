@@ -41,7 +41,8 @@ export const Navbar = () => {
     }, []);
 
     return (
-        <nav className="navbar-container">
+        <nav className="navbar-container">   
+                  
             <div
                 className={`navbar-button ${isMenuOpen ? "is-expanded" : ""}`}
                 onClick={toggleMenu}
@@ -56,8 +57,8 @@ export const Navbar = () => {
                             <Link
                                 to="/"
                                 onClick={() =>
-                                    setTimeout(() => setIsMenuOpen(false), 200)}> 
-                                Home
+                                    setTimeout(() => setIsMenuOpen(false), 200)}>
+                                Welcome
                             </Link>
                         </li>
                         <li>
@@ -70,6 +71,18 @@ export const Navbar = () => {
                     </ul>
                 </div>
             )}
+            <div className="navbar-container_user-training ">
+            {store.userData && store.userData.is_active ? (
+                        <Link to={"/dashboard/landing"}>
+                            <button className="button-training" onClick={() =>
+                                setTimeout(() => setIsMenuOpen(false), 200)}>                            
+                             Landing 
+                            </button>
+                            </Link>
+                        ) : (
+                            <div></div>
+                        )}
+            </div>
              <div className="navbar-button_login">
             {store.userData && store.userData.is_active ? (
                 <div className="">

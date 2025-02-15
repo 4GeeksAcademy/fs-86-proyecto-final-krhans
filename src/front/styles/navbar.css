@@ -7,7 +7,7 @@
 }
 
 .navbar-container {
-    position: relative;
+    position: fixed;
     width: 100%;
     background-color: var(--color-navbar);
     color: var(--color-navbar_font);
@@ -17,6 +17,20 @@
     justify-content: space-between;
     padding: 10px 20px;
     box-sizing: border-box;
+    z-index: 1000;
+}
+
+
+
+.button-training{
+    background-color: transparent;
+    text-align:center;
+    font-weight: 600;
+    color: var(--color-navbar_font);
+    border: 3px solid var(--color-navbar_font); 
+    border-radius: 20px;
+    padding: 1px 6px;
+    font-size: 1.5rem;
 }
 
 .navbar-button {
@@ -33,6 +47,7 @@
     transition: all 0.5s ease;
     width: 90px;
     text-align: center;
+    
 }
 
 
@@ -46,14 +61,14 @@
 
 .navbar-menu {
     position: absolute;
-    top: 50px;
+    top: 50px; 
     left: 0;
-    width: 100%;
+    width: 45%;
     background: rgba(138, 43, 226, 0.9);
     border-radius: 15px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+    border: 3px solid var(--color-navbar);
+    box-shadow: 0 4px 8px var(--color-font);
     background-color: var(--color-emergente); 
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
     z-index: 10;
     padding: 10px 0;
     animation: slideDown 0.3s ease-out;
@@ -61,16 +76,21 @@
 
 .navbar-menu ul {
     list-style: none;
+    font-size:2rem;
     margin: 0;
     padding: 0;
+    border-bottom: 2px solid var(--color-navbar);
+    border-radius: 15px; 
 }
 
 .navbar-menu li {
+    font-size:2rem;
     padding: 10px 20px;
     opacity: 0;
     transform: scale(0.9) translateY(-20px);
     animation: fadeInCascada 0.5s ease-out forwards;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    border-bottom: 2px solid var(--color-navbar);
+    border-radius: 15px;  
 }
 
 .navbar-menu li:last-child {
@@ -108,6 +128,8 @@
     border: 3px solid var(--color-navbar);
     box-shadow: 0 4px 8px var(--color-font);
 }
+
+
 .dropdown-item{
     color: var(--color-navbar);
     font-size:1.3rem;
