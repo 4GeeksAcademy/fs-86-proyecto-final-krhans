@@ -85,7 +85,7 @@ const Frases = () => {
 
   const randomFrase = frases[Math.floor(Math.random() * frases.length)];
 
-  return <div>{randomFrase}</div>;
+  return <p><b>{randomFrase}</b></p>;
 };
 
 export default Frases;
