@@ -69,11 +69,6 @@
     border-width: 6px;
 }
 
-.motivational-phrase p {
-    color: #673A69;
-    font-size: 1.2rem;
-    font-weight: bold;
-}
 
 .calendar-avatar-container {
     display: flex;
@@ -104,6 +99,7 @@
 .calendar h3 {
     color: #A278B5;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+    text-align: center;
 }
 
 .calendar ul {
@@ -118,41 +114,68 @@
     font-weight: bold;
 }
 
+.week-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 10px;
+}
+
+
+.day-circle {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: #D4A5E6;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
 .avatar-emotions {
+    display: flex;
+    flex-direction: row; 
+    justify-content:baseline; 
+    gap: 0.5rem;
+    align-items: center; 
     background-color: #C2A8E3;
     border-radius: 20px;
     padding: 15px;
     margin: 5px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     transition: transform 0.3s ease;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
     text-align: center;
 }
 
-.avatar-emotions:hover {
+/* .avatar-emotions:hover {
     transform: translateY(-5px);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
     border-width: 6px;
-}
+} */
 
-.avatar-emotions img {
-    width: 90px;
+ .avatar-emotions img {
+    width: 5rem;
     height: auto;
     border-radius: 50%;
     border: 4px solid #A0D6DB;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-.avatar-emotions p {
-    color: #A278B5;
-    font-size: 1rem;
-    margin: 10px 0;
+.avatar-emotions__avatar{
+    width: 40%;
+}
+.avatar-emotions__statistics{
+    width: 40%;
+    height: 100%;
 }
 
 .statistics-button {
+    height: 100%;
     padding: 12px 22px;
     background-color: #C2A8E3;
     color: #673A69;
@@ -166,12 +189,32 @@
     text-align: center;
 }
 
-.statistics-button:hover {
+.statistics-button:hover,
+.exercise-btn:hover {
     background-color: #A278B5;
     color: #f2eafa;
     transform: scale(1.1);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
+
+
+.bottom-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    background-color: #f2eafa;
+    border: 4px solid #C2A8E3;
+    border-radius: 20px;
+    padding: 15px;
+    margin-bottom: 20px;
+    width: 90%;
+    height: 25%;
+    max-width: 500px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+}
+
 
 .start-routine-button {
     background-color: #3f9dbc;
@@ -184,9 +227,21 @@
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease-in-out;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+    align-items: center;
 }
 
 .start-routine-button:hover {
     background-color: #A0D6DB;
     transform: scale(1.05);
 }
+
+
+ .centered-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; 
+}
+
+
+
