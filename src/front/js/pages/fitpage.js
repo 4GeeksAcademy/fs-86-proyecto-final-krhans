@@ -40,6 +40,7 @@ const FitPage = () => {
             <div className="bottom-container">
                 <StartRoutineButton onClick={routineTable} />
             </div>
+            
         </div>
     );
 }
