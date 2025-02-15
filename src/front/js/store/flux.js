@@ -176,41 +176,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
-			createdRoutine: async (user) => {
-				try {
-					// Obtener el token del usuario
-					const token = localStorage.getItem("jwt-token");
-
-					// Verificar si el token existe
-					if (!token) {
-						console.error("No hay token disponible en localStorage.");
-						throw new Error("No hay token disponible.");
-					}
-
-					// Verificar si los datos contienen los campos necesarios
-					if (!user || !user.routine || !user.workout) {
-						throw new Error("Faltan campos obligatorios en la rutina.");
-					}
-
-					console.log("Enviando rutina al backend:", JSON.stringify(user, null, 2));
-
-					// Hacer la solicitud al backend con el token en los headers
-					const newRoutine = await dispatcherUser.postRoutine(user, token);
-
-					// Verificar si la respuesta tiene un error
-					if (!newRoutine || newRoutine.error) {
-						throw new Error(newRoutine?.error || "No se pudo registrar la rutina.");
-					}
-
-					// Guardar la rutina en el estado global
-					setStore({ userData: newRoutine });
-
-					return newRoutine;
-				} catch (error) {
-					console.error("Error en el registro de rutina:", error.message);
-					alert("Hubo un error al registrar la rutina: " + error.message);
-				}
-			},
+			
 		}
 	}
 }

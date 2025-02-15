@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { getGeminiResponse } from './geminiService';
 import { Context } from "../store/appContext";
+import { dispatcherUser } from '../store/dispatcher';
 
 const GenerateRoutine = () => {
   const location = useLocation();
@@ -11,6 +12,8 @@ const GenerateRoutine = () => {
   const { actions } = useContext(Context);
   const [rutinaGenerada, setRutinaGenerada] = useState("");
   const [mensaje, setMensaje] = useState("");
+
+  const token = localStorage.getItem("jwt-token");
 
   const generarRutina = async () => {
     let prompt = "";
@@ -80,6 +83,7 @@ const GenerateRoutine = () => {
     console.log("Prompt generado:", prompt);
 
     try {
+
       const respuestaGemini = await getGeminiResponse(prompt);
       if (!respuestaGemini) throw new Error("Respuesta vacía de Gemini");
 
@@ -97,7 +101,8 @@ const GenerateRoutine = () => {
       setRutinaGenerada(JSON.stringify(rutinaJSON, null, 2));
       setMensaje("Rutina generada correctamente");
 
-      await actions.createdRoutine(rutinaJSON);
+      // await actions.createdRoutine(rutinaJSON);
+      await dispatcherUser.postRoutine(token, rutinaJSON);
 
     } catch (error) {
       console.error("Error al generar la rutina:", error);
