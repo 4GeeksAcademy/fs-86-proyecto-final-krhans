@@ -172,6 +172,7 @@ def handle_routines():
     try:
         if request.method == 'POST':
             data = request.get_json()
+            print("esto es es lo que se envia",data)
             required_fields = ["routine", "workout"]
             if not all(field in data for field in required_fields):
                 return jsonify({"error": "Faltan campos obligatorios"}), 400

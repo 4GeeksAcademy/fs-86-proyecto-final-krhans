@@ -143,14 +143,15 @@ export const dispatcherUser = {
             return { error: error.message };
         }
     },
-    postRoutine: async (rutinaGenerada) => {
+    postRoutine: async (token, routine) => {
         try {
             const response = await fetch(`${process.env.BACKEND_URL}/api/routine`, {
                 method: "POST",
                 headers: {
+                    "Authorization": `Bearer ${token}`,
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify(rutinaGenerada)
+                body: JSON.stringify(routine)
             });
 
             if (!response.ok) {

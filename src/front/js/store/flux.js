@@ -7,25 +7,45 @@ const getState = ({ getStore, getActions, setStore }) => {
 			userData: {
 				user_name: "",
 				email: "",
-				user_image:{},
+				user_image: {},
 				profile: {
-				  phone_number: "",
-				  age: "",
-				  gender: "",
-				  description: "",
-				  profile_image: "",
-				}
-			  },
-			
+					phone_number: "",
+					age: "",
+					gender: "",
+					description: "",
+					profile_image: "",
+				},
+				routine: {
+					name: "",
+					description: "",
+					days_per_week: "",
+				},
+				workout: [
+					{
+						fitness_level: "",
+						category: "",
+						goal: "",
+						difficulty: "",
+						trainings: [
+							{
+								name: "",
+								mode: "",
+								duration: "",
+							}
+						]
+					}
+				]
+			},
+
 		},
 		actions: {
 			addNewUser: async (user) => {
 				try {
 					const newUser = await dispatcherUser.post(user);
-					if (!newUser || newUser.error) { 
+					if (!newUser || newUser.error) {
 						throw new Error(newUser?.error || "No se pudo registrar el usuario.");
-					}			
-					setStore({ userData: newUser });			
+					}
+					setStore({ userData: newUser });
 					return newUser;
 				} catch (error) {
 					console.error("Error en el registro:", error.message);
@@ -38,12 +58,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 					const data = await dispatcherUser.login(email, password);
 					if (data.token && typeof data.token === "string" && data.token.trim() !== "") {
 						localStorage.removeItem("jwt-token");
-						
+
 						localStorage.setItem("jwt-token", data.token);
 						setStore({
 							userData: {
-								...data.user,  
-								user_image: data.user.user_image  
+								...data.user,
+								user_image: data.user.user_image
 							}
 						});
 						return true;
@@ -52,24 +72,24 @@ const getState = ({ getStore, getActions, setStore }) => {
 					}
 				} catch (error) {
 					console.error("Login failed:", error);
-					throw error; 
+					throw error;
 				}
-			},			
+			},
 			getUserData: async (token) => {
 				const store = getStore();
 				try {
 					if (!token) {
 						throw new Error("Token de autenticación no proporcionado.");
 					}
-                    
+
 					const user = await dispatcherUser.getUserData(token);
-			        
+
 					if (!user) {
 						throw new Error("No se encontraron datos del usuario.");
 					}
-					setStore({userData: user})
+					setStore({ userData: user })
 					return user;
-			
+
 				} catch (error) {
 					console.error("Error al obtener los datos del usuario:", error.message);
 					return { error: error.message };
@@ -79,21 +99,21 @@ const getState = ({ getStore, getActions, setStore }) => {
 				try {
 					const token = localStorage.getItem("jwt-token");
 					if (!token) throw new Error("No hay token disponible.");
-					
+
 					const updatedUser = await dispatcherUser.update(token, user);
-					
-					if (!updatedUser || updatedUser.error) { 
+
+					if (!updatedUser || updatedUser.error) {
 						throw new Error(updatedUser?.error || "No se pudo actualizar el usuario.");
-					} 		
-					
+					}
+
 					setStore({ userData: updatedUser });
 
 					return updatedUser;
 				} catch (error) {
 					console.error("Error en la actualización:", error.message);
 					alert("Hubo un error al actualizar el usuario: " + error.message);
-					
-					return null;  
+
+					return null;
 				}
 			},
 			updateUserImage: async (newImage) => {
@@ -101,63 +121,65 @@ const getState = ({ getStore, getActions, setStore }) => {
 				try {
 					const token = localStorage.getItem("jwt-token");
 					if (!token) throw new Error("No hay token disponible.");
-					
+
 					const updateImage = await dispatcherUser.updateImage(token, newImage);
 
-					if (!updateImage|| updateImage.error) { 
+					if (!updateImage || updateImage.error) {
 						throw new Error(updateImage?.error || "No se pudo actualizar la imagen del usuario.");
-					} 
-					
+					}
+
 					setStore((prevStore) => ({
 						...prevStore,
-						userData: { ...prevStore.userData, user_image: updateImage.user_image } }
+						userData: { ...prevStore.userData, user_image: updateImage.user_image }
+					}
 					));
 					return updateImage;
 				} catch (error) {
 					console.error("Error en la actualización:", error.message);
 					alert("Hubo un error al actualizar la imagen del usuario: " + error.message);
-					
-					return null;  
+
+					return null;
 				}
 			},
 
 			logout: async (navigate) => {
-			try{
-                const token = localStorage.getItem("jwt-token");
-					if (!token) throw new Error("No hay token disponible.");                
-				const newState = await dispatcherUser.isActive(token);
+				try {
+					const token = localStorage.getItem("jwt-token");
+					if (!token) throw new Error("No hay token disponible.");
+					const newState = await dispatcherUser.isActive(token);
 
-				if (!newState || newState.error ) {
-					throw new Error(newState?.error || "No se pudo actualizar el estado del usuario.");
-				} 
-					
-				navigate("/");
-				localStorage.removeItem("jwt-token");						    
-				setStore({ userData: null});
-				
-				
-			}catch(error) {
-				console.error("Error en la actualización:", error.message);
-				alert("Hubo un error al actualizar el estado del usuario: " + error.message);				
-				return null;  
-			}
+					if (!newState || newState.error) {
+						throw new Error(newState?.error || "No se pudo actualizar el estado del usuario.");
+					}
+
+					navigate("/");
+					localStorage.removeItem("jwt-token");
+					setStore({ userData: null });
+
+
+				} catch (error) {
+					console.error("Error en la actualización:", error.message);
+					alert("Hubo un error al actualizar el estado del usuario: " + error.message);
+					return null;
+				}
 			},
 			getMessage: async () => {
-				try{
+				try {
 					// fetching data from the backend
 					const resp = await fetch(process.env.BACKEND_URL + "/api/hello")
 					const data = await resp.json()
 					setStore({ message: data.message })
 					// don't forget to return something, that is how the async resolves
 					return data;
-				}catch(error){
+				} catch (error) {
 					console.log("Error loading message from backend", error)
 				}
 			},
+
 			
 		}
-	};
-};
+	}
+}
 
 export default getState;
 
