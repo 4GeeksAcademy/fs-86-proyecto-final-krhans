@@ -9,28 +9,18 @@ import UploadWidget from "./UploadWidget";
 
 const EditProfile = ({ showModal, onClose }) => {
   const { store, actions } = useContext(Context);
-  const [userName, setUserName] = useState('');
-  const [userEmail, setUserEmail] = useState('');
-  const [userPhone, setUserPhone] = useState('');
-  const [userAge, setUserAge] = useState('');
-  const [userDescription, setUserDescription] = useState('');
-  const [userGender, setUserGender] = useState('');
+  const [userName, setUserName] = useState(store.userData.user_name || "");
+  const [userEmail, setUserEmail] = useState(store.userData.email || '');
+  const [userPhone, setUserPhone] = useState(store.userData.profile?.phone_number || '');
+  const [userAge, setUserAge] = useState(store.userData.profile?.age || '');
+  const [userDescription, setUserDescription] = useState(store.userData.profile?.description || '');
+  const [userGender, setUserGender] = useState(store.userData.profile?.gender || '');
   const [profileImage, setProfileImage] = useState(null);
-  const [previewImage, setPreviewImage] = useState('');
+  const [previewImage, setPreviewImage] = useState(store.userData.user_image?.img || '');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (store.userData) {
-      setUserName(store.userData.user_name || '');
-      setUserEmail(store.userData.email || '');
-      setUserPhone(store.userData.profile?.phone_number || '');
-      setUserAge(store.userData.profile?.age || '');
-      setUserDescription(store.userData.profile?.description || '');
-      setUserGender(store.userData.profile?.gender || '');
-      setPreviewImage(store.userData.user_image?.img || ''); 
-    }
-  }, [store.userData]);
+
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
