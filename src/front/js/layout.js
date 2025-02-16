@@ -19,7 +19,7 @@ import CoachPage from "./pages/coachPage";
 import ProfileUser from "./pages/userProfile";
 import StatisticsScreen from "./component/statisticsScreen";
 import GenerateRoutine from "./component/geminiResponseSurvy";
-
+import ExerciseTable from "./pages/accessRoutine";
 
 
 const Layout = () => {
@@ -49,6 +49,7 @@ const Layout = () => {
                             <Route path="coaching-interview" element={<CoachingInterview />}/>
                             <Route path="coach-page" element={<CoachPage />} />
                             <Route path="userprofile" element={<ProfileUser />} />
+                            <Route path="routine-access" element={<ExerciseTable />} />
                         </Route>                     	
                         <Route element={<h1>Not found!</h1>} path="*" />
                     </Routes>
