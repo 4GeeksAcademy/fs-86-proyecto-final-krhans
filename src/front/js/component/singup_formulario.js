@@ -28,36 +28,32 @@ const SignUpOverview = () => {
         if (!password) message = "Please insert password";
         if (!confirmPassword) message = "Please insert confirm password";
         if (password !== confirmPassword) message = "Passwords do not match";
-
+    
         if (message === "") {
             setIsLoading(true);
             try {
-
-
                 let user = new UserData();
                 user.user_name = userName;
                 user.email = email;
                 user.password = password;
-
+    
                 const newUser = await actions.addNewUser(user.toJSON());
                 if (isMounted.current) {
                     if (newUser) {
-                        setPopupMessage("✅ Registration successful! Redirecting...");
+                        setPopupMessage("✅ Registration successful! Logging in...");
                         setShowPopup(true);
-                        setTimeout(() => {
-                            if (isMounted.current) {
-                                setShowPopup(false);
-                                navigate("/");
-                            }
-                        }, 3000);
+    
+                        const loggedIn = await actions.login(email, password);
+                        if (loggedIn) {
+                            navigate("/dashboard"); 
+                        } else {
+                            setPopupMessage("❌ Registration successful, but login failed.");
+                        }
                     } else {
                         setPopupMessage("❌ Registration failed. Try again.");
-                        setShowPopup(true);
                     }
-
+                    setShowPopup(true);
                 }
-
-                navigate("/welcome");
             } catch (error) {
                 console.error("Error en el registro:", error);
                 if (isMounted.current) {
@@ -78,6 +74,7 @@ const SignUpOverview = () => {
             setTimeout(() => setShowPopup(false), 3000);
         }
     };
+    
 
     useEffect(() => {
         return () => {
