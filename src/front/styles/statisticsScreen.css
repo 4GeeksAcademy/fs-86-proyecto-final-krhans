@@ -33,6 +33,14 @@
     border-radius: 50%;
 }
 
+.khrans-video {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    animation: aparecer 1.5s ease-out forwards;
+    border: 5px solid var(--color-Button);
+}
+
 .progress-container {
     display: flex;
     flex-direction: column;

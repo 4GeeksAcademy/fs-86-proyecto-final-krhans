@@ -20,6 +20,7 @@ import ProfileUser from "./pages/userProfile";
 import StatisticsScreen from "./component/statisticsScreen";
 import GenerateRoutine from "./component/geminiResponseSurvy";
 import ExerciseTable from "./pages/accessRoutine";
+import RoutineOverview from "./component/routineOverview";
 
 
 const Layout = () => {
@@ -45,6 +46,7 @@ const Layout = () => {
                             <Route path="fit-interview" element={<FitInterview />}/>
                             <Route path="generate-routine" element={<GenerateRoutine />}/>
                             <Route path="landing" element={<LandingPage />}/>
+                            <Route path="routine" element= {<RoutineOverview/>}/>
                             <Route element={<StatisticsScreen />} path="statisticsscreen" />                             
                             <Route path="coaching-interview" element={<CoachingInterview />}/>
                             <Route path="coach-page" element={<CoachPage />} />

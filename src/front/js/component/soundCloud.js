@@ -1,6 +1,6 @@
-   import React from "react";
+import React from "react";
 
-   const SounCloudComponent = () => {
+export const SounCloudComponent = () => {
     return (
         <></>
     );
