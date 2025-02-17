@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from "react";
 // import FitPageOverview from "../component/fitPageOverview";
+import { useNavigate } from "react-router-dom";
 import Frases from "../component/motivationalPhrase";
 import AvatarEmotions from "../component/avatarEmotion";
 import Calendar from "../component/calendar";
 import StartRoutineButton from "../component/startRoutine";
 import KhransAvatar from "../../img/Khrans-avatar.webp";
 import '../../styles/landingPageOverview.css'
+import RoutineOverview from "../component/routineOverview.js";
 
 const LandingPage = () => {
+    const navigate = useNavigate();
     const daysOfWeek = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
     const today = new Date();
     const monthName = today.toLocaleString('en-US', { month: 'long' });
@@ -27,7 +30,7 @@ const LandingPage = () => {
         //TODO: Se deberá acceder a las estadísticas del usuario
     }
     const routineTable = () => {
-        //TODO: Se deberá acceder a una tabla con las rutinas del workout que toca y soundcloud
+        navigate("/dashboard/routine");
     }
 
     return (

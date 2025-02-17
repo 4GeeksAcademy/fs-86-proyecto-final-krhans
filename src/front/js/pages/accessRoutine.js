@@ -1,6 +1,6 @@
 import React from "react";
-import '../../styles/accessRoutine.css'
-import SounCloudComponent from 'src/front/js/component/soundCloud.js'
+import '../../styles/accessRoutine.css';
+import { SounCloudComponent } from "../component/soundCloud.js";
 
 
     const ExerciseTable = () => {
