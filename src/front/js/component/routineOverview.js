@@ -33,9 +33,9 @@ const RoutineOverview = () => {
     };
     return (
         <div className="routine-page-container">
-            <div className="routine-details">
+            {/* <div className="routine-details">
                 <p>ROUTINE</p>
-            </div>
+            </div> */}
             <div className="bottom-container">
                 <div className="music-timer-wrapper">
                     <div className="music-container">
@@ -69,11 +69,11 @@ const RoutineOverview = () => {
                     </div>
                     {message && <p className="timer-message">{message}</p>}
                 </div>
-                <div className="exercise-table">
+                {/* <div className="exercise-table">
                     <button className="start-routine-button" onClick={handleBack}>
                         BACK
                     </button>
-                </div>
+                </div> */}
             </div>
         </div>
     );

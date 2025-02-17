@@ -27,7 +27,7 @@ const LandingPage = () => {
     });
 
     const statistics = () => {
-        //TODO: Se deberá acceder a las estadísticas del usuario
+        navigate("/dashboard/statisticsscreen")
     }
     const routineTable = () => {
         navigate("/dashboard/routine");
