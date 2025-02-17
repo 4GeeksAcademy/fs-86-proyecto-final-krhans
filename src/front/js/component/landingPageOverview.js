@@ -1,15 +1,28 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { Context } from "../store/appContext";
 import "../../styles/landingPageOverview.css";
 import KhransAvatar from "../../img/Khrans-avatar.webp";
 
 const LandingPageOverview = () => {
+    const { store } = useContext(Context); // 📌 Obtenemos la rutina guardada en el contexto
     const [motivationalPhrase, setMotivationalPhrase] = useState("Today is a great day to make progress!");
     const [todayDate, setTodayDate] = useState(""); 
+    const navigate = useNavigate();
 
     useEffect(() => {
         const today = new Date().toLocaleDateString();
         setTodayDate(today);
     }, []);
+
+    // 📌 Función para ir a la rutina con el ID generado
+    const handleStartRoutine = () => {
+        if (store.userData.routine.id) {
+            navigate(`/dashboard/routine/`); // ✅ Enviamos el ID
+        } else {
+            console.error("❌ No se encontró un ID de rutina.");
+        }
+    };
 
     return (
         <div className="fit-page-container">
@@ -34,7 +47,9 @@ const LandingPageOverview = () => {
                     <p>SOUND CLOUD</p>
                 </div>
                 <div className="exercise-table">
-                    <button className="start-routine-button">Start Routine</button>
+                    <button className="start-routine-button" onClick={handleStartRoutine}>
+                        Start Routine
+                    </button>
                 </div>
             </div>
         </div>

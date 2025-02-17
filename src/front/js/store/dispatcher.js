@@ -194,8 +194,7 @@ export const dispatcherUser = {
             const response = await fetch(`${process.env.BACKEND_URL}/api/routine/${id}`, {
                 method: "GET",
                 headers: {
-                    "Authorization": `Bearer ${token}`,
-                   
+                    "Authorization": `Bearer ${token}`,          
                 }
             });
 

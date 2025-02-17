@@ -200,11 +200,13 @@ def handle_routines():
                 return jsonify({"error": f"Error de base de datos: {str(e)}"}), 500
         elif request.method == 'GET':
             routines = RoutineService.get_routine_list(user_id)
+            workouts= WorkoutService.get_workout_list(user_id)
             return jsonify([{
                 "id": routine.id,
                 "name": routine.name,
                 "description": routine.description,
-                "days_per_week": routine.days_per_week
+                "days_per_week": routine.days_per_week,
+                "workout" : [workout.serialize() for workout in workouts],
             } for routine in routines]), 200
     except Exception as e:
         db.session.rollback()

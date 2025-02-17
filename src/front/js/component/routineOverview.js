@@ -1,41 +1,89 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { Context } from "../store/appContext"; 
 import "../../styles/routineOverview.css";
 
 const RoutineOverview = () => {
-    const [timeLeft, setTimeLeft] = useState(420);
-    const [totalTime, setTotalTime] = useState(420);
+    const { store, actions } = useContext(Context);
+    const routine = store.userData.routine;
+    const trainings = store.trainings || []; 
+
+    const [exerciseIndex, setExerciseIndex] = useState(0);
+    const [timeLeft, setTimeLeft] = useState(0);
     const [isRunning, setIsRunning] = useState(false);
+    const [isResting, setIsResting] = useState(false);
     const [message, setMessage] = useState("");
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const fetchRoutine = async () => {
+            try {
+                await actions.getRoutineList();
+                console.log("Rutina almacenada en store:", store.userData.routine);
+
+                if (trainings.length > 0) {
+                    setExerciseIndex(0);
+                    setTimeLeft(trainings[0].duration * 60); 
+                }
+            } catch (error) {
+                console.error("Error al obtener la rutina:", error);
+            }
+        };
+
+        fetchRoutine();
+    }, []);
+
     useEffect(() => {
         let timer;
         if (isRunning && timeLeft > 0) {
             timer = setInterval(() => {
-                setTimeLeft((prev) => prev - 1);
+                setTimeLeft(prev => prev - 1);
             }, 1000);
-        } else if (timeLeft === 0) {
-            setIsRunning(false);
-            setMessage(":marca_de_verificación_gruesa: ¡Rutina completada!");
+        } else if (timeLeft === 0 && trainings.length > 0) {
+            clearInterval(timer);
+
+            if (isResting) {
+                setIsResting(false);
+                nextExercise();
+            } else {
+                setIsResting(true);
+                setTimeLeft(40); 
+            }
         }
         return () => clearInterval(timer);
-    }, [isRunning, timeLeft]);
-    const handleToggleTimer = () => {
-        setIsRunning((prev) => !prev);
+    }, [isRunning, timeLeft, isResting]);
+
+    const nextExercise = () => {
+        if (exerciseIndex < trainings.length - 1) {
+            setExerciseIndex(prev => prev + 1);
+            setTimeLeft(trainings[exerciseIndex + 1].duration * 60);
+        } else {
+            setIsRunning(false);
+            setMessage("✔️ ¡Rutina completada!");
+        }
     };
+
+    const handleToggleTimer = () => {
+        setIsRunning(prev => !prev);
+    };
+
     const handleWorkDone = () => {
         setIsRunning(false);
         setMessage("");
         navigate("/dashboard/statisticsscreen");
     };
+
     const handleBack = () => {
-        navigate("/fitpageoverview");
+        navigate("/landingpageoverview");
     };
+
     return (
         <div className="routine-page-container">
-            {/* <div className="routine-details">
-                <p>ROUTINE</p>
-            </div> */}
+            {trainings.length > 0 && (
+                <div className="routine-details">
+                    <p>{isResting ? "DESCANSO" : trainings[exerciseIndex].name}</p>
+                </div>
+            )}
             <div className="bottom-container">
                 <div className="music-timer-wrapper">
                     <div className="music-container">
@@ -50,7 +98,7 @@ const RoutineOverview = () => {
                                 <circle className="progress-ring" cx="45" cy="45" r="40"
                                     style={{
                                         strokeDasharray: 251,
-                                        strokeDashoffset: (1 - timeLeft / totalTime) * 251
+                                        strokeDashoffset: (1 - timeLeft / (isResting ? 40 : trainings[exerciseIndex]?.duration * 60)) * 251
                                     }}
                                 />
                                 <text x="50%" y="50%" textAnchor="middle" dy=".3em" transform="rotate(90 45 45)" className="timer-text">
@@ -78,4 +126,5 @@ const RoutineOverview = () => {
         </div>
     );
 };
+
 export default RoutineOverview;
