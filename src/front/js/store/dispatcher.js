@@ -211,27 +211,45 @@ export const dispatcherUser = {
             return { error: error.message };
         }
     },
-    getTrainings: async (token, workout_id) => {
+    fetchVideoUrl: async (videoId) => {
         try {
-            const response = await fetch(`${process.env.BACKEND_URL}/api/trainings/${workout_id}`, {
-                method: "GET",
-                headers: {
-                    "Authorization": `Bearer ${token}`,          
-                }
-            });
+            const apiKey = "sk-e2f5fccd94ede4b8b0920f640ecdf3bd";
+            const jwtToken = localStorage.getItem("jwt-token");
 
-            if (!response.ok) {
-                const errorData = await response.json();
-                console.error('Error Data:', errorData);
-                throw new Error(`Error ${response.status}: ${errorData.error || response.statusText}`);
+            if (!jwtToken) {
+                console.error("No hay token disponible, el usuario no está autenticado.");
+                return { error: "Usuario no autenticado" };
             }
 
-            return await response.json();
+            const myHeaders = new Headers();
+            myHeaders.append("API-KEY", apiKey);
+            myHeaders.append("Authorization", `Bearer ${jwtToken}`);
+            myHeaders.append("Content-Type", "application/json");
 
+            const requestOptions = {
+                method: "GET",
+                headers: myHeaders,
+                mode: "cors",
+                redirect: "follow"
+            };
+
+            const response = await fetch(`https://app-api.pixverse.ai/openapi/v2/video/result/${videoId}`, requestOptions);
+
+            if (!response.ok) {
+                throw new Error(`Error HTTP: ${response.status}`);
+            }
+
+            const data = await response.json();
+            console.log("Respuesta de la API:", data);
+
+            if (data && data.Resp && data.Resp.url) {
+                const decodedUrl = decodeURIComponent(data.Resp.url);
+                return { url: decodedUrl };
+            }
         } catch (error) {
-            console.error("Error obteniendo los datos del usuario:", error);
+            console.error("Error al obtener el video:", error);
             return { error: error.message };
         }
-    },    
+    },
 };
 

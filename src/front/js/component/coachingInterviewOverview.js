@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "../../styles/coachingInterviewOverview.css";
-import KhransCoach from "../../img/khrans-coach.png";
 import questionsData from "./trainingQuestions";
 import { useNavigate } from "react-router-dom";
+import { dispatcherUser } from "../store/dispatcher.js";
 
 const CoachingInterviewOverview = () => {
     const [selectedArea, setSelectedArea] = useState(null);
@@ -10,9 +10,11 @@ const CoachingInterviewOverview = () => {
     const [sliderValue, setSliderValue] = useState(3);
     const [hiddenAreas, setHiddenAreas] = useState([]);
     const [responses, setResponses] = useState({});
+    const [videoUrl, setVideoUrl] = useState(null);
+    
 
     const navigate = useNavigate();
-
+    const videoId= "322983515015424";
 
     const handleButtonClick = (area) => {
         setSelectedArea(area);
@@ -45,9 +47,9 @@ const CoachingInterviewOverview = () => {
 
     useEffect(() => {
         const timer0 = setTimeout(() => setStep(0), 1000);
-        const timer1 = setTimeout(() => setStep(1), 3000);
-        const timer2 = setTimeout(() => setStep(2), 8000);
-        const timer3 = setTimeout(() => setStep(3), 12000);
+        const timer1 = setTimeout(() => setStep(1), 1500);
+        const timer2 = setTimeout(() => setStep(2), 3000);
+        const timer3 = setTimeout(() => setStep(3), 5000);
 
         return () => {
             clearTimeout(timer0);
@@ -57,6 +59,17 @@ const CoachingInterviewOverview = () => {
         };
     }, []);
 
+    useEffect(() => {
+            const fetchVideo = async () => {
+                const result = await dispatcherUser.fetchVideoUrl(videoId);
+                if (result.url) {
+                    setVideoUrl(result.url);
+                }
+            };
+    
+            fetchVideo();
+        }, [videoId]);
+
     return (
         <div className="coachingInterview-container">
             {step === 1 && <p className="fade-text">"Choosing to delve into yourself is one of the wisest decisions you can make."</p>}
@@ -65,7 +78,7 @@ const CoachingInterviewOverview = () => {
             {step === 3 && <p className="area-message">"Select an area to explore"</p>}
 
             <div className={`coachingInterview-avatar ${step >= 0 ? "fade-in" : ""}`}>
-                <img src={KhransCoach} alt="Khrans Coach" className="KhransCoach" />
+                <video src={videoUrl} className="KhransCoach" autoPlay loop muted />
             </div>
             {step === 3 && !selectedArea && (
                 <div className="area-options">

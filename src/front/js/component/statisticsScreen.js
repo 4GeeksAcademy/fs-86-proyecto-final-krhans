@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'; 
 import '../../styles/statisticsScreen.css';
-import KhransAvatar from "../../img/Khrans-avatar.webp";
+import { dispatcherUser } from "../store/dispatcher.js";
 
 import DailyProgress from './dailyProgres';
 import WeeklyProgress from './weeklyProgress';
@@ -9,59 +9,18 @@ const StatisticsScreen = () => {
     
     const [showStats, setShowStats] = useState(false);
     const [videoUrl, setVideoUrl] = useState(null);
+    const videoId = "322909542675840";
 
     useEffect(() => {
-            const fetchVideoUrl = async () => {
-                try {
-                    const apiKey = "sk-e2f5fccd94ede4b8b0920f640ecdf3bd";
-                    
-                    const jwtToken = localStorage.getItem("jwt-token"); 
-                    if (!jwtToken) {
-                        console.error("No hay token disponible, el usuario no está autenticado.");
-                        return;
-                    }
-        
-                    const videoId = "322635580604544";
-    
-                    const myHeaders = new Headers();
-                    myHeaders.append("API-KEY", apiKey);
-                    myHeaders.append("Authorization", `Bearer ${jwtToken}`);
-                    myHeaders.append("Content-Type", "application/json");
-        
-                    const requestOptions = {
-                        method: "GET",
-                        headers: myHeaders,
-                        mode: "cors",
-                        redirect: "follow"
-                    };
-        
-                    const response = await fetch(`https://app-api.pixverse.ai/openapi/v2/video/result/${videoId}`, requestOptions);
-        
-                    if (!response.ok) {
-                        throw new Error(`Error HTTP: ${response.status}`);
-                    }
-        
-                    const data = await response.json();
-                    console.log("Respuesta de la API:", data);
-    
-                    if (data && data.Resp && data.Resp.url) {
-                        const decodedUrl = decodeURIComponent(data.Resp.url);
-                
-                        localStorage.setItem("khransVideoUrl", decodedUrl);
-                        
-                        setVideoUrl(decodedUrl);
-                    } else {
-                        console.error("La API no devolvió una URL de video válida.");
-                        setVideoUrl(null);
-                    }
-                } catch (error) {
-                    console.error("Error al obtener el video:", error);
+            const fetchVideo = async () => {
+                const result = await dispatcherUser.fetchVideoUrl(videoId);
+                if (result.url) {
+                    setVideoUrl(result.url);
                 }
             };
     
-            fetchVideoUrl();
-            
-        }, []);
+            fetchVideo();
+        }, [videoId]);
 
     useEffect(() => {
         setTimeout(() => {
@@ -73,32 +32,29 @@ const StatisticsScreen = () => {
     return (
         <div className="statistics-container">
             <div className="motivational-phrase">
-                <h2>Sigue así, ¡tú puedes!</h2>
-                {videoUrl ? (
-                    <video src={videoUrl} className="khrans-video" autoPlay loop muted />
-                ) : (
-                    <img src={KhransAvatar} alt="Khrans Avatar" className="avatar-image" />
-                )}
+                <h2>Keep it up, you can do it!</h2>
+                <video src={videoUrl} className="khrans-video" autoPlay loop muted />
             </div>
             <div className="progress-container">
                 <DailyProgress/>
                 <WeeklyProgress/>
+
                 <div className="exercise-info">
-                    <h3>Ejercicio Destacado</h3>
+                    <h3>Featured Exercise</h3>
                     <div className="exercise-graph">
                        
                     </div>
                     <div className={`exercise-stats ${showStats ? 'show' : ''}`}>
                         <div className="stat-item">
-                            <h4>Porcentaje</h4>
+                            <h4>Percentage</h4>
                             <div className="stat-value">80%</div>
                         </div>
                         <div className="stat-item">
-                            <h4>Nivel</h4>
-                            <div className="stat-value">Avanzado</div>
+                            <h4>Level</h4>
+                            <div className="stat-value">Advanced</div>
                         </div>
                         <div className="stat-item">
-                            <h4>Pendiente</h4>
+                            <h4>Pending</h4>
                             <div className="stat-value">15%</div>
                         </div>
                     </div>

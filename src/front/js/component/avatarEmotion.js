@@ -1,15 +1,25 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
+import { dispatcherUser } from "../store/dispatcher.js";
 
-const AvatarEmotions = ({ avatarSrc, onStatisticsClick }) => {
+const AvatarEmotions = ({onStatisticsClick }) => {
+  const [videoUrl, setVideoUrl] = useState(null);
+  const videoId = "322634554020544";
+
+  useEffect(() => {
+      const fetchVideo = async () => {
+          const result = await dispatcherUser.fetchVideoUrl(videoId);
+          if (result.url) {
+              setVideoUrl(result.url);
+          }
+      };
+
+      fetchVideo();
+  }, [videoId]);
+      
   return (
     <div className="avatar-emotions">
       <div className="avatar-emotions__avatar">
-        <img
-          src={avatarSrc}
-          alt="Avatar"
-          className="avatar-image"
-          onClick={onStatisticsClick}
-        />
+        <video src={videoUrl} className="avatar-video" autoPlay loop muted />
       </div>
       <div className="avatar-emotions__statistics">
         <button className="statistics-button" onClick={onStatisticsClick}>
