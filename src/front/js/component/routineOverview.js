@@ -18,8 +18,8 @@ const RoutineOverview = () => {
     useEffect(() => {
         const fetchRoutine = async () => {
             try {
-                await actions.getRoutineList();
-                console.log("Rutina almacenada en store:", store.userData.routine);
+                const trainings = await actions.getTrainings();
+                console.log("Entrenos almacenada en store:", trainings);
 
                 if (trainings.length > 0) {
                     setExerciseIndex(0);

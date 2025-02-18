@@ -211,6 +211,27 @@ export const dispatcherUser = {
             return { error: error.message };
         }
     },
-    
+    getTrainings: async (token, workout_id) => {
+        try {
+            const response = await fetch(`${process.env.BACKEND_URL}/api/trainings/${workout_id}`, {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${token}`,          
+                }
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.error('Error Data:', errorData);
+                throw new Error(`Error ${response.status}: ${errorData.error || response.statusText}`);
+            }
+
+            return await response.json();
+
+        } catch (error) {
+            console.error("Error obteniendo los datos del usuario:", error);
+            return { error: error.message };
+        }
+    },    
 };
 

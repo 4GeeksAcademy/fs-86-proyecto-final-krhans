@@ -36,5 +36,13 @@ class TrainingRepository:
         except Exception as e:
             db.session.rollback()
             return {"error": f"Error inesperado: {str(e)}"}, 500
+        
+
+    @staticmethod
+    def get_training_list(user_id, workout_id):
+        try:
+            return Training.query.filter_by(user_id=user_id,workout_id=workout_id).all()or None
+        except Exception as e:
+            return {"error": f"Error inesperado: {str(e)}"}, 500
 
 

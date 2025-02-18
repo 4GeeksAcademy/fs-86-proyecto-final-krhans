@@ -281,4 +281,20 @@ def complete_workout(workout_id, workout_completion_id):
         return jsonify(complete_workout.serialize()), 200
     except Exception as e:
         return jsonify({"error": f"Error inesperado: {str(e)}"}), 500
+    
+@api.route('/trainings/<int:workout_id>', methods=['GET'])
+@jwt_required()
+def get_training_list(workout_id):
+    user_id = get_jwt_identity()
+    try:
+        training_list = TrainingService.get_training_list(user_id, workout_id)
+        if not training_list:
+            return jsonify({"message": "No se encontraron trainings"}), 404
+        return jsonify([{
+                "trainings" : [training.serialize() for training in training_list],
+            } ]), 200
+    
+    except Exception as e:
+        return jsonify({"error": f"Error inesperado: {str(e)}"}), 500
+
 

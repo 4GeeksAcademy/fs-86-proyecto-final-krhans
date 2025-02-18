@@ -158,43 +158,55 @@ const getState = ({ getStore, getActions, setStore }) => {
 					setStore({
 						userData: {
 							...store.userData,
-							routine: response[0], 
+							routine: response[0],
 							workout: response[0].workout[0],
-							trainings: response[0].workout[0].trainings || [] 
+							trainings: response[0].workout[0].trainings || []
 						}
-					}); 
-					 // TODO:RETOCAR METODO
+					});
+					// TODO:RETOCAR METODO
 					return response;
 				} catch (error) {
 					console.error("Error al obtener la rutina:", error.message);
 				}
 			},
 
-			
-			getTrainings: async () => {
-				try {
-					const store = getStore();
-					return store.userData.trainings || []; 
-				} catch (error) {
-					console.error("Error al obtener los entrenamientos:", error.message);
-					return null;
-				}
-			},
 
-			getMessage: async () => {
+			getTrainings: async () => {
+				const store = getStore();
 				try {
-					// fetching data from the backend
-					const resp = await fetch(process.env.BACKEND_URL + "/api/hello")
-					const data = await resp.json()
-					setStore({ message: data.message })
-					// don't forget to return something, that is how the async resolves
-					return data;
-				} catch (error) {
-					console.log("Error loading message from backend", error);
-				}
-			},
-		}
-	};
+					const token = localStorage.getItem("jwt-token");
+					if (!token) throw new Error("No hay token disponible.");
+					let workout_id;
+					for (let i = 0; i < store.userData.workout.length; i++) {
+						if (store.userData.workout[i].isActive) {
+							workout_id = store.userData.workout[i].id;
+							break; 
+						}
+					}
+				console.log("funciona workout", workout_id);
+				training_List = await dispatcherUser.getTrainings(token, workout_id)
+				console.log("que me devuelve training list", training_List);
+				return training_List || [];
+			} catch(error) {
+				console.error("Error al obtener los entrenamientos:", error.message);
+				return null;
+			}
+		},
+
+		getMessage: async () => {
+			try {
+				// fetching data from the backend
+				const resp = await fetch(process.env.BACKEND_URL + "/api/hello")
+				const data = await resp.json()
+				setStore({ message: data.message })
+				// don't forget to return something, that is how the async resolves
+				return data;
+			} catch (error) {
+				console.log("Error loading message from backend", error);
+			}
+		},
+	}
+};
 };
 
 export default getState;
