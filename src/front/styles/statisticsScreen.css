@@ -34,11 +34,11 @@
 }
 
 .khrans-video {
-    width: 150px;
-    height: 150px;
+    width: 100px;
+    height: 100px;
     border-radius: 50%;
     animation: aparecer 1.5s ease-out forwards;
-    border: 5px solid var(--color-Button);
+    border: 5px solid rgb(115, 0, 187);
 }
 
 .progress-container {

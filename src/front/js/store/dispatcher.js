@@ -212,6 +212,46 @@ export const dispatcherUser = {
             return { error: error.message };
         }
     },
-    
+
+    fetchVideoUrl: async (videoId) => {
+        try {
+            const apiKey = "sk-e2f5fccd94ede4b8b0920f640ecdf3bd";
+            const jwtToken = localStorage.getItem("jwt-token");
+
+            if (!jwtToken) {
+                console.error("No hay token disponible, el usuario no está autenticado.");
+                return { error: "Usuario no autenticado" };
+            }
+
+            const myHeaders = new Headers();
+            myHeaders.append("API-KEY", apiKey);
+            myHeaders.append("Authorization", `Bearer ${jwtToken}`);
+            myHeaders.append("Content-Type", "application/json");
+
+            const requestOptions = {
+                method: "GET",
+                headers: myHeaders,
+                mode: "cors",
+                redirect: "follow"
+            };
+
+            const response = await fetch(`https://app-api.pixverse.ai/openapi/v2/video/result/${videoId}`, requestOptions);
+
+            if (!response.ok) {
+                throw new Error(`Error HTTP: ${response.status}`);
+            }
+
+            const data = await response.json();
+            console.log("Respuesta de la API:", data);
+
+            if (data && data.Resp && data.Resp.url) {
+                const decodedUrl = decodeURIComponent(data.Resp.url);
+                return { url: decodedUrl };
+            }
+        } catch (error) {
+            console.error("Error al obtener el video:", error);
+            return { error: error.message };
+        }
+    },
 };
 

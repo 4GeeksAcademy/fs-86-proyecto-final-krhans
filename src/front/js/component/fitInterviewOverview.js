@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "../../styles/fitInterviewOverview.css";
-import KhransAvatar from "../../img/Khrans-avatar.webp";
+import { dispatcherUser } from "../store/dispatcher.js";
 import { useNavigate } from "react-router-dom";
 
 const getQuestions = (answers) => [
@@ -12,7 +12,7 @@ const getQuestions = (answers) => [
     { 
         id: 2, 
         question: "How many days a week can you train?", 
-        options: ["0 days", "1-2 days", "3-4 days", "5 or more days"] 
+        options: ["1 day", "2-3 days", "4 days", "5 or more days"] 
     },
     { 
         id: 3, 
@@ -29,18 +29,32 @@ const getQuestions = (answers) => [
     { 
         id: 5, 
         question: "What motivates you most to keep training?", 
-        options: ["See quick physical results", "Improve long-term health", "Feel good mentally", "Train with others"] 
+        options: ["quick results", "Improve health", "Feel good mentally", "Train with others"] 
     }
 ];
 
 const FitInterviewOverview = () => {
+    const [videoUrl, setVideoUrl] = useState(null);
     const [index, setIndex] = useState(0);
     const [answers, setAnswers] = useState({});
     const [visibleOptions, setVisibleOptions] = useState([]);
     const [questions, setQuestions] = useState(getQuestions({}));
     const [currentQuestion, setCurrentQuestion] = useState(questions[0]);
+
+    const videoId = "322980648122496";
     
     const navigate = useNavigate();
+
+    useEffect(() => {
+            const fetchVideo = async () => {
+                const result = await dispatcherUser.fetchVideoUrl(videoId);
+                if (result.url) {
+                    setVideoUrl(result.url);
+                }
+            };
+    
+            fetchVideo();
+        }, [videoId]);
 
     useEffect(() => {
         setVisibleOptions([]);
@@ -96,7 +110,7 @@ const FitInterviewOverview = () => {
                 ))}
             </div>
             <div className="avatar-container">
-                <img src={KhransAvatar} alt="Khrans Avatar" className="khrans-image" />
+                <video src={videoUrl} className="khrans-video" autoPlay loop muted />
             </div>
             <div className="fitinterview-options">
                 {currentQuestion.options.slice(2).map((option, idx) => (
