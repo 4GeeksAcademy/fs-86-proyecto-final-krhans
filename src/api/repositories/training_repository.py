@@ -4,8 +4,8 @@ class TrainingRepository:
     @staticmethod
     def create_training(training_data, workout_id):
         name = training_data.get("name")
-        mode = training_data.get("mode", "duration") 
-        
+        is_completed = training_data.get("is_completed")
+        mode = training_data.get("mode", "duration")        
         duration = training_data.get("duration")
         repetitions = training_data.get("repetitions")
         sets = training_data.get("sets")
@@ -20,6 +20,7 @@ class TrainingRepository:
 
         training = Training(
             name=name,
+            is_completed=is_completed,
             mode=mode,
             duration=duration,
             repetitions=repetitions,

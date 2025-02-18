@@ -20,21 +20,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					description: "",
 					days_per_week: "",
 				},
-				workout: [
-					{
-						fitness_level: "",
-						category: "",
-						goal: "",
-						difficulty: "",
-						trainings: [
-							{
-								name: "",
-								mode: "",
-								duration: "",
-							}
-						]
-					}
-				]
+				
 			},
 
 		},
@@ -163,6 +149,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return null;
 				}
 			},
+
 			getTrainings:async()=>{
 				const store=getStore();
 				try {

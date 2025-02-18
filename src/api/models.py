@@ -126,9 +126,9 @@ class Workout(db.Model):
 
 class Training(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String, nullable=False)  
+    name = db.Column(db.String, nullable=False) 
+    is_completed = db.Column(db.Boolean, nullable=False, default=False)
     mode = db.Column(db.String, nullable=False, default='duration')  
-
     duration = db.Column(Numeric(10, 2), nullable=True)
     repetitions = db.Column(db.Integer, nullable=True)  
     sets = db.Column(db.Integer, nullable=True)  
@@ -152,6 +152,7 @@ class Training(db.Model):
         return {
             "id": self.id,
             "name": self.name,
+            "is_completed": self.is_completed,
             "mode": self.mode,
             "duration": float(self.duration) if self.duration else None,
             "repetitions": self.repetitions,

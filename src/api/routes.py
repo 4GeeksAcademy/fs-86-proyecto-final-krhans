@@ -167,7 +167,7 @@ def update_profile_image():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-@api.route('/routine', methods=['GET', 'POST'])
+@api.route('/routine', methods=['GET', 'POST',])
 @jwt_required()
 def handle_routines():
     user_id = get_jwt_identity()
@@ -180,7 +180,7 @@ def handle_routines():
                 return jsonify({"error": "Faltan campos obligatorios"}), 400
             routine_data = data.get('routine')
             workout_data = data.get('workout')
-            session = db.session
+            db.session = db.session
             try:
                 with db.session.begin():
                     routine = RoutineService.create_routine(routine_data, user_id)
@@ -283,4 +283,7 @@ def complete_workout(workout_id, workout_completion_id):
         return jsonify(complete_workout.serialize()), 200
     except Exception as e:
         return jsonify({"error": f"Error inesperado: {str(e)}"}), 500
+    
+
+
 
