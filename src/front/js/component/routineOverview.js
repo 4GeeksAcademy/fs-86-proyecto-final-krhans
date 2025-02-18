@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { Context } from "../store/appContext"; 
 import "../../styles/routineOverview.css";
 import { Context } from "../store/appContext";
 import Timer from "./timer";

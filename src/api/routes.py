@@ -209,6 +209,7 @@ def handle_routines():
                 "description": routine.description,
                 "days_per_week": routine.days_per_week,
                 "workout":[workout.serialize() for workout in workouts]
+
             } for routine in routines]), 200
     except Exception as e:
         db.session.rollback()
@@ -284,6 +285,5 @@ def complete_workout(workout_id, workout_completion_id):
     except Exception as e:
         return jsonify({"error": f"Error inesperado: {str(e)}"}), 500
     
-
 
 
