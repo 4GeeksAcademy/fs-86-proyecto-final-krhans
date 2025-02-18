@@ -194,8 +194,7 @@ export const dispatcherUser = {
             const response = await fetch(`${process.env.BACKEND_URL}/api/routine/${id}`, {
                 method: "GET",
                 headers: {
-                    "Authorization": `Bearer ${token}`,
-                   
+                    "Authorization": `Bearer ${token}`,          
                 }
             });
 
@@ -212,7 +211,6 @@ export const dispatcherUser = {
             return { error: error.message };
         }
     },
-
     fetchVideoUrl: async (videoId) => {
         try {
             const apiKey = "sk-e2f5fccd94ede4b8b0920f640ecdf3bd";

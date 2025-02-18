@@ -1,7 +1,6 @@
 import React from "react";
 import '../../styles/accessRoutine.css';
-import { SounCloudComponent } from "../component/soundCloud.js";
-
+import RoutineOverview from "../component/routineOverview.js";
 
     const ExerciseTable = () => {
         const exercises = [
@@ -39,8 +38,9 @@ import { SounCloudComponent } from "../component/soundCloud.js";
     const ExercisePage = () => {
         return (
             <div className="p-8 flex flex-col gap-4">
+                <RoutineOverview />
                 <ExerciseTable />
-                <SounCloudComponent />
+                
             </div>
         );
     };

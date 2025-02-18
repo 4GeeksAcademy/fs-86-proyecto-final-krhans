@@ -11,7 +11,6 @@ export const HomeWelcomePage = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [showWelcome, setShowWelcome] = useState(false);
     const [showHelp, setShowHelp] = useState(false);
-
     const videoId = "322634554020544";
 
     useEffect(() => {

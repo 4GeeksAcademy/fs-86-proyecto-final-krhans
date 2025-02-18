@@ -1,0 +1,56 @@
+
+.gemini-container{   
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: stretch;
+    padding-top: 100px ;
+    
+}
+.gemini-container_items{
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: stretch;
+    padding: 20px;
+}
+.gemini_title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--color-font);
+    width: 90%;
+    overflow: hidden;
+    white-space: normal;
+    animation: move-up-to-down 4s 1 forwards;
+    text-align: center;
+}
+
+
+@keyframes move-up-to-down {
+    from {
+        transform: translateY(-150px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(-10px);
+        opacity: 1;
+    }
+}
+
+.gemini-button{
+    padding: 15px ;
+    margin:10px 4px;
+    color:var( --color-font);
+    background-color: var(--color-Button);
+    font-family: sans-serif;
+    font-weight: 550;
+    text-transform: uppercase;
+    text-align: center;
+    position: relative;
+    text-decoration: none;
+    display:inline-block;
+    border-color: var(--color-Button);
+    border-radius: 10px;
+}

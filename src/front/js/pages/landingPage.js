@@ -40,7 +40,7 @@ const LandingPage = () => {
     });
 
     const statistics = () => {
-       navigate("/dashboard/statisticsscreen");
+        navigate("/dashboard/statisticsscreen")
     }
     const routineTable = () => {
         navigate("/dashboard/routine");

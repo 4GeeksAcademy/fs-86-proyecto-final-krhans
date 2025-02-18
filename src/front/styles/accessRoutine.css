@@ -1,18 +1,17 @@
 .exercise-container {
     width: 90%;
     margin: 0 auto;
-    padding-top: 5rem;
     text-align: center;
 }
 
 .exercise-container__title {
     font-size: 24px;
     font-weight: bold;
-    margin-bottom: 20px;
+    /* margin-bottom: 20px; */
 }
 
 table {
-    width: 100%;
+    width: 90%;
     border-collapse: collapse;
     border: 1px solid #ccc;
     margin: 0 auto;
@@ -20,7 +19,7 @@ table {
 
 th, td {
     border: 1px solid #ccc;
-    padding: 10px;
+    /* padding: 10px; */
     text-align: center;
 }
 

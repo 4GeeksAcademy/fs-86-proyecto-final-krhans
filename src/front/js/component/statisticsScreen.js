@@ -2,7 +2,11 @@ import React, { useState, useEffect } from 'react';
 import '../../styles/statisticsScreen.css';
 import { dispatcherUser } from "../store/dispatcher.js";
 
+import DailyProgress from './dailyProgres';
+import WeeklyProgress from './weeklyProgress';
+
 const StatisticsScreen = () => {
+    
     const [showStats, setShowStats] = useState(false);
     const [videoUrl, setVideoUrl] = useState(null);
     const videoId = "322909542675840";
@@ -23,6 +27,7 @@ const StatisticsScreen = () => {
             setShowStats(true);
         }, 2000); 
     }, []);
+    
 
     return (
         <div className="statistics-container">
@@ -31,10 +36,9 @@ const StatisticsScreen = () => {
                 <video src={videoUrl} className="khrans-video" autoPlay loop muted />
             </div>
             <div className="progress-container">
-                <div className="progress-chart">
-                    <h3>Weekly Progress</h3>
-                    
-                </div>
+                <DailyProgress/>
+                <WeeklyProgress/>
+
                 <div className="exercise-info">
                     <h3>Featured Exercise</h3>
                     <div className="exercise-graph">

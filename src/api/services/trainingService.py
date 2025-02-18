@@ -8,7 +8,16 @@ class TrainingService:
             return new_training
         except Exception as e:
             raise e
+
+    @staticmethod
+    def get_training_list(user_id,workout_id):
+        try:  
+            training_list = TrainingRepository.get_training_list(user_id,workout_id)
+            return training_list
+        except Exception as e:
+            raise e
             
+    
 
            
             
