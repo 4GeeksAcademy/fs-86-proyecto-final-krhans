@@ -67,7 +67,8 @@ const RoutineOverview = () => {
   };
 
   const getAccessToken = async () => {
-
+    //TODO:PREGUNTAR A HANS COMO CONTROLO SI EL TOKEN HA EXPIRADO O NO 
+    localStorage.removeItem("soundcloud_token");
     const storedToken = localStorage.getItem("soundcloud_token");
     if (storedToken) {
       setAccessToken(storedToken);

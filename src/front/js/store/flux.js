@@ -20,6 +20,22 @@ const getState = ({ getStore, getActions, setStore }) => {
 					name: "",
 					description: "",
 					days_per_week: "",
+					workouts:{
+						fitness_level:"",
+						category : "", 
+						goal : "",
+						difficulty : "",
+						is_active : "",
+						"trainings":{
+							name :"",
+							is_completed:"",
+							mode :"", 
+							duration :"",
+							repetitions :"",
+							sets :"",
+							rest :""
+						}
+					}
 				},
 				
 			},
@@ -131,71 +147,24 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
-
-			getTrainings:async()=>{
-				const store=getStore();
-				try {
-					const token = localStorage.getItem("jwt-token");
-					if (!token) throw new Error("No hay token disponible.");
-					
-					const workoutList = store.userData?.routines?.[0]?.workouts || []; 
-					
-					let trainingList = [];
-					
-					for (let i = 0; i < workoutList.length; i++) {
-						if (workoutList[i].is_active) {
-						   	trainingList.push(...workoutList[i].trainings); 
-						  break;
-						}
-					  }
-		
-					return trainingList;
-				} catch (error) {
-					console.error("Error en la actualización:", error.message);
-				}
-			},
-			getMessage: async () => {
-				try {
-					const token = localStorage.getItem("jwt-token");
-					if (!token) throw new Error("No hay token disponible.");
-					const response = await dispatcherUser.getRoutineList(token);
-					if (!response || response.error) {
-						throw new Error(response?.error || "No se pudo obtener la rutina.");
-					}
-					console.log("Datos que se reciben del back:", response[0].workout[0]);
-
-					setStore({
-						userData: {
-							...store.userData,
-							routine: response[0],
-							workout: response[0].workout[0],
-							trainings: response[0].workout[0].trainings || []
-						}
-					});
-					// TODO:RETOCAR METODO
-					return response;
-				} catch (error) {
-					console.error("Error al obtener la rutina:", error.message);
-				}
-			},
-
-
 			getTrainings: async () => {
 				const store = getStore();
+				let workout_id;
+				let trainingList = [];
 				try {
 					const token = localStorage.getItem("jwt-token");
 					if (!token) throw new Error("No hay token disponible.");
-					let workout_id;
-					for (let i = 0; i < store.userData.workout.length; i++) {
-						if (store.userData.workout[i].isActive) {
-							workout_id = store.userData.workout[i].id;
-							break; 
+				
+					for (let i = 0; i < store.userData.routines[0].workouts.length; i++) { 
+						if (store.userData.routines[0].workouts[i].is_active) { 
+							workout_id = store.userData.routines[0].workouts[i].id; 
+							trainingList.push(...store.userData.routines[0].workouts[i].trainings); 
+							break;
 						}
 					}
-				console.log("funciona workout", workout_id);
-				training_List = await dispatcherUser.getTrainings(token, workout_id)
-				console.log("que me devuelve training list", training_List);
-				return training_List || [];
+				
+				 
+				return trainingList || [];
 			} catch(error) {
 				console.error("Error al obtener los entrenamientos:", error.message);
 				return null;
