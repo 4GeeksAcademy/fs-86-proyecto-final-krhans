@@ -20,21 +20,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					description: "",
 					days_per_week: "",
 				},
-				workout: [
-					{
-						fitness_level: "",
-						category: "",
-						goal: "",
-						difficulty: "",
-						trainings: [
-							{
-								name: "",
-								mode: "",
-								duration: "",
-							}
-						]
-					}
-				]
+				
 			},
 
 		},
@@ -161,6 +147,27 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.error("Error en la actualización:", error.message);
 					alert("Hubo un error al actualizar el estado del usuario: " + error.message);
 					return null;
+				}
+			},
+			
+            getRoutine:	async (token) => {
+				const store = getStore();
+				try {
+					if (!token) {
+						throw new Error("Token de autenticación no proporcionado.");
+					}
+
+					const routine = await dispatcherUser.getRoutineList(token);
+
+					if (!routine) {
+						throw new Error("No se encontraron datos del usuario.");
+					}
+					setStore({ userData: routine })
+					return routine;
+
+				} catch (error) {
+					console.error("Error al obtener los datos del usuario:", error.message);
+					return { error: error.message };
 				}
 			},
 			getMessage: async () => {

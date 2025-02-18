@@ -1,10 +1,12 @@
 import React, { useContext, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { getGeminiResponse } from './geminiService';
 import { Context } from "../store/appContext";
 import { dispatcherUser } from '../store/dispatcher';
+import "../../styles/geminiresponseSurvy.css"
 
-const GenerateRoutine = () => {
+
+const GenerateRoutine = ({videoUrl}) => {
   const location = useLocation();
   const coachResponse = location.state?.responses || {};
   const fitAnswers = location.state?.answers || {};
@@ -12,6 +14,8 @@ const GenerateRoutine = () => {
   const { actions } = useContext(Context);
   const [rutinaGenerada, setRutinaGenerada] = useState("");
   const [mensaje, setMensaje] = useState("");
+
+  const navigate = useNavigate()
 
   const token = localStorage.getItem("jwt-token");
 
@@ -27,7 +31,7 @@ const GenerateRoutine = () => {
           "routine": {
               "name": "Nombre de la rutina",
               "description": "Breve descripción",
-              "days_per_week": Número de días recomendados
+              "days_per_week": Número de días recomendados, un solo valor numerico
           },
           "workout": [
               {
@@ -38,8 +42,11 @@ const GenerateRoutine = () => {
                   "trainings": [
                       {
                           "name": "Ejercicio 1",
-                          "mode": "Repeticiones o tiempo",
-                          "duration": Duración en minutos
+                          "is_complete":"false por defecto",
+                          "mode": "minutos o segudos",
+                          "duration": "Duración, un solo valor, aunque mode me devuelva repeticiones dame un tiempo en donde el usuario realize el ejerccicio",
+                          "repetitions": "cantidad de repeticiones " ,
+                          "rest": "tiempo de descanso entre ejercicios"
                       }
                   ]
               }
@@ -57,7 +64,7 @@ const GenerateRoutine = () => {
           "routine": {
               "name": "Nombre de la rutina",
               "description": "Breve descripción",
-              "days_per_week": Número de días recomendados
+              "days_per_week": Número de días recomendados, un solo valor numerico
           },
           "workout": [
               {
@@ -68,8 +75,11 @@ const GenerateRoutine = () => {
                   "trainings": [
                       {
                           "name": "Ejercicio 1",
-                          "mode": "Repeticiones o tiempo",
-                          "duration": Duración en minutos
+                          "is_complete":"false por defecto",
+                          "mode": " minutos o segundos ",                          
+                          "duration": "Duración, un solo valor, aunque mode me devuelva repeticiones dame un tiempo en donde el usuario realize el ejerccicio",
+                          "repetitions": "cantidad de repeticiones " ,
+                          "rest": "tiempo de descanso entre ejercicios"
                       }
                   ]
               }
@@ -103,6 +113,7 @@ const GenerateRoutine = () => {
 
       // await actions.createdRoutine(rutinaJSON);
       await dispatcherUser.postRoutine(token, rutinaJSON);
+      navigate('/dashboard/landing')
 
     } catch (error) {
       console.error("Error al generar la rutina:", error);
@@ -111,11 +122,15 @@ const GenerateRoutine = () => {
   };
 
   return (
-    <div>
-      <h2>Generar Rutina Personalizada</h2>
-      <button onClick={generarRutina}>Generar rutina</button>
+    <div className='gemini-container'>
+      <div className='gemini-container_items'>
+      <h1 className='gemini_title'>"¡Estás a un paso de transformar tu esfuerzo en resultados! Haz clic y comienza tu viaje hacia una mejor versión de ti mismo."</h1>
+      <div className="avatar-container">
+                <video src={videoUrl} className="khrans-video" autoPlay loop muted />
+            </div>
+      <button className='gemini-button' onClick={generarRutina}>Generar rutina</button>
       <p>{mensaje}</p>
-      {rutinaGenerada && <pre>{rutinaGenerada}</pre>}
+      </div>
     </div>
   );
 };

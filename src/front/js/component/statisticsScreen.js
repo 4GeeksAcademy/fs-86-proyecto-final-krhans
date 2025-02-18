@@ -2,7 +2,11 @@ import React, { useState, useEffect } from 'react';
 import '../../styles/statisticsScreen.css';
 import KhransAvatar from "../../img/Khrans-avatar.webp";
 
+import DailyProgress from './dailyProgres';
+import WeeklyProgress from './weeklyProgress';
+
 const StatisticsScreen = () => {
+    
     const [showStats, setShowStats] = useState(false);
     const [videoUrl, setVideoUrl] = useState(null);
 
@@ -64,6 +68,7 @@ const StatisticsScreen = () => {
             setShowStats(true);
         }, 2000); 
     }, []);
+    
 
     return (
         <div className="statistics-container">
@@ -76,10 +81,8 @@ const StatisticsScreen = () => {
                 )}
             </div>
             <div className="progress-container">
-                <div className="progress-chart">
-                    <h3>Progreso Semanal</h3>
-                    
-                </div>
+                <DailyProgress/>
+                <WeeklyProgress/>
                 <div className="exercise-info">
                     <h3>Ejercicio Destacado</h3>
                     <div className="exercise-graph">
