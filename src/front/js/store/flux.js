@@ -150,7 +150,28 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
-
+			getTrainings:async()=>{
+				const store=getStore();
+				try {
+					const token = localStorage.getItem("jwt-token");
+					if (!token) throw new Error("No hay token disponible.");
+					
+					const workoutList = store.userData?.routines?.[0]?.workouts || []; 
+					
+					let trainingList = [];
+					
+					for (let i = 0; i < workoutList.length; i++) {
+						if (workoutList[i].is_active) {
+						   	trainingList.push(...workoutList[i].trainings); 
+						  break;
+						}
+					  }
+		
+					return trainingList;
+				} catch (error) {
+					console.error("Error en la actualización:", error.message);
+				}
+			},
 			getMessage: async () => {
 				try {
 					// fetching data from the backend

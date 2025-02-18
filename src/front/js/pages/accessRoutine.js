@@ -1,6 +1,5 @@
 import React from "react";
 import '../../styles/accessRoutine.css';
-import { SounCloudComponent } from "../component/soundCloud.js";
 import RoutineOverview from "../component/routineOverview.js";
 
     const ExerciseTable = () => {

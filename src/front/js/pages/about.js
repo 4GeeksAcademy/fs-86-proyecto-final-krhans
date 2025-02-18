@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../styles/about.css";
-import rigoImageUrl from "../../img/rigo-baby.jpg";
+import gabrielImageUrl from "../../img/gabri-small.jpg";
+import cristianImageUrl from "../../img/cristian-foto.jpg";
+import albantaImageUrl from "../../img/albanta-small.jpg";
+import marcoImageUrl from "../../img/marco-small.jpg";
 
 export const About = () => {
     const navigate = useNavigate();
@@ -12,19 +15,16 @@ export const About = () => {
     }, []);
 
     const teamMembers = [
-        { id: "gabriel", name: "Gabriel", image: rigoImageUrl },
-        { id: "cristian", name: "Cristian", image: rigoImageUrl },
-        { id: "marco", name: "Marco", image: rigoImageUrl },
-        { id: "albanta", name: "Albanta", image: rigoImageUrl }
+        { id: "gabriel", name: "Mugiwara Tech", image: gabrielImageUrl },
+        { id: "cristian", name: "Cristian", image: cristianImageUrl },
+        { id: "marco", name: "Marco", image: marcoImageUrl },
+        { id: "albanta", name: "Albanta", image: albantaImageUrl }
     ];
 
     return (
         <div className="container text-center">
             <nav className="navbar navbar-expand-lg custom-navbar">
                 <div className="container-fluid justify-content-end">
-                    <button className="home-button" onClick={() => navigate("/")}> 
-                        <i className="fas fa-home"></i>
-                    </button>
                 </div>
             </nav>
 
@@ -32,13 +32,11 @@ export const About = () => {
                 {showText && <h2 className="fade-in">Our journey: Dream, fight and achieve</h2>}
             </div>
 
-            <div className="row justify-content-center team-section">
+            <div className="team-section">
                 {teamMembers.map(member => (
-                    <div key={member.id} className="col-md-3">
-                        <div className="team-member-card" onClick={() => navigate(`/profile/${member.id}`)}>
-                            <img src={member.image} alt={member.name} className="member-image" />
-                            <h2 className="member-name">{member.name}</h2>
-                        </div>
+                    <div key={member.id} className="team-member-card" onClick={() => navigate(`/profile/${member.id}`)}>
+                        <img src={member.image} alt={member.name} className="member-image" />
+                        <h2 className="member-name">{member.name}</h2>
                     </div>
                 ))}
             </div>

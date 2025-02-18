@@ -43,8 +43,7 @@ export const HomeWelcomePage = () => {
                     throw new Error(`Error HTTP: ${response.status}`);
                 }
     
-                const data = await response.json();
-                console.log("Respuesta de la API:", data);
+                const data = await response.json(); 
 
                 if (data && data.Resp && data.Resp.url) {
                     const decodedUrl = decodeURIComponent(data.Resp.url);
