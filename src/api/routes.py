@@ -104,12 +104,14 @@ def user_profile():
         if request.method == 'GET':
             profile_data = user.profile.serialize() if user.profile else None
             user_image = user.user_image.serialize() if user.user_image else None
+            routines=RoutineService.get_routine_list(user_id)
             return jsonify({
                 "user_name": user.user_name,
                 "email": user.email,
                 "is_active": user.is_active,
                 "profile": profile_data, 
-                "user_image": user_image
+                "user_image": user_image,
+                "routines":[routine.serialize() for routine in routines]
             }), 200  
 
         elif request.method == 'PUT':
@@ -165,7 +167,7 @@ def update_profile_image():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-@api.route('/routine', methods=['GET', 'POST'])
+@api.route('/routine', methods=['GET', 'POST',])
 @jwt_required()
 def handle_routines():
     user_id = get_jwt_identity()
@@ -178,7 +180,7 @@ def handle_routines():
                 return jsonify({"error": "Faltan campos obligatorios"}), 400
             routine_data = data.get('routine')
             workout_data = data.get('workout')
-            session = db.session
+            db.session = db.session
             try:
                 with db.session.begin():
                     routine = RoutineService.create_routine(routine_data, user_id)
@@ -200,13 +202,14 @@ def handle_routines():
                 return jsonify({"error": f"Error de base de datos: {str(e)}"}), 500
         elif request.method == 'GET':
             routines = RoutineService.get_routine_list(user_id)
-            workouts= WorkoutService.get_workout_list(user_id)
+            workouts=WorkoutService.get_workout_list(user_id)
             return jsonify([{
                 "id": routine.id,
                 "name": routine.name,
                 "description": routine.description,
                 "days_per_week": routine.days_per_week,
-                "workout" : [workout.serialize() for workout in workouts],
+                "workout":[workout.serialize() for workout in workouts]
+
             } for routine in routines]), 200
     except Exception as e:
         db.session.rollback()
@@ -282,19 +285,5 @@ def complete_workout(workout_id, workout_completion_id):
     except Exception as e:
         return jsonify({"error": f"Error inesperado: {str(e)}"}), 500
     
-@api.route('/trainings/<int:workout_id>', methods=['GET'])
-@jwt_required()
-def get_training_list(workout_id):
-    user_id = get_jwt_identity()
-    try:
-        training_list = TrainingService.get_training_list(user_id, workout_id)
-        if not training_list:
-            return jsonify({"message": "No se encontraron trainings"}), 404
-        return jsonify([{
-                "trainings" : [training.serialize() for training in training_list],
-            } ]), 200
-    
-    except Exception as e:
-        return jsonify({"error": f"Error inesperado: {str(e)}"}), 500
 
 

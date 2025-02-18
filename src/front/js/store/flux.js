@@ -21,21 +21,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					description: "",
 					days_per_week: "",
 				},
-				workout: [
-					{
-						fitness_level: "",
-						category: "",
-						goal: "",
-						difficulty: "",
-						trainings: [
-							{
-								name: "",
-								mode: "",
-								duration: "",
-							}
-						]
-					}
-				]
+				
 			},
 		},
 		actions: {
@@ -144,8 +130,31 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return null;
 				}
 			},
-			getRoutineList: async () => {
-				const store = getStore();
+
+
+			getTrainings:async()=>{
+				const store=getStore();
+				try {
+					const token = localStorage.getItem("jwt-token");
+					if (!token) throw new Error("No hay token disponible.");
+					
+					const workoutList = store.userData?.routines?.[0]?.workouts || []; 
+					
+					let trainingList = [];
+					
+					for (let i = 0; i < workoutList.length; i++) {
+						if (workoutList[i].is_active) {
+						   	trainingList.push(...workoutList[i].trainings); 
+						  break;
+						}
+					  }
+		
+					return trainingList;
+				} catch (error) {
+					console.error("Error en la actualización:", error.message);
+				}
+			},
+			getMessage: async () => {
 				try {
 					const token = localStorage.getItem("jwt-token");
 					if (!token) throw new Error("No hay token disponible.");
