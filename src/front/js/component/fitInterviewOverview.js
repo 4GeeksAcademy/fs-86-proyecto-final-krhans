@@ -110,7 +110,7 @@ const FitInterviewOverview = () => {
                 ))}
             </div>
             <div className="avatar-container">
-                <video src={videoUrl} className="khrans-video" autoPlay loop muted />
+                <video src={videoUrl} className="khransFit-video" autoPlay loop muted />
             </div>
             <div className="fitinterview-options">
                 {currentQuestion.options.slice(2).map((option, idx) => (

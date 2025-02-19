@@ -49,7 +49,7 @@ const CoachingInterviewOverview = () => {
         const timer0 = setTimeout(() => setStep(0), 1000);
         const timer1 = setTimeout(() => setStep(1), 1500);
         const timer2 = setTimeout(() => setStep(2), 3000);
-        const timer3 = setTimeout(() => setStep(3), 5000);
+        const timer3 = setTimeout(() => setStep(3), 4000);
 
         return () => {
             clearTimeout(timer0);
@@ -78,7 +78,7 @@ const CoachingInterviewOverview = () => {
             {step === 3 && <p className="area-message">"Select an area to explore"</p>}
 
             <div className={`coachingInterview-avatar ${step >= 0 ? "fade-in" : ""}`}>
-                <video src={videoUrl} className="KhransCoach" autoPlay loop muted />
+                <video src={videoUrl} className="KhransCoach-video" autoPlay muted />
             </div>
             {step === 3 && !selectedArea && (
                 <div className="area-options">

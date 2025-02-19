@@ -4,16 +4,26 @@
     flex-direction: column;
     align-items: center;
     justify-content: stretch;
-    padding-top: 100px ;
+    padding-top: 90px ;
     
 }
+
+
+.khransRoutine-video {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    animation: aparecer 1.5s ease-out forwards;
+    border: 5px solid var(--color-Button);
+}
+
 .gemini-container_items{
     width: 90%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: stretch;
-    padding: 20px;
+    padding: 10px;
 }
 .gemini_title {
     font-size: 1.5rem;
@@ -40,7 +50,7 @@
 }
 
 .gemini-button{
-    padding: 15px ;
+    padding: 10px ;
     margin:10px 4px;
     color:var( --color-font);
     background-color: var(--color-Button);
