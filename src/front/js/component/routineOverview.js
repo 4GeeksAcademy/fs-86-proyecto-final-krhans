@@ -8,18 +8,25 @@ const RoutineOverview = () => {
   const navigate = useNavigate();
   const { actions } = useContext(Context);
 
-  //Timer
+  // Timer
   const [trainings, setTrainings] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [timeLeft, setTimeLeft] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
   const [message, setMessage] = useState("");
   const [isResting, setIsResting] = useState(false);
-
+  
   const REST_PERIOD = 10;
 
-  //SoundCloud
-  const [genre, setGenre] = useState("jazz");
+  // SoundCloud
+  const genres = { 
+    running: "running", 
+    workout: "workout", 
+    walking: "walking", 
+    relax: "relax"
+  };
+
+  const [genre, setGenre] = useState(""); 
   const [tracks, setTracks] = useState([]);
   const [accessToken, setAccessToken] = useState("");
   const [currentTrackUrl, setCurrentTrackUrl] = useState("");
@@ -29,20 +36,36 @@ const RoutineOverview = () => {
   const clientId = process.env.REACT_APP_SOUNDCLOUD_CLIENT_ID;
   const clientSecret = process.env.REACT_APP_SOUNDCLOUD_CLIENT_SECRET;
 
-  const isSoundCloudAPIAvailable = () => typeof window.SC !== "undefined";
+  // Asignar género según la rutina recibida
+  useEffect(() => {
+    const fetchRoutine = async () => {
+      try {
+        const routine = await actions.getRoutine(); 
+        if (routine) {
+          if (routine.category in genres) {
+            setGenre(genres[routine.category]);
+          } else {
+            setGenre("workout"); 
+          }
+        }
+      } catch (error) {
+        console.error("❌ Error al obtener la rutina:", error);
+      }
+    };
+    fetchRoutine();
+  }, [actions]);
 
   const loadSoundCloudAPI = () => {
-    if (!isSoundCloudAPIAvailable()) {
+    if (typeof window.SC === "undefined") {
       const script = document.createElement("script");
       script.src = "https://w.soundcloud.com/player/api.js";
       script.async = true;
-      script.onload = () => console.log("API de SoundCloud cargada.");
-      script.onerror = () => console.log("Error al cargar la API de SoundCloud");
+      script.onload = () => console.log("✅ API de SoundCloud cargada.");
+      script.onerror = () => console.log("❌ Error al cargar SoundCloud");
       document.body.appendChild(script);
     }
   };
 
-  //Metodos SoundCloud
   useEffect(() => {
     loadSoundCloudAPI();
   }, []);
@@ -61,13 +84,13 @@ const RoutineOverview = () => {
       attempts++;
       if (attempts >= maxAttempts) {
         clearInterval(interval);
-        console.error("❌ Error: No se pudo cargar la API de SoundCloud en el tiempo esperado.");
+        console.error("❌ No se pudo cargar la API de SoundCloud.");
       }
     }, 100);
   };
 
   const getAccessToken = async () => {
-    //TODO:PREGUNTAR A HANS COMO CONTROLO SI EL TOKEN HA EXPIRADO O NO 
+     //TODO:PREGUNTAR A HANS COMO CONTROLO SI EL TOKEN HA EXPIRADO O NO
     localStorage.removeItem("soundcloud_token");
     const storedToken = localStorage.getItem("soundcloud_token");
     if (storedToken) {
@@ -85,39 +108,33 @@ const RoutineOverview = () => {
           client_secret: clientSecret,
         }),
       });
-      console.log("Accediendo al token...")
+
       const data = await response.json();
       if (data.access_token) {
         localStorage.setItem("soundcloud_token", data.access_token);
         setAccessToken(data.access_token);
       } else {
-        console.error("Error obteniendo el token:", data);
+        console.error("❌ Error obteniendo el token:", data);
       }
     } catch (error) {
-      console.error("Error al autenticar con OAuth:", error);
+      console.error("❌ Error al autenticar con OAuth:", error);
     }
   };
 
-  const getTracks = async (genre) => {
-    if (!accessToken || tracks.length > 0) return;
+  const getTracks = async () => {
+    if (!accessToken || tracks.length > 0 || !genre) return;
 
     try {
-      const response = await fetch(
-        `https://api.soundcloud.com/tracks?genre=${genre}&limit=10`,
-        {
-          headers: { Authorization: `OAuth ${accessToken}` },
-        }
-      );
-
+      const response = await fetch(`/playlists/${genre}`);
       const data = await response.json();
-      if (Array.isArray(data)) {
-        setTracks(data);
+      if (data.playlist) {
+        setTracks(data.playlist.tracks);
       } else {
-        console.error("Error: No se obtuvo un listado de canciones", data);
+        console.error(`⚠️ No se obtuvo lista de reproducción para ${genre}`);
         setTracks([]);
       }
     } catch (error) {
-      console.error("Error fetching tracks: ", error);
+      console.error("❌ Error fetching playlist: ", error);
       setTracks([]);
     }
   };
@@ -127,24 +144,20 @@ const RoutineOverview = () => {
   }, []);
 
   useEffect(() => {
-    if (accessToken) {
-      getTracks(genre);
+    if (accessToken && genre) {
+      getTracks();
     }
-  }, [accessToken]);
-
+  }, [accessToken, genre]);
 
   useEffect(() => {
     if (tracks.length > 0) {
       const randomTrack = tracks[Math.floor(Math.random() * tracks.length)];
-      setCurrentTrackUrl(randomTrack.permalink_url);
-      console.log("URL de la canción seleccionada:", randomTrack.permalink_url);
+      setCurrentTrackUrl(randomTrack.stream_url);
     }
   }, [tracks]);
 
-
   useEffect(() => {
     if (currentTrackUrl) {
-      console.log("Esperando que la API de SoundCloud esté lista...");
       waitForSoundCloudAPI(() => {
         const iframe = document.getElementById("soundcloud-player");
         if (iframe) {
@@ -152,15 +165,13 @@ const RoutineOverview = () => {
           playerRef.current.load(currentTrackUrl, { auto_play: false });
 
           playerRef.current.bind(window.SC.Widget.Events.READY, () => {
-            console.log("Reproductor listo");
+            console.log("🎵 Reproductor listo");
             setIsPlayerReady(true);
           });
 
           playerRef.current.bind(window.SC.Widget.Events.ERROR, (e) => {
-            console.error("Error en el reproductor de SoundCloud", e);
+            console.error("❌ Error en el reproductor de SoundCloud", e);
           });
-        } else {
-          console.error("Iframe no encontrado");
         }
       });
     }
@@ -168,16 +179,11 @@ const RoutineOverview = () => {
 
   const startPlaying = () => {
     if (isPlayerReady && playerRef.current) {
-      console.log("Reproduciendo la canción...");
       playerRef.current.play();
-    } else {
-      console.error("Reproductor no disponible");
     }
   };
 
-
-
-  //Metodos Timer
+  
   useEffect(() => {
     const fetchTrainings = async () => {
       try {
@@ -188,70 +194,13 @@ const RoutineOverview = () => {
           setTimeLeft(parseInt(data[0].duration, 10));
           setMessage(data[0].name);
         }
-        console.log("Entrenamientos: ", data);
       } catch (error) {
-        console.log("Error: ", error.message);
+        console.error("❌ Error:", error.message);
       }
     };
 
     fetchTrainings();
   }, []);
-
-  useEffect(() => {
-    let timer;
-    if (isRunning && timeLeft > 0) {
-      timer = setInterval(() => {
-        setTimeLeft((prev) => prev - 1);
-      }, 1000);
-    } else if (timeLeft === 0 && isRunning) {
-      clearInterval(timer);
-      handleNextStep();
-    }
-
-    return () => clearInterval(timer);
-  }, [isRunning, timeLeft]);
-
-  const handleNextStep = () => {
-    if (isResting) {
-      // Si estamos descansando y no hemos completado todos los entrenamientos
-      if (currentIndex + 1 < trainings.length) {
-        setCurrentIndex((prev) => prev + 1);
-        setTimeLeft(parseInt(trainings[currentIndex + 1].duration, 10));
-        setIsResting(false);
-        setMessage(trainings[currentIndex + 1].name);
-      } else {
-        setIsRunning(false);
-        setMessage("✔️ ¡Rutina completada!");
-      }
-    } else {
-
-      setIsResting(true);
-      setTimeLeft(REST_PERIOD);
-      setMessage(`🛑 Descanso...`);
-    }
-  };
-
-  const handleToggleTimer = () => {
-    setIsRunning((prev) => {
-      const newIsRunning = !prev;
-      if (newIsRunning) {
-
-        startPlaying();
-      }
-      return newIsRunning;
-    });
-  };
-
-
-  const handleWorkDone = () => {
-    setIsRunning(false);
-    setMessage("");
-    navigate("/dashboard/statisticsscreen");
-  };
-
-  const handleBack = () => {
-    navigate("/fitpageoverview");
-  };
 
   return (
     <div className="routine-page-container">
@@ -260,40 +209,24 @@ const RoutineOverview = () => {
       </div>
       <div className="bottom-container">
         <div className="music-timer-wrapper">
-          <div className="music-timer-wrapper">
-
-            <div className="soundcloud-player">
-              {currentTrackUrl && (
-                <iframe
-                  id="soundcloud-player"
-                  width="100%"
-                  height="166"
-                  scrolling="no"
-                  frameBorder="no"
-                  allow="autoplay"
-                  src={`https://w.soundcloud.com/player/?url=${encodeURIComponent(
-                    currentTrackUrl
-                  )}&auto_play=true&hide_related=true&show_comments=false&show_user=false&show_reposts=false`}
-                  onLoad={() => console.log("Iframe cargado con éxito")}
-                />
-              )}
-            </div>
+          <div className="soundcloud-player">
+            {currentTrackUrl && (
+              <iframe
+                id="soundcloud-player"
+                width="100%"
+                height="166"
+                scrolling="no"
+                frameBorder="no"
+                allow="autoplay"
+                src={`https://w.soundcloud.com/player/?url=${encodeURIComponent(currentTrackUrl)}&auto_play=true`}
+              />
+            )}
           </div>
           <div className="timer-buttons-container">
-           
-            <Timer
-              timeLeft={timeLeft}
-              isResting={isResting}
-              trainings={trainings}
-              currentIndex={currentIndex}
-              handleToggleTimer={handleToggleTimer}
-            />
-           
-            <div className="buttons-container">
-              <button className="start-timer-button" onClick={handleToggleTimer}>
-                {isRunning ? "❚❚" : "▶️"}
-              </button>
-            </div>
+            <Timer timeLeft={timeLeft} />
+            <button className="start-timer-button" onClick={startPlaying}>
+              ▶️
+            </button>
           </div>
         </div>
       </div>
