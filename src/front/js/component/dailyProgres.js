@@ -9,7 +9,7 @@ const DailyProgress = () => {
 
   return (
     <div className="daily-progress-container">
-      <h3 className="daily-progress-heading">Progreso Diario</h3>
+      <h3 className="daily-progress-heading">Daily Progress</h3>
       <div className="daily-progress-circle">
         <CircularProgressbar
           value={progress}
@@ -23,7 +23,7 @@ const DailyProgress = () => {
           })}
         />
       </div>
-      <p className="daily-progress-text">Entrenamiento completado: {progress}%</p>
+      <p className="daily-progress-text">Training Completed: {progress}%</p>
     </div>
   );
 };

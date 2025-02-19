@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect} from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { getGeminiResponse } from './geminiService';
 import { Context } from "../store/appContext";
@@ -6,7 +6,8 @@ import { dispatcherUser } from '../store/dispatcher';
 import "../../styles/geminiresponseSurvy.css"
 
 
-const GenerateRoutine = ({videoUrl}) => {
+const GenerateRoutine = () => {
+  const [videoUrl, setVideoUrl] = useState(null);
   const location = useLocation();
   const coachResponse = location.state?.responses || {};
   const fitAnswers = location.state?.answers || {};
@@ -121,15 +122,28 @@ const GenerateRoutine = ({videoUrl}) => {
     }
   };
 
+  const videoId = "323170867849472";
+
+  useEffect(() => {
+            const fetchVideo = async () => {
+                const result = await dispatcherUser.fetchVideoUrl(videoId);
+                if (result.url) {
+                    setVideoUrl(result.url);
+                }
+            };
+    
+            fetchVideo();
+        }, [videoId]);
+
   return (
     <div className='gemini-container'>
       <div className='gemini-container_items'>
-      <h1 className='gemini_title'>"¡Estás a un paso de transformar tu esfuerzo en resultados! Haz clic y comienza tu viaje hacia una mejor versión de ti mismo."</h1>
-      <div className="avatar-container">
-                <video src={videoUrl} className="khrans-video" autoPlay loop muted />
-            </div>
-      <button className='gemini-button' onClick={generarRutina}>Generar rutina</button>
-      <p>{mensaje}</p>
+        <h1 className='gemini_title'>"You're just one step away from turning your effort into results! Click and start your journey towards a better version of yourself. "</h1>
+        <div className="avatar-container">
+                  <video src={videoUrl} className="khransRoutine-video" autoPlay loop muted />
+              </div>
+        <button className='gemini-button' onClick={generarRutina}>Create Routine</button>
+        <p>{mensaje}</p>
       </div>
     </div>
   );

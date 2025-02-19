@@ -54,12 +54,20 @@
     }
 }
 
-.avatar-profile .khrans-image {
+.avatar-profile .khrans-video {
     width: 50px;
     height: auto;
     border-radius: 50%;
     border: 2px solid #A0D6DB;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.khrans-video{
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    animation: aparecer 1.5s ease-out forwards;
+    border: 5px solid rgb(115, 0, 187);
 }
 
 .motivational-phrase {

@@ -92,16 +92,7 @@
 .exercise-stats {
     display: flex;
     justify-content: space-around;
-    opacity: 0; 
-    transform: translateX(150px); 
-    transition: transform 0.8s ease-out, opacity 0.8s ease-out;
 }
-
-.exercise-stats.show {
-    opacity: 1;
-    transform: translateX(0);
-}
-
 
 .stat-item {
     text-align: center;

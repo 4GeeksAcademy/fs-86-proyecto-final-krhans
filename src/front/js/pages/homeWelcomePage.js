@@ -11,7 +11,7 @@ export const HomeWelcomePage = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [showWelcome, setShowWelcome] = useState(false);
     const [showHelp, setShowHelp] = useState(false);
-    const videoId = "322634554020544";
+    const videoId = "323171701139328";
 
     useEffect(() => {
         const fetchVideo = async () => {
@@ -34,12 +34,12 @@ export const HomeWelcomePage = () => {
 
         const welcomeTimer = setTimeout(() => {
             setShowWelcome(true);
-        }, 4000);
+        }, 2000);
 
         const helpTimer = setTimeout(() => {
             setShowWelcome(false);
             setShowHelp(true);
-        }, 6000);
+        }, 3500);
 
         return () => {
             clearTimeout(welcomeTimer);
@@ -58,7 +58,7 @@ export const HomeWelcomePage = () => {
                 {showHelp && <h2 className="help-message">¿How can I help you?</h2>}
             </div>
             <div className="avatar-container">
-                <video src={videoUrl} className="khrans-video" autoPlay loop muted />
+                <video src={videoUrl} className="khransHome-video" autoPlay muted/>
             </div>
 
         </div>

@@ -41,9 +41,12 @@
     align-items: center;
 }
 
-.khrans-video {
-    width: 150px;
-    height: auto;
+.khransFit-video {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    animation: aparecer 1.5s ease-out forwards;
+    border: 5px solid rgb(115, 0, 187);
 }
 
 .fitinterview-options {

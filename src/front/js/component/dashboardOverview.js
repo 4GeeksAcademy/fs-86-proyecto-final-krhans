@@ -29,7 +29,7 @@ const DashboardOverview = () => {
         <h1>"Which path will you take?"</h1>
       </div>
       <div className="dashboard-avatar">
-        <video src={videoUrl} className="khrans-video" autoPlay loop muted />
+        <video src={videoUrl} className="khransDashboard-video" autoPlay loop muted />
       </div>
       <div className="neblina"></div>
       <img
