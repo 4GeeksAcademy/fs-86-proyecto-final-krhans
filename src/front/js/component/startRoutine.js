@@ -2,7 +2,7 @@ import React from "react";
 
 const StartRoutineButton = ({ onClick }) => {
   return (
-    <button className="start-routine-button" onClick={onClick}>
+    <button className="routine-button" onClick={onClick}>
       Start Routine
     </button>
   );

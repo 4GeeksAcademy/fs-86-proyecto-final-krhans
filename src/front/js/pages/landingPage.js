@@ -6,7 +6,6 @@ import AvatarEmotions from "../component/avatarEmotion";
 import Calendar from "../component/calendar";
 import StartRoutineButton from "../component/startRoutine";
 import '../../styles/landingPageOverview.css'
-import RoutineOverview from "../component/routineOverview.js";
 import { dispatcherUser } from "../store/dispatcher.js";
 
 const LandingPage = () => {
@@ -50,17 +49,22 @@ const LandingPage = () => {
     };
 
     return (
-        <div className="fit-page-container">
-            <div className="motivational-phrase"><Frases /></div>
-            <div className="calendar-avatar-container">
+        <div className="landing-container">
+            <div className="calendar-container">
                 <Calendar monthName={monthName} currentWeek={currentWeek} />
-                <AvatarEmotions avatarSrc={videoUrl} onStatisticsClick={statistics} />
             </div>
-            <div className="bottom-container">
-                <StartRoutineButton onClick={routineTable} />
-                <button className="interview-button" onClick={handleRedoInterview}>Redo Interview</button>
+            <div className="routine-section">
+                <h3>Today's Routine</h3>
+                <div className="routine-grid">
+                    <div routineColumn-right>Hola</div>
+                    <div routineColumn-left>Papu</div>
+                </div>
             </div>
-            
+            <StartRoutineButton onClick={routineTable} className="routine-button"/>
+            <div className="avatar-section">
+                <div className="avatar-motivation"><Frases /></div>
+                <AvatarEmotions handleRedoInterview={handleRedoInterview} avatarSrc={videoUrl} onStatisticsClick={statistics} />
+            </div>
         </div>
     );
 }

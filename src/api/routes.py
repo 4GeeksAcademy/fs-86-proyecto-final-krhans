@@ -9,6 +9,8 @@ from api.services.workoutService import WorkoutService
 from api.services.trainingService import TrainingService
 from api.services.workoutCompletionService import WorkoutCompletionService
 from api.services.userImageService import UserImageService
+from api.services.soundCloudService import SoundCloudService
+from api.services.createPlaylist import CreatePlaylist
 from sqlalchemy.exc import SQLAlchemyError
 import os
 
@@ -17,7 +19,10 @@ api = Blueprint('api', __name__)
 # Allow CORS requests to this API
 CORS(api)
 
-
+# Configurar el servicio de SoundCloud
+client_id = os.getenv("SOUNDCLOUD_CLIENT_ID")
+client_secret = os.getenv("SOUNDCLOUD_CLIENT_SECRET")
+soundcloudservice = SoundCloudService()
 
 @api.route('/log_in', methods=['POST'])
 def log_in():
@@ -104,14 +109,14 @@ def user_profile():
         if request.method == 'GET':
             profile_data = user.profile.serialize() if user.profile else None
             user_image = user.user_image.serialize() if user.user_image else None
-            routines=RoutineService.get_routine_list(user_id)
+            routines = RoutineService.get_routine_list(user_id)
             return jsonify({
                 "user_name": user.user_name,
                 "email": user.email,
                 "is_active": user.is_active,
                 "profile": profile_data, 
                 "user_image": user_image,
-                "routines":[routine.serialize() for routine in routines]
+                "routines": [routine.serialize() for routine in routines]
             }), 200  
 
         elif request.method == 'PUT':
@@ -167,14 +172,14 @@ def update_profile_image():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-@api.route('/routine', methods=['GET', 'POST',])
+@api.route('/routine', methods=['GET', 'POST'])
 @jwt_required()
 def handle_routines():
     user_id = get_jwt_identity()
     try:
         if request.method == 'POST':
             data = request.get_json()
-            print("esto es es lo que se envia",data)
+            print("esto es es lo que se envia", data)
             required_fields = ["routine", "workout"]
             if not all(field in data for field in required_fields):
                 return jsonify({"error": "Faltan campos obligatorios"}), 400
@@ -190,7 +195,7 @@ def handle_routines():
                         workout_ids.append(created_workout.id)
                         trainings = workout.get("trainings", [])
                         for training in trainings:
-                            TrainingService.create_training(training,created_workout.id)
+                            TrainingService.create_training(training, created_workout.id)
                         WorkoutCompletionService.create_workout_completion(user_id, created_workout.id)
                 return jsonify({
                     "message": "Rutina creada exitosamente",
@@ -202,13 +207,13 @@ def handle_routines():
                 return jsonify({"error": f"Error de base de datos: {str(e)}"}), 500
         elif request.method == 'GET':
             routines = RoutineService.get_routine_list(user_id)
-            workouts=WorkoutService.get_workout_list(user_id)
+            workouts = WorkoutService.get_workout_list(user_id)
             return jsonify([{
                 "id": routine.id,
                 "name": routine.name,
                 "description": routine.description,
                 "days_per_week": routine.days_per_week,
-                "workout":[workout.serialize() for workout in workouts]
+                "workout": [workout.serialize() for workout in workouts]
 
             } for routine in routines]), 200
     except Exception as e:
@@ -254,7 +259,7 @@ def handle_workout(workout_id):
     user_id = get_jwt_identity()
     try:
         if request.method == 'GET':
-            workouts = WorkoutService.get_workout_by_id(user_id,workout_id)
+            workouts = WorkoutService.get_workout_by_id(user_id, workout_id)
             if not workouts:
                 return jsonify({"message": "No se encontraron workouts"}), 404
             return jsonify([workout.serialize() for workout in workouts]), 200
@@ -266,9 +271,9 @@ def handle_workout(workout_id):
 def complete_workout_list():
     user_id = get_jwt_identity()
     try:
-        complete_workout=WorkoutCompletionService.get_workout_completion_list(user_id)
+        complete_workout = WorkoutCompletionService.get_workout_completion_list(user_id)
         if not complete_workout:
-                return jsonify({"message": "No se encontraron workouts"}), 404
+            return jsonify({"message": "No se encontraron workouts"}), 404
         return jsonify([workout.serialize() for workout in complete_workout]), 200
     except Exception as e:
         return jsonify({"error": f"Error inesperado: {str(e)}"}), 500
@@ -284,6 +289,51 @@ def complete_workout(workout_id, workout_completion_id):
         return jsonify(complete_workout.serialize()), 200
     except Exception as e:
         return jsonify({"error": f"Error inesperado: {str(e)}"}), 500
-    
 
 
+# Rutas para SoundCloud
+@api.route('/api/tracks', methods=['GET'])
+def get_tracks():
+    genre = request.args.get('genre')
+    if not genre:
+        return jsonify({"error": "Genre is required"}), 400
+
+    try:
+        tracks = soundcloud_service.get_tracks_by_genre(genre)
+        return jsonify(tracks), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@api.route('/api/track/<int:track_id>', methods=['GET'])
+def get_track(track_id):
+    try:
+        track = soundcloud_service.get_track(track_id)
+        return jsonify(track), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@api.route('/api/track/<int:track_id>/stream', methods=['GET'])
+def get_stream_url(track_id):
+    try:
+        stream_url, track_data = soundcloud_service.get_stream_url(track_id)
+        if not stream_url:
+            return jsonify({"error": "Stream URL not found"}), 404
+        return jsonify({
+            "stream_url": stream_url,
+            "track_data": track_data
+        }), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+# Rutas para acceder a las listas de reproducción almacenadas
+@api.route('/playlists/<genre>', methods=['GET'])
+def get_playlist(genre):
+    try:
+        file_path = f"api/data/{genre}_playlist.json"
+        if not os.path.exists(file_path):
+            return jsonify({"error": "Playlist not found"}), 404
+        with open(file_path, 'r') as file:
+            playlist = json.load(file)
+        return jsonify({"playlist": playlist}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500

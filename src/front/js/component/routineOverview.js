@@ -19,6 +19,7 @@ const RoutineOverview = () => {
   const REST_PERIOD = 10;
 
   // SoundCloud
+
   const genres = { 
     running: "running", 
     workout: "workout", 
@@ -29,9 +30,14 @@ const RoutineOverview = () => {
   const [genre, setGenre] = useState(""); 
   const [tracks, setTracks] = useState([]);
   const [accessToken, setAccessToken] = useState("");
+  const genres = ["running", "workout", "walking", "relax"];
+  const [playlists, setPlaylists] = useState({ running: [], workout: [], walking: [], relax: [] });
   const [currentTrackUrl, setCurrentTrackUrl] = useState("");
   const [isPlayerReady, setIsPlayerReady] = useState(false);
+  const [selectedGenre, setSelectedGenre] = useState("");
+  const [currentTrackData, setCurrentTrackData] = useState(null);
   const playerRef = useRef(null);
+
 
   const clientId = process.env.REACT_APP_SOUNDCLOUD_CLIENT_ID;
   const clientSecret = process.env.REACT_APP_SOUNDCLOUD_CLIENT_SECRET;
@@ -124,10 +130,13 @@ const RoutineOverview = () => {
   const getTracks = async () => {
     if (!accessToken || tracks.length > 0 || !genre) return;
 
+
+  const getPlaylist = async (genre) => {
     try {
       const response = await fetch(`/playlists/${genre}`);
       const data = await response.json();
       if (data.playlist) {
+
         setTracks(data.playlist.tracks);
       } else {
         console.error(`⚠️ No se obtuvo lista de reproducción para ${genre}`);
@@ -136,6 +145,7 @@ const RoutineOverview = () => {
     } catch (error) {
       console.error("❌ Error fetching playlist: ", error);
       setTracks([]);
+
     }
   };
 
@@ -183,22 +193,24 @@ const RoutineOverview = () => {
     }
   };
 
-  
   useEffect(() => {
     const fetchTrainings = async () => {
       try {
+        console.log("Solicitando entrenamientos..."); 
+        
         const data = await actions.getTrainings();
-        if (data.length > 0) {
-          setTrainings(data);
-          setCurrentIndex(0);
-          setTimeLeft(parseInt(data[0].duration, 10));
-          setMessage(data[0].name);
+        
+        if (!data || data.length === 0) {
+          console.warn("⚠️ No se recibieron entrenamientos o la lista está vacía.", data);
+          return;
         }
+
       } catch (error) {
         console.error("❌ Error:", error.message);
+
       }
     };
-
+  
     fetchTrainings();
   }, []);
 
@@ -211,6 +223,7 @@ const RoutineOverview = () => {
         <div className="music-timer-wrapper">
           <div className="soundcloud-player">
             {currentTrackUrl && (
+
               <iframe
                 id="soundcloud-player"
                 width="100%"
@@ -227,6 +240,7 @@ const RoutineOverview = () => {
             <button className="start-timer-button" onClick={startPlaying}>
               ▶️
             </button>
+
           </div>
         </div>
       </div>
