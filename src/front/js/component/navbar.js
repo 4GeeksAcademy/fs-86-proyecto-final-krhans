@@ -74,9 +74,9 @@ export const Navbar = () => {
             <div className="navbar-container_user-training ">
             {store.userData && store.userData.is_active ? (
                         <Link to={"/dashboard/landing"}>
-                            <button className="button-training" onClick={() =>
-                                setTimeout(() => setIsMenuOpen(false), 200)}>                            
-                             Landing 
+                            <button className="navbarHome-button" onClick={() =>
+                                setTimeout(() => setIsMenuOpen(false), 200)}>
+                                <i className="fas fa-home"></i>
                             </button>
                             </Link>
                         ) : (
