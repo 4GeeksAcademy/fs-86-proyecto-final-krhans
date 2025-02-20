@@ -26,8 +26,9 @@ const AvatarEmotions = ({onStatisticsClick, handleRedoInterview }) => {
         <button className="statistics-button" onClick={onStatisticsClick}>
           STATISTICS
         </button>
+
         <button className="interview-button" onClick={handleRedoInterview}>Redo Interview</button>
-        <button className="statistics-button" onClick={statistics}>STATISTICS</button>
+
 
       </div>
     </div>
