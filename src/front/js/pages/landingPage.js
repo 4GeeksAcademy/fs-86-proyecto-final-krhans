@@ -88,11 +88,8 @@ const LandingPage = () => {
     
             <div className="bottom-section">
                 <div className="avatar-motivation"><Frases /></div>
-                <div className="bottom-buttons">
-                    <button className="interview-button" onClick={handleRedoInterview}>Redo Interview</button>
-                    <AvatarEmotions avatarSrc={videoUrl} />
-                    <button className="statistics-button" onClick={statistics}>STATISTICS</button>
-                </div>
+
+                <AvatarEmotions handleRedoInterview={handleRedoInterview} avatarSrc={videoUrl} onStatisticsClick={statistics} />
             </div>
         </div>
     );
