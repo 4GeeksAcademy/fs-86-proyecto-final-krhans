@@ -77,7 +77,7 @@ const LandingPage = () => {
                 ) : (
                     <div className="no-day-container">
                         <div className="arrow-to-calendar">⬆️</div>
-                        <h3 className="no-day-selected">Selecciona un día para ver la rutina</h3>
+                        <h3 className="no-day-selected">"Select a day to view the routine"</h3>
                     </div>
                 )}
             </div>
@@ -87,9 +87,12 @@ const LandingPage = () => {
             </div>
     
             <div className="bottom-section">
-                <div className="avatar-motivation"><Frases /></div>
-
-                <AvatarEmotions handleRedoInterview={handleRedoInterview} avatarSrc={videoUrl} onStatisticsClick={statistics} />
+                <div className="avatar-motivation-container">
+                    <div className="avatar-motivation"><Frases /></div>
+                </div>
+                <div className="avatar-landing-container">
+                    <AvatarEmotions handleRedoInterview={handleRedoInterview} avatarSrc={videoUrl} onStatisticsClick={statistics} />
+                </div>
             </div>
         </div>
     );

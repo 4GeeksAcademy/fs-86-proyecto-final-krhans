@@ -19,7 +19,9 @@ const AvatarEmotions = ({onStatisticsClick, handleRedoInterview }) => {
   return (
     <div className="avatar-emotions">
       <div className="avatar-emotions__avatar">
+        <button className="interview-button" onClick={handleRedoInterview}>Redo Interview</button>
         <video src={videoUrl} className="landing-avatar" autoPlay loop muted />
+        <button className="statistics-button" onClick={onStatisticsClick}>Statistics</button>
       </div>
     </div>
   );

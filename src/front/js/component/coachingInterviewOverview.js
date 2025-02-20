@@ -48,8 +48,8 @@ const CoachingInterviewOverview = () => {
     useEffect(() => {
         const timer0 = setTimeout(() => setStep(0), 1000);
         const timer1 = setTimeout(() => setStep(1), 1500);
-        const timer2 = setTimeout(() => setStep(2), 3000);
-        const timer3 = setTimeout(() => setStep(3), 4000);
+        const timer2 = setTimeout(() => setStep(2), 4000);
+        const timer3 = setTimeout(() => setStep(3), 6000);
 
         return () => {
             clearTimeout(timer0);

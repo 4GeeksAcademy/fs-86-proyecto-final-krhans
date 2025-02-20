@@ -4,10 +4,8 @@
     flex-direction: column;
     align-items: center;
     justify-content: stretch;
-    padding-top: 90px ;
-    
+    padding-top:40px;
 }
-
 
 .khransRoutine-video {
     width: 180px;
@@ -25,8 +23,10 @@
     justify-content: stretch;
     padding: 10px;
 }
+
 .gemini_title {
-    font-size: 1.5rem;
+    background-color: #c65def;
+    font-size: 1.2rem;
     font-weight: bold;
     color: var(--color-font);
     width: 90%;
@@ -34,8 +34,25 @@
     white-space: normal;
     animation: move-up-to-down 4s 1 forwards;
     text-align: center;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    position: relative;
+    margin-bottom: 20px;
 }
 
+.gemini_title::after {
+    content: "";
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 12px solid transparent;
+    border-right: 12px solid transparent;
+    border-top: 12px solid #c65def;
+}
 
 @keyframes move-up-to-down {
     from {
