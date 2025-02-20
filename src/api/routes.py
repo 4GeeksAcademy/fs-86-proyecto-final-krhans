@@ -37,10 +37,13 @@ def log_in():
             return jsonify({"error": "ID de usuario no válido"}), 500
         
         access_token = UserService.get_token(user)
+        routines=RoutineService.get_routine_list(user.id)
+        print(routines)
         return jsonify({
             "message": "Inicio de sesión exitoso",
             "token": access_token,
-            "user": user.serialize()
+            "user": user.serialize(),
+            "routines": [routine.serialize() for routine in routines]
         }), 200
 
     except Exception as e:
