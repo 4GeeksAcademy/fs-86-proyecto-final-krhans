@@ -213,6 +213,22 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return null; 
 				}
 			},
+			workoutExists: () => {
+				const store = getStore();
+				try {
+					// Verificar si el usuario tiene rutinas y si alguna rutina tiene workouts
+					const hasWorkouts = Array.isArray(store.userData.routines) &&
+						store.userData.routines.some(routine => 
+							Array.isArray(routine.workouts) && routine.workouts.length > 0
+						);
+			
+					console.log("Tiene workouts:", hasWorkouts);
+					return hasWorkouts;
+				} catch (error) {
+					console.error("Error al verificar los workouts:", error.message);
+					return false;
+				}
+			},			
 			getMessage: async () => {
 				try {
 					// fetching data from the backend
