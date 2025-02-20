@@ -9,8 +9,6 @@ from api.services.workoutService import WorkoutService
 from api.services.trainingService import TrainingService
 from api.services.workoutCompletionService import WorkoutCompletionService
 from api.services.userImageService import UserImageService
-from api.services.soundCloudService import SoundCloudService
-from api.services.createPlaylist import CreatePlaylist
 from sqlalchemy.exc import SQLAlchemyError
 import os
 
@@ -19,10 +17,6 @@ api = Blueprint('api', __name__)
 # Allow CORS requests to this API
 CORS(api)
 
-# Configurar el servicio de SoundCloud
-client_id = os.getenv("SOUNDCLOUD_CLIENT_ID")
-client_secret = os.getenv("SOUNDCLOUD_CLIENT_SECRET")
-soundcloudservice = SoundCloudService()
 
 @api.route('/log_in', methods=['POST'])
 def log_in():
@@ -290,50 +284,3 @@ def complete_workout(workout_id, workout_completion_id):
     except Exception as e:
         return jsonify({"error": f"Error inesperado: {str(e)}"}), 500
 
-
-# Rutas para SoundCloud
-@api.route('/api/tracks', methods=['GET'])
-def get_tracks():
-    genre = request.args.get('genre')
-    if not genre:
-        return jsonify({"error": "Genre is required"}), 400
-
-    try:
-        tracks = soundcloud_service.get_tracks_by_genre(genre)
-        return jsonify(tracks), 200
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
-
-@api.route('/api/track/<int:track_id>', methods=['GET'])
-def get_track(track_id):
-    try:
-        track = soundcloud_service.get_track(track_id)
-        return jsonify(track), 200
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
-
-@api.route('/api/track/<int:track_id>/stream', methods=['GET'])
-def get_stream_url(track_id):
-    try:
-        stream_url, track_data = soundcloud_service.get_stream_url(track_id)
-        if not stream_url:
-            return jsonify({"error": "Stream URL not found"}), 404
-        return jsonify({
-            "stream_url": stream_url,
-            "track_data": track_data
-        }), 200
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
-
-# Rutas para acceder a las listas de reproducción almacenadas
-@api.route('/playlists/<genre>', methods=['GET'])
-def get_playlist(genre):
-    try:
-        file_path = f"api/data/{genre}_playlist.json"
-        if not os.path.exists(file_path):
-            return jsonify({"error": "Playlist not found"}), 404
-        with open(file_path, 'r') as file:
-            playlist = json.load(file)
-        return jsonify({"playlist": playlist}), 200
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
