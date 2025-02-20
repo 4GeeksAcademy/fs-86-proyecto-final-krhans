@@ -189,7 +189,7 @@
     display:flex;
     justify-content: center;
     position:absolute;
-    right:14%;
+    right:15%;
     width:fit-content;
     height:fit-content;
     color: var(--color-font);
@@ -198,6 +198,7 @@
     font-size: 0.8rem;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
     text-align: center;
+    margin-left: 2rem;
 };
 
 .avatar-motivation::after {

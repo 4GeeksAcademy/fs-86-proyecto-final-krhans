@@ -63,7 +63,7 @@ const LandingPage = () => {
             <StartRoutineButton onClick={routineTable} className="routine-button"/>
             <div className="avatar-section">
                 <div className="avatar-motivation"><Frases /></div>
-                <AvatarEmotions onClick={handleRedoInterview} avatarSrc={videoUrl} onStatisticsClick={statistics} />
+                <AvatarEmotions handleRedoInterview={handleRedoInterview} avatarSrc={videoUrl} onStatisticsClick={statistics} />
             </div>
         </div>
     );
