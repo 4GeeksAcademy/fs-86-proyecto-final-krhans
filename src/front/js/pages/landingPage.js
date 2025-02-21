@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Frases from "../component/motivationalPhrase";
 import AvatarEmotions from "../component/avatarEmotion";
@@ -6,12 +6,14 @@ import Calendar from "../component/calendar";
 import StartRoutineButton from "../component/startRoutine";
 import '../../styles/landingPageOverview.css'
 import { dispatcherUser } from "../store/dispatcher.js";
+import { Context } from "../store/appContext.js";
 
 const LandingPage = () => {
     const navigate = useNavigate();
     const [videoUrl, setVideoUrl] = useState(null);
     const videoId = "322634554020544";
     const [selectedDate, setSelectedDate] = useState(null);
+    const{actions}=useContext(Context);
 
     useEffect(() => {
         const fetchVideo = async () => {
@@ -50,11 +52,19 @@ const LandingPage = () => {
         navigate("/dashboard/statisticsscreen")
     }
     const routineTable = () => {
-        navigate("/dashboard/routine");
+        const hasWorkouts=actions.workoutExists();
+        if (!hasWorkouts) {
+            alert("You must conduct an interview first")
+            navigate("/dashboard");
+          } else {
+              navigate("/dashboard/routine");
+          }
     }
     const handleRedoInterview = () => {
         navigate("/dashboard");
     };
+
+    
 
     return (
         <div className="landing-container">

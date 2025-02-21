@@ -22,7 +22,7 @@ const AvatarEmotions = ({onStatisticsClick, handleRedoInterview }) => {
         <button className="interview-button" onClick={handleRedoInterview}>Redo Interview</button>
         <video src={videoUrl} className="landing-avatar" autoPlay loop muted />
         <button className="statistics-button" onClick={onStatisticsClick}>Statistics</button>
-      </div>
+      </div>    
     </div>
   );
 };

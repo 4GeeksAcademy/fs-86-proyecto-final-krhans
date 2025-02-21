@@ -17,7 +17,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					description: "",
 					profile_image: "",
 				},
-				routine: {
+				routines: {
 					name: "",
 					description: "",
 					days_per_week: "",
@@ -65,13 +65,24 @@ const getState = ({ getStore, getActions, setStore }) => {
 						setStore({
 							userData: {
 								...data.user,
-								user_image: data.user.user_image
+								user_image: data.user.user_image,
+								routines:data.routines
 							}
 						});
+						console.log("Datos del usuario que se obtienen al loguearse: ",store.userData)
 						return true;
 					} else {
 						throw new Error("Invalid credentials");
 					}
+				} catch (error) {
+					console.error("Login failed:", error);
+					throw error;
+				}
+			},
+			routineExists:()=>{
+				const store=getStore();
+				try {
+					console.log("Vamos a ver si hay rutinas en el usuario: ",store.userData)
 				} catch (error) {
 					console.error("Login failed:", error);
 					throw error;
@@ -191,7 +202,33 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return null; 
 				}
 			},
+			routineExists:()=>{
+				const store=getStore();
+				try {
+					const exist=Array.isArray(store.userData.routines) && store.userData.routines.length > 0;
+					console.log("Tiene rutinas: ",exist)
+					return exist
+				} catch (error) {
+					console.error("Error al obtener los datos del usuario:", error.message);
+					return null; 
+				}
+			},
+			workoutExists: () => {
+				const store = getStore();
+				try {
+					// Verificar si el usuario tiene rutinas y si alguna rutina tiene workouts
+					const hasWorkouts = Array.isArray(store.userData.routines) &&
+						store.userData.routines.some(routine => 
+							Array.isArray(routine.workouts) && routine.workouts.length > 0
+						);
 			
+					console.log("Tiene workouts:", hasWorkouts);
+					return hasWorkouts;
+				} catch (error) {
+					console.error("Error al verificar los workouts:", error.message);
+					return false;
+				}
+			},			
 			getMessage: async () => {
 				try {
 					// fetching data from the backend

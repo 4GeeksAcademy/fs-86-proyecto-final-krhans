@@ -128,7 +128,6 @@ export const dispatcherUser = {
                 },
                
             });
-            console.log("Respuesta de la API (cruda):", response);
             if (!response.ok) {
                 const errorData = await response.json();
                 console.error("Error Data:", errorData);
@@ -239,7 +238,6 @@ export const dispatcherUser = {
             }
     
             const data = await response.json();
-            console.log("Respuesta de la API:", data);
     
             if (data && data.Resp && data.Resp.url) {
                 const decodedUrl = decodeURIComponent(data.Resp.url);
