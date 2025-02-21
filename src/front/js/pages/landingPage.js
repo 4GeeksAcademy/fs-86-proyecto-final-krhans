@@ -13,7 +13,7 @@ const LandingPage = () => {
     const [videoUrl, setVideoUrl] = useState(null);
     const videoId = "322634554020544";
     const [selectedDate, setSelectedDate] = useState(null);
-    const{actions}=useContext(Context);
+    const { store, actions } = useContext(Context);
 
     useEffect(() => {
         const fetchVideo = async () => {
@@ -27,14 +27,9 @@ const LandingPage = () => {
     }, [videoId]);
 
     const today = new Date();
+    const currentMonth = today.toLocaleString('en-US', { month: 'long' });
 
-    const monthName = today.toLocaleString('en-US', { month: 'long' });
-    const formattedMonthName = monthName.charAt(0).toUpperCase() + monthName.slice(1);
-    
-    const currentMonth = today instanceof Date && !isNaN(today) 
-        ? today.toLocaleString('en-US', { month: 'long' }) 
-        : "Unknown Month";
-
+    // Generar los días de la semana con su fecha
     const currentWeek = Array.from({ length: 7 }, (_, i) => {
         const date = new Date(today);
         date.setDate(today.getDate() - today.getDay() + i + 1);
@@ -49,39 +44,54 @@ const LandingPage = () => {
     };
 
     const statistics = () => {
-        navigate("/dashboard/statisticsscreen")
-    }
+        navigate("/dashboard/statisticsscreen");
+    };
+
     const routineTable = () => {
-        const hasWorkouts=actions.workoutExists();
+        const hasWorkouts = actions.workoutExists();
         if (!hasWorkouts) {
-            alert("You must conduct an interview first")
+            alert("You must conduct an interview first");
             navigate("/dashboard");
-          } else {
-              navigate("/dashboard/routine");
-          }
-    }
+        } else {
+            navigate("/dashboard/routine");
+        }
+    };
+
     const handleRedoInterview = () => {
         navigate("/dashboard");
     };
 
-    
+    // Obtener workouts del store
+    const workouts = store.userData?.routines?.[0]?.workouts || [];
+    const weekDays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+
+    // Asignar workouts a los días de la semana según su índice
+    const assignedWorkouts = workouts.map((workout, index) => ({
+        ...workout,
+        day: weekDays[index % weekDays.length] // Se cicla entre los días de la semana
+    }));
+
+    // Buscar el workout del día seleccionado
+    const selectedWorkout = assignedWorkouts.find(workout => workout.day === selectedDate?.name);
 
     return (
         <div className="landing-container">
             <div className="calendar-container">
-            <Calendar monthName={currentMonth} currentWeek={currentWeek} onDateClick={handleDateClick} />
+                <Calendar monthName={currentMonth} currentWeek={currentWeek} onDateClick={handleDateClick} />
             </div>
-    
+
             <div className="routine-section">
                 {selectedDate ? (
                     <>
                         <h3 className="selected-day-title">{selectedDate.name}</h3>
                         <ul className="routine-list">
-                            <li>Ejercicio 1</li>
-                            <li>Ejercicio 2</li>
-                            <li>Ejercicio 3</li>
-                            <li>Ejercicio 4</li>
-                            <li>Ejercicio 5</li>
+                            {selectedWorkout ? (
+                                selectedWorkout.trainings.map((exercise, i) => (
+                                    <li key={i}>{exercise.name}</li>
+                                ))
+                            ) : (
+                                <p>No workout assigned for this day</p>
+                            )}
                         </ul>
                     </>
                 ) : (
@@ -91,11 +101,11 @@ const LandingPage = () => {
                     </div>
                 )}
             </div>
-    
+
             <div className="main-content">
                 <StartRoutineButton onClick={routineTable} className="routine-button" />
             </div>
-    
+
             <div className="bottom-section">
                 <div className="avatar-motivation-container">
                     <div className="avatar-motivation"><Frases /></div>
