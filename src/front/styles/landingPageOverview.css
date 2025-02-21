@@ -248,69 +248,73 @@
     margin-top: 20px;
 }
 
-.landing-avatar {
+.avatar-motivation-container {
     display: flex;
-    width:100px;
-    height:100px;
-    margin-top: 30px; 
-    flex-direction: column;
-    align-items: center;
     justify-content: center;
-
-    background-color: #f2eafa;
-    border: 4px solid #3f9dbc;
-    border-radius: 50%;
-    position: relative;
-    z-index: 2;
-    transition: margin-top 0.3s ease-in-out;
+    width: 100%;
+    margin-bottom: -20px;
 }
 
 .avatar-motivation {
     background-color: #D7BDE2;
     color: #4A235A;
-    font-size: 1rem;
     font-weight: bold;
-    padding: 8px 15px;
+    padding: 15px 20px;
     border-radius: 15px;
-    border: 2px solid #BB8FCE;
-    position: absolute;
-    top: -35px;
-    left: 50%;
-    transform: translateX(-50%);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     text-align: center;
-    max-width: 250px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    position: relative;
+    max-width: 80%;
+    z-index: 2;
+    animation: aparecer 3s ease-out forwards;    
 }
 
 .avatar-motivation::after {
     content: "";
     position: absolute;
-    bottom: -10px;
+    bottom: -12px;
     left: 50%;
     transform: translateX(-50%);
     width: 0;
     height: 0;
-    border-style: solid;
-    border-width: 10px 10px 0 10px;
-    border-color: #D7BDE2 transparent transparent transparent;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 12px solid #D7BDE2;
 }
 
+.avatar-landing-container{
+    width:160px;
+    height:auto;
+    display:flex;
+    justify-content: center;
+    animation: aparecer 1.5s ease-out forwards;
+}
 
-.bottom-buttons {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    max-width: 300px;
-    margin-top: 60px;
+.avatar-emotions__avatar{
+    width:auto;
+    height:auto;
+    display:flex;
+    flex-direction:row;
+    align-items: center; 
+}
+
+.landing-avatar {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 5px solid #673A69;
+    background-color: #fff;
 }
 
 .interview-button,
 .statistics-button {
-    background-color: #C39BD3;
-    width:auto;
-    color: #4A235A;
+    background-color: #C2A8E3;
+    color: #673A69;
     font-weight: bold;
-    border-radius: 10px;
-    border: 2px solid #BB8FCE;
+    border: 2px solid #3f9dbc;
+    border-radius: 8px;
+    padding: 10px;
+    width: fit-content;
+    height:fit-content;
     text-align: center;
 }
