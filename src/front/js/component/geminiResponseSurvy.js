@@ -24,7 +24,7 @@ const GenerateRoutine = () => {
     let prompt = "";
 
     if (Object.keys(coachResponse).length > 0) {
-      prompt = `Genera una rutina de entrenamiento personalizada en formato JSON basado en las respuestas del usuario.
+      prompt = `Genera una rutina de entrenamiento personalizada en formato JSON basado en las respuestas del usuario, que sean 7 workout deacuerdo a los 7 dias de las semana.
 
       Formato de salida esperado (solo JSON, sin explicaciones):
       \`\`\`json
@@ -36,7 +36,7 @@ const GenerateRoutine = () => {
           },
           "workout": [
               {
-                  "fitness_level": "Principiante/Intermedio/Avanzado",
+                  "fitness_level": "Depende respuesta del usuario"",
                   "category": "Lectura/Recuperación/Mentalidad/Desarrollo Personal",
                   "goal": "Objetivo basado en el usuario",
                   "difficulty": "Baja/Media/Alta",
@@ -57,7 +57,7 @@ const GenerateRoutine = () => {
       Recuerda devolver solo el JSON sin texto adicional.
       `;
     } else if (Object.keys(fitAnswers).length > 0) {
-      prompt = `Basado en las respuestas del usuario, genera una rutina de entrenamiento en formato JSON.
+      prompt = `Basado en las respuestas del usuario, genera una rutina de entrenamiento en formato JSON,  que sean 7 workout deacuerdo a los 7 dias de las semana.
 
       Formato de salida esperado (solo JSON, sin explicaciones):
       \`\`\`json
@@ -69,7 +69,7 @@ const GenerateRoutine = () => {
           },
           "workout": [
               {
-                  "fitness_level": "Principiante/Intermedio/Avanzado",
+                  "fitness_level": "depende respuesta del usuario",
                   "category": "Cardio/Fuerza/Flexibilidad",
                   "goal": "Objetivo basado en el usuario",
                   "difficulty": "Baja/Media/Alta",
