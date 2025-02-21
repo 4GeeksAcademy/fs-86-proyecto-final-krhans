@@ -16,17 +16,13 @@ export const About = () => {
 
     const teamMembers = [
         { id: "gabriel", name: "Mugiwara Tech", image: gabrielImageUrl },
-        { id: "cristian", name: "Cristian", image: cristianImageUrl },
-        { id: "marco", name: "Marco", image: marcoImageUrl },
-        { id: "albanta", name: "Albanta", image: albantaImageUrl }
+        { id: "cristian", name: "Chufli", image: cristianImageUrl },
+        { id: "marco", name: "Leo", image: marcoImageUrl },
+        { id: "albanta", name: "Baine", image: albantaImageUrl }
     ];
 
     return (
         <div className="container text-center">
-            <nav className="navbar navbar-expand-lg custom-navbar">
-                <div className="container-fluid justify-content-end">
-                </div>
-            </nav>
 
             <div className="about-message">
                 {showText && <h2 className="fade-in">Our journey: Dream, fight and achieve</h2>}
