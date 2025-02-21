@@ -1,12 +1,15 @@
-import React, { useState, useEffect } from 'react'; 
+import React, { useState, useEffect, useContext } from 'react'; 
+import { Context } from "../store/appContext";
 import '../../styles/statisticsScreen.css';
 import { dispatcherUser } from "../store/dispatcher.js";
-
 import DailyProgress from './dailyProgres';
 import WeeklyProgress from './weeklyProgress';
 
 const StatisticsScreen = () => {
-    
+
+    const { store } = useContext(Context);
+    const [dailyProgress, setDailyProgress] = useState(0);
+
     const [showStats, setShowStats] = useState(false);
     const [videoUrl, setVideoUrl] = useState(null);
     const videoId = "322909542675840";
@@ -35,31 +38,12 @@ const StatisticsScreen = () => {
                 <h2>Keep it up, you can do it!</h2>
                 <video src={videoUrl} className="khrans-video" autoPlay loop muted />
             </div>
-            <div className="progress-container">
-                <DailyProgress/>
-                <WeeklyProgress/>
 
-                <div className="exercise-info">
-                    <h3>Featured Exercise</h3>
-                    <div className="exercise-graph">
-                       
-                    </div>
-                    <div className={`exercise-stats ${showStats ? 'show' : ''}`}>
-                        <div className="stat-item">
-                            <h4>Percentage</h4>
-                            <div className="stat-value">80%</div>
-                        </div>
-                        <div className="stat-item">
-                            <h4>Level</h4>
-                            <div className="stat-value">Advanced</div>
-                        </div>
-                        <div className="stat-item">
-                            <h4>Pending</h4>
-                            <div className="stat-value">15%</div>
-                        </div>
-                    </div>
-                </div>
+            <div className="progress-container">
+            <DailyProgress routine={store.userData.routines[0]} onDailyProgressUpdate={setDailyProgress} />
+            <WeeklyProgress routine={store.userData.routines[0]} dailyProgress={dailyProgress} />
             </div>
+
         </div>
     );
 };
