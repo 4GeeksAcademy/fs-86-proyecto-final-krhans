@@ -1,18 +1,40 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 import "../../styles/WeeklyProgress.css"; 
 
-const WeeklyProgress = () => {
-  
-  const weekProgress = [
-    { day: "Monday", progress: 100 },
-    { day: "Tuesday", progress: 80 },
-    { day: "Wendsday", progress: 60 },
-    { day: "Thuesday", progress: 90 },
-    { day: "Friday", progress: 100 },
-    { day: "Saturday", progress: 70 },
-    { day: "Sunday", progress: 50 },
-  ];
+const WeeklyProgress = ({ routine, dailyProgress }) => {
+  const [weekProgress, setWeekProgress] = useState([]);
+
+  useEffect(() => {
+    if (!routine || !routine.workouts) return;
+
+    const today = new Date();
+    const todayName = today.toLocaleDateString("en-US", { weekday: "long" });
+    const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+    let weeklyData = daysOfWeek.map(day => ({ day, progress: 0 }));
+
+    routine.workouts.forEach(workout => {
+      workout.completions.forEach(completion => {
+        if (completion.completed && completion.date_completed) {
+          let completedDate = new Date(completion.date_completed);
+          let dayName = daysOfWeek[completedDate.getDay()];
+          let dayEntry = weeklyData.find(entry => entry.day === dayName);
+          if (dayEntry) {
+            dayEntry.progress += 100 / routine.workouts.length;
+          }
+        }
+      });
+    });
+
+    // Actualizar el progreso del día actual con DailyProgress
+    let todayEntry = weeklyData.find(entry => entry.day === todayName);
+    if (todayEntry) {
+      todayEntry.progress = dailyProgress;
+    }
+
+    setWeekProgress(weeklyData);
+  }, [routine, dailyProgress]);
 
   return (
     <div className="weekly-progress-container">
