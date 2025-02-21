@@ -195,6 +195,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			getSoundCloudTracksByGenre: async (genre) => {
 				try {
 					const tracks = await SoundCloudDispatcher.getTracksByGenre(genre);
+					console.log("Tracks: ",tracks)
 					console.log("Tracks de SoundCloud obtenidos:", tracks);
 					return tracks;
 				} catch (error) {
@@ -216,7 +217,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 			workoutExists: () => {
 				const store = getStore();
 				try {
-					// Verificar si el usuario tiene rutinas y si alguna rutina tiene workouts
 					const hasWorkouts = Array.isArray(store.userData.routines) &&
 						store.userData.routines.some(routine => 
 							Array.isArray(routine.workouts) && routine.workouts.length > 0

@@ -85,7 +85,7 @@ const RoutineOverview = () => {
         };
         getTracksByGenre();
     }
-}, []); 
+}, [accessToken]); 
 
 
 
