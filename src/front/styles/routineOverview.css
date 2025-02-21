@@ -4,7 +4,8 @@
     align-items: center;
     justify-content: center;
     /* min-height: 100vh; */
-    padding-top: 5rem;
+    padding-top: 2rem;
+    margin-top: -1rem;
     background-color: #F2EAFA;
     font-family: sans-serif;
     color: #084F67;
@@ -25,13 +26,35 @@
 }
 
 .routine-details p {
-    font-size: 22px;
+    font-size: 26px;
     font-weight: bold;
     color: #5C2E91;
     text-transform: uppercase;
     letter-spacing: 2px;
     margin: 0;
 }
+
+.soundcloud-player-container {
+    background-color: #5C2E91; /* Mismo fondo que el de abajo */
+    border: 6px solid #ad80ca; /* Mismo borde que abajo */
+    border-radius: 15px;
+    padding: 18px; /* Espaciado interno */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Misma sombra */
+    width: 100%;
+    max-width: 320px; /* Mismo ancho máximo que abajo */
+    margin-bottom: 20px; /* Separación del siguiente div */
+    box-sizing: border-box; /* incluye padding y border en el ancho */
+    display: flex;
+    justify-content: center; /* centra el widget */
+}
+
+/* Aquí agregas lo siguiente */
+.soundcloud-player-container iframe {
+    max-width: 100%; /* que no se salga del contenedor */
+    height: 120px; /* ajusta altura, más pequeño que original */
+    border-radius: 10px; /* opcional, redondea bordes */
+}
+
 
 .bottom-container {
     display: flex;
@@ -41,7 +64,7 @@
 }
 .music-timer-wrapper {
     background-color: #DBB8F2;
-    border: 4px solid #3F9DBC;
+    border: 4px solid #5C2E91;
     border-radius: 15px;
     padding: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -71,6 +94,7 @@
     align-items: center;
     gap: 8px;
     margin-right: 10px;
+    
 }
 .progress-circle {
     transform: rotate(-90deg);
@@ -94,8 +118,8 @@
 }
 .start-timer-button,
 .work-done-button {
-    background-color: #DBB8F2;
-    border: 5px solid #BFE3F2;
+    background-color: #BFE3F2;
+    border: 5px solid #5C2E91;
     border-radius: 20px;
     padding: 8px 18px;
     cursor: pointer;

@@ -176,13 +176,13 @@ const RoutineOverview = () => {
         setMessage(trainings[currentIndex + 1].name);
       } else {
         setIsRunning(false);
-        setMessage("✔️ ¡Rutina completada!");
+        setMessage("✔️ ¡DO IT!");
       }
     } else {
 
       setIsResting(true);
       setTimeLeft(REST_PERIOD);
-      setMessage(`🛑 Descanso...`);
+      setMessage(`🛑 Interval...`);
     }
   };
 
@@ -210,32 +210,36 @@ const RoutineOverview = () => {
 
   return (
     <div className="routine-page-container">
-      <div className="routine-details">
-        {message && <p className="timer-message">{message}</p>}
-      </div>
+      <div className="soundcloud-player-container">
+  <div className="soundcloud-player">
+    {currentTrackUrl && (
+      <iframe
+        id="soundcloud-player"
+        width="100%"
+        height="100" // Reducimos la altura aquí
+        scrolling="no"
+        frameBorder="no"
+        allow="autoplay"
+        src={`https://w.soundcloud.com/player/?url=${encodeURIComponent(
+          currentTrackUrl
+        )}&auto_play=true&hide_related=true&show_comments=false&show_user=false&show_reposts=false`}
+        onLoad={() => console.log("Iframe cargado con éxito")}
+      />
+    )}
+  </div>
+</div>
+
+  
+      {/* Routine Details ahora en la posición inferior */}
       <div className="bottom-container">
         <div className="music-timer-wrapper">
-          <div className="music-timer-wrapper">
-
-            <div className="soundcloud-player">
-              {currentTrackUrl && (
-                <iframe
-                  id="soundcloud-player"
-                  width="100%"
-                  height="166"
-                  scrolling="no"
-                  frameBorder="no"
-                  allow="autoplay"
-                  src={`https://w.soundcloud.com/player/?url=${encodeURIComponent(
-                    currentTrackUrl
-                  )}&auto_play=true&hide_related=true&show_comments=false&show_user=false&show_reposts=false`}
-                  onLoad={() => console.log("Iframe cargado con éxito")}
-                />
-              )}
+          
+            <div className="routine-details">
+              {message && <p className="timer-message">{message}</p>}
             </div>
-          </div>
+          
+  
           <div className="timer-buttons-container">
-           
             <Timer
               timeLeft={timeLeft}
               isResting={isResting}
@@ -243,7 +247,7 @@ const RoutineOverview = () => {
               currentIndex={currentIndex}
               handleToggleTimer={handleToggleTimer}
             />
-           
+  
             <div className="buttons-container">
               <button className="start-timer-button" onClick={handleToggleTimer}>
                 {isRunning ? "❚❚" : "▶️"}
@@ -254,6 +258,7 @@ const RoutineOverview = () => {
       </div>
     </div>
   );
+  
 };
 
 export default RoutineOverview;
