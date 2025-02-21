@@ -31,6 +31,7 @@ const RoutineOverview = () => {
 
   const isSoundCloudAPIAvailable = () => typeof window.SC !== "undefined";
 
+  //Metodos SoundCloud
   const loadSoundCloudAPI = () => {
     if (!isSoundCloudAPIAvailable()) {
       const script = document.createElement("script");
@@ -42,7 +43,7 @@ const RoutineOverview = () => {
     }
   };
 
-  //Metodos SoundCloud
+
   useEffect(() => {
     loadSoundCloudAPI();
   }, []);
@@ -66,71 +67,26 @@ const RoutineOverview = () => {
     }, 100);
   };
 
-  const getAccessToken = async () => {
-    //TODO:PREGUNTAR A HANS COMO CONTROLO SI EL TOKEN HA EXPIRADO O NO 
-    localStorage.removeItem("soundcloud_token");
-    const storedToken = localStorage.getItem("soundcloud_token");
-    if (storedToken) {
-      setAccessToken(storedToken);
-      return;
-    }
 
-    try {
-      const response = await fetch("https://api.soundcloud.com/oauth2/token", {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: new URLSearchParams({
-          grant_type: "client_credentials",
-          client_id: clientId,
-          client_secret: clientSecret,
-        }),
-      });
-      console.log("Accediendo al token...")
-      const data = await response.json();
-      if (data.access_token) {
-        localStorage.setItem("soundcloud_token", data.access_token);
-        setAccessToken(data.access_token);
-      } else {
-        console.error("Error obteniendo el token:", data);
-      }
-    } catch (error) {
-      console.error("Error al autenticar con OAuth:", error);
-    }
-  };
-
-  const getTracks = async (genre) => {
-    if (!accessToken || tracks.length > 0) return;
-
-    try {
-      const response = await fetch(
-        `https://api.soundcloud.com/tracks?genre=${genre}&limit=10`,
-        {
-          headers: { Authorization: `OAuth ${accessToken}` },
-        }
-      );
-
-      const data = await response.json();
-      if (Array.isArray(data)) {
-        setTracks(data);
-      } else {
-        console.error("Error: No se obtuvo un listado de canciones", data);
-        setTracks([]);
-      }
-    } catch (error) {
-      console.error("Error fetching tracks: ", error);
-      setTracks([]);
-    }
-  };
 
   useEffect(() => {
+    const getAccessToken=async ()=>{
+      const token=await actions.getSoundCloudAccessToken()
+      setAccessToken(token)
+    }
     getAccessToken();
   }, []);
 
   useEffect(() => {
     if (accessToken) {
-      getTracks(genre);
+        const getTracksByGenre = async () => {
+            const tracks = await actions.getSoundCloudTracksByGenre(genre);
+            setTracks(tracks);
+        };
+        getTracksByGenre();
     }
-  }, [accessToken]);
+}, [accessToken]); 
+
 
 
   useEffect(() => {
@@ -179,7 +135,7 @@ const RoutineOverview = () => {
 
   //Metodos Timer
   useEffect(() => {
-    const fetchTrainings = async () => {
+    const getTrainings = async () => {
       try {
         const data = await actions.getTrainings();
         if (data.length > 0) {
@@ -188,13 +144,12 @@ const RoutineOverview = () => {
           setTimeLeft(parseInt(data[0].duration, 10));
           setMessage(data[0].name);
         }
-        console.log("Entrenamientos: ", data);
       } catch (error) {
         console.log("Error: ", error.message);
       }
     };
 
-    fetchTrainings();
+    getTrainings();
   }, []);
 
   useEffect(() => {

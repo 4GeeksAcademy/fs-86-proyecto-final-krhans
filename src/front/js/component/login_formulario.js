@@ -28,12 +28,13 @@ const LogInOverview = () => {
                 const success = await actions.login(email, password);
                 if (isMounted.current) { 
                     if (success) {
+                        const routineExists=actions.routineExists()
                         setPopupMessage("✅ Login successful! Redirecting...");
                         setShowPopup(true);
                         setTimeout(() => {
                             if (isMounted.current) { 
                                 setShowPopup(false);
-                                navigate("/dashboard/landing"); 
+                                navigate(routineExists ? "/dashboard/landing" : "/dashboard");
                             }
                         }, 3000);
                     } else {

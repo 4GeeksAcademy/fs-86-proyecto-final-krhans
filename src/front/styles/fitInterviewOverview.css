@@ -10,7 +10,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100vh;
+    height: 70vh;
     text-align: center;
     padding: 20px;
     background: var(--color-background);
@@ -21,10 +21,39 @@
     background: var(--color-button);
     border: 2px solid var(--color-navbar);
     border-radius: 20px;
-    padding: 10px;
-    margin-bottom: 90px;
+    padding: 15px;
+    margin-bottom: 10px;
     width: 90%;
+    max-width: 300px;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    position: relative;
+    text-align: center;
+}
+
+.fitinterview-question::after {
+    content: "";
+    position: absolute;
+    bottom: -14px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 12px 10px 0 10px;
+    border-color: var(--color-button) transparent transparent transparent;
+}
+
+.fitinterview-question::before {
+    content: "";
+    position: absolute;
+    bottom: -16px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 14px 12px 0 12px; 
+    border-color: var(--color-navbar) transparent transparent transparent;
 }
 
 .fitinterview-question h2 {

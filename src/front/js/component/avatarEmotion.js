@@ -18,15 +18,11 @@ const AvatarEmotions = ({onStatisticsClick, handleRedoInterview }) => {
       
   return (
     <div className="avatar-emotions">
-      <button className="interview-button" onClick={handleRedoInterview}>Redo Interview</button>
       <div className="avatar-emotions__avatar">
-        <video src={videoUrl} className="avatar-video" autoPlay loop muted />
-      </div>
-      <div className="avatar-emotions__statistics">
-        <button className="statistics-button" onClick={onStatisticsClick}>
-          STATISTICS
-        </button>
-      </div>
+        <button className="interview-button" onClick={handleRedoInterview}>Redo Interview</button>
+        <video src={videoUrl} className="landing-avatar" autoPlay loop muted />
+        <button className="statistics-button" onClick={onStatisticsClick}>Statistics</button>
+      </div>    
     </div>
   );
 };

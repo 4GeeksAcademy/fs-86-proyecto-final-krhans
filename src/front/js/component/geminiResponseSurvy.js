@@ -138,8 +138,8 @@ const GenerateRoutine = () => {
   return (
     <div className='gemini-container'>
       <div className='gemini-container_items'>
-        <h1 className='gemini_title'>"You're just one step away from turning your effort into results! Click and start your journey towards a better version of yourself. "</h1>
-        <div className="avatar-container">
+        <div className='gemini_title'>"You're just one step away from turning your effort into results! Click and start your journey towards a better version of yourself. "</div>
+        <div className="avatarGenerateRoutine-container">
                   <video src={videoUrl} className="khransRoutine-video" autoPlay loop muted />
               </div>
         <button className='gemini-button' onClick={generarRutina}>Create Routine</button>

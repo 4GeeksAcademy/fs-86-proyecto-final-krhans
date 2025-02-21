@@ -1,6 +1,7 @@
 import { dispatcherUser } from "./dispatcher";
 import UserData from "../clases/userdata";
 import { Navigate } from "react-router-dom";
+import { SoundCloudDispatcher } from "../store/SoundCloudDispatcher";
 
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
@@ -16,28 +17,28 @@ const getState = ({ getStore, getActions, setStore }) => {
 					description: "",
 					profile_image: "",
 				},
-				routine: {
+				routines: {
 					name: "",
 					description: "",
 					days_per_week: "",
-					workouts:{
-						fitness_level:"",
-						category : "", 
-						goal : "",
-						difficulty : "",
-						is_active : "",
-						"trainings":{
-							name :"",
-							is_completed:"",
-							mode :"", 
-							duration :"",
-							repetitions :"",
-							sets :"",
-							rest :""
+					workouts: {
+						fitness_level: "",
+						category: "",
+						goal: "",
+						difficulty: "",
+						is_active: "",
+						"trainings": {
+							name: "",
+							is_completed: "",
+							mode: "",
+							duration: "",
+							repetitions: "",
+							sets: "",
+							rest: ""
 						}
 					}
 				},
-				
+
 			},
 		},
 		actions: {
@@ -64,13 +65,24 @@ const getState = ({ getStore, getActions, setStore }) => {
 						setStore({
 							userData: {
 								...data.user,
-								user_image: data.user.user_image
+								user_image: data.user.user_image,
+								routines:data.routines
 							}
 						});
+						console.log("Datos del usuario que se obtienen al loguearse: ",store.userData)
 						return true;
 					} else {
 						throw new Error("Invalid credentials");
 					}
+				} catch (error) {
+					console.error("Login failed:", error);
+					throw error;
+				}
+			},
+			routineExists:()=>{
+				const store=getStore();
+				try {
+					console.log("Vamos a ver si hay rutinas en el usuario: ",store.userData)
 				} catch (error) {
 					console.error("Login failed:", error);
 					throw error;
@@ -148,43 +160,89 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 			getTrainings: async () => {
+				//TODO:RETOCAR
 				const store = getStore();
 				let workout_id;
 				let trainingList = [];
 				try {
 					const token = localStorage.getItem("jwt-token");
 					if (!token) throw new Error("No hay token disponible.");
-				
-					for (let i = 0; i < store.userData.routines[0].workouts.length; i++) { 
-						if (store.userData.routines[0].workouts[i].is_active) { 
-							workout_id = store.userData.routines[0].workouts[i].id; 
-							trainingList.push(...store.userData.routines[0].workouts[i].trainings); 
+					for (let i = 0; i < store.userData.routines[0].workouts.length; i++) {
+						if (store.userData.routines[0].workouts[i].is_active) {
+							workout_id = store.userData.routines[0].workouts[i].id;
+							trainingList.push(...store.userData.routines[0].workouts[i].trainings);
 							break;
 						}
 					}
-				
-				 
-				return trainingList || [];
-			} catch(error) {
-				console.error("Error al obtener los entrenamientos:", error.message);
-				return null;
-			}
-		},
 
-		getMessage: async () => {
-			try {
-				// fetching data from the backend
-				const resp = await fetch(process.env.BACKEND_URL + "/api/hello")
-				const data = await resp.json()
-				setStore({ message: data.message })
-				// don't forget to return something, that is how the async resolves
-				return data;
-			} catch (error) {
-				console.log("Error loading message from backend", error);
-			}
-		},
-	}
-};
+
+					return trainingList || [];
+				} catch (error) {
+					console.error("Error al obtener los entrenamientos:", error.message);
+					return null;
+				}
+			},
+			getSoundCloudAccessToken: async () => {
+				try {
+					const token = await SoundCloudDispatcher.getAccessToken();
+					return token
+				} catch (error) {
+					console.error("Error al obtener el token de SoundCloud:", error.message);
+					return null; 
+				}
+			},
+			
+			getSoundCloudTracksByGenre: async (genre) => {
+				try {
+					const tracks = await SoundCloudDispatcher.getTracksByGenre(genre);
+					console.log("Tracks: ",tracks)
+					console.log("Tracks de SoundCloud obtenidos:", tracks);
+					return tracks;
+				} catch (error) {
+					console.error("Error al obtener los tracks de SoundCloud:", error.message);
+					return null; 
+				}
+			},
+			routineExists:()=>{
+				const store=getStore();
+				try {
+					const exist=Array.isArray(store.userData.routines) && store.userData.routines.length > 0;
+					console.log("Tiene rutinas: ",exist)
+					return exist
+				} catch (error) {
+					console.error("Error al obtener los datos del usuario:", error.message);
+					return null; 
+				}
+			},
+			workoutExists: () => {
+				const store = getStore();
+				try {
+					const hasWorkouts = Array.isArray(store.userData.routines) &&
+						store.userData.routines.some(routine => 
+							Array.isArray(routine.workouts) && routine.workouts.length > 0
+						);
+			
+					console.log("Tiene workouts:", hasWorkouts);
+					return hasWorkouts;
+				} catch (error) {
+					console.error("Error al verificar los workouts:", error.message);
+					return false;
+				}
+			},			
+			getMessage: async () => {
+				try {
+					// fetching data from the backend
+					const resp = await fetch(process.env.BACKEND_URL + "/api/hello")
+					const data = await resp.json()
+					setStore({ message: data.message })
+					// don't forget to return something, that is how the async resolves
+					return data;
+				} catch (error) {
+					console.log("Error loading message from backend", error);
+				}
+			},
+		}
+	};
 };
 
 export default getState;
