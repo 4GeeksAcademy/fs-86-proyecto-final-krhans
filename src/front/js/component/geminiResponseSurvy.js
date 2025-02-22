@@ -24,7 +24,7 @@ const GenerateRoutine = () => {
     let prompt = "";
 
     if (Object.keys(coachResponse).length > 0) {
-      prompt = `Genera una rutina de entrenamiento personalizada en formato JSON basado en las respuestas del usuario, que sean 7 workout deacuerdo a los 7 dias de las semana.
+      prompt = `Genera una rutina de entrenamiento personalizada en formato JSON basado en las respuestas del usuario, que sean 7 workout deacuerdo a los 7 dias de las semana y solo 7.
 
       Formato de salida esperado (solo JSON, sin explicaciones):
       \`\`\`json
@@ -44,7 +44,7 @@ const GenerateRoutine = () => {
                       {
                           "name": "Ejercicio 1",
                           "is_complete":"false por defecto",
-                          "mode": "minutos o segudos",
+                          "mode": "minutos o segudos, repeticiones",
                           "duration": "Duración, un solo valor, aunque mode me devuelva repeticiones dame un tiempo en donde el usuario realize el ejerccicio",
                           "repetitions": "cantidad de repeticiones " ,
                           "rest": "tiempo de descanso entre ejercicios"
@@ -57,7 +57,7 @@ const GenerateRoutine = () => {
       Recuerda devolver solo el JSON sin texto adicional.
       `;
     } else if (Object.keys(fitAnswers).length > 0) {
-      prompt = `Basado en las respuestas del usuario, genera una rutina de entrenamiento en formato JSON,  que sean 7 workout deacuerdo a los 7 dias de las semana.
+      prompt = `Basado en las respuestas del usuario, genera una rutina de entrenamiento en formato JSON,  que sean 7 workout deacuerdo a los 7 dias de las semana y solo 7.
 
       Formato de salida esperado (solo JSON, sin explicaciones):
       \`\`\`json
@@ -77,7 +77,7 @@ const GenerateRoutine = () => {
                       {
                           "name": "Ejercicio 1",
                           "is_complete":"false por defecto",
-                          "mode": " minutos o segundos ",                          
+                          "mode": " minutos o segundos, repeticiones ",                          
                           "duration": "Duración, un solo valor, aunque mode me devuelva repeticiones dame un tiempo en donde el usuario realize el ejerccicio",
                           "repetitions": "cantidad de repeticiones " ,
                           "rest": "tiempo de descanso entre ejercicios"
