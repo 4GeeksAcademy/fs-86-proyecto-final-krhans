@@ -1,6 +1,6 @@
 import React from "react";
 
-const Timer = ({ timeLeft, isResting, trainings, currentIndex }) => {
+const Timer = ({ timeLeft, isResting, workout, currentIndex }) => {
   return (
     <div className="timer-container">
       <svg className="progress-circle" width="90" height="90">
@@ -13,7 +13,7 @@ const Timer = ({ timeLeft, isResting, trainings, currentIndex }) => {
           style={{
             strokeDasharray: 251,
             strokeDashoffset:
-              (1 - timeLeft / (isResting ? 10 : trainings[currentIndex]?.duration)) * 251,
+              (1 - timeLeft / (isResting ? 10 : workout.trainings[currentIndex]?.duration)) * 251,
           }}
         />
         <text

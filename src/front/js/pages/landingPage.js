@@ -46,16 +46,6 @@ const LandingPage = () => {
         navigate("/dashboard/statisticsscreen");
     };
 
-    const routineTable = () => {
-        const hasWorkouts = actions.workoutExists();
-        if (!hasWorkouts) {
-            alert("You must conduct an interview first");
-            navigate("/dashboard");
-        } else {
-            navigate("/dashboard/routine");
-        }
-    };
-
     const handleRedoInterview = () => {
         navigate("/dashboard");
     };
@@ -72,6 +62,14 @@ const LandingPage = () => {
 
     // Buscar el workout del día seleccionado
     const selectedWorkout = assignedWorkouts.find(workout => workout.day === selectedDate?.name);
+
+    const routineTable = () => {
+        if (!selectedWorkout) {
+            alert("No routine found for today.");
+            return;
+        }
+        navigate("/dashboard/routine", { state: { day: currentWeek, workout: selectedWorkout} });
+    };
 
     return (
         <div className="landing-container">

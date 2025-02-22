@@ -2,7 +2,7 @@ export const dispatcherUser = {
     post: async (userData) => {
         try {
             const response = await fetch(`${process.env.BACKEND_URL}/api/sign_up`, {
-                method: "POST",
+                method: "POST",               
                 headers: {
                     "Content-Type": "application/json"
                 },
