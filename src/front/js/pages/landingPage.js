@@ -29,10 +29,9 @@ const LandingPage = () => {
     const today = new Date();
     const currentMonth = today.toLocaleString('en-US', { month: 'long' });
 
-    // Generar los días de la semana con su fecha
     const currentWeek = Array.from({ length: 7 }, (_, i) => {
         const date = new Date(today);
-        date.setDate(today.getDate() - today.getDay() + i + 1);
+        date.setDate(today.getDate() + i);
         return {
             name: date.toLocaleString('en-US', { weekday: 'long' }),
             date: date.getDate()
@@ -40,7 +39,7 @@ const LandingPage = () => {
     });
 
     const handleDateClick = (day) => {
-        setSelectedDate(day);
+        setSelectedDate(prevDate => (prevDate?.name === day.name ? null : day));
     };
 
     const statistics = () => {
