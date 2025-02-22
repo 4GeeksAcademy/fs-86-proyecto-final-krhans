@@ -144,6 +144,7 @@ export const dispatcherUser = {
     },
     postRoutine: async (token, routine) => {
         try {
+            
             const response = await fetch(`${process.env.BACKEND_URL}/api/routine`, {
                 method: "POST",
                 headers: {

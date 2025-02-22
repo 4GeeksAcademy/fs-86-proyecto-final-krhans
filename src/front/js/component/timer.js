@@ -1,6 +1,13 @@
 import React from "react";
 
-const Timer = ({ timeLeft, isResting, workout, currentIndex }) => {
+const Timer = ({ timeLeft, workout, currentIndex }) => {
+  // Verifica si workout y currentIndex son válidos
+  if (!workout || !workout.trainings || !workout.trainings[currentIndex]) {
+    return null; // No renderiza nada si los datos no están disponibles
+  }
+
+  const duration = workout.trainings[currentIndex]?.duration || 60;
+
   return (
     <div className="timer-container">
       <svg className="progress-circle" width="90" height="90">
@@ -12,8 +19,8 @@ const Timer = ({ timeLeft, isResting, workout, currentIndex }) => {
           r="40"
           style={{
             strokeDasharray: 251,
-            strokeDashoffset:
-              (1 - timeLeft / (isResting ? 10 : workout.trainings[currentIndex]?.duration)) * 251,
+            strokeDashoffset: (251-(timeLeft / duration) * 251),// Cierra el círculo conforme pasa el tiempo
+           
           }}
         />
         <text

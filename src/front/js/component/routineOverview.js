@@ -1,43 +1,36 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
-import { useNavigate, useLocation} from "react-router-dom";
-import { Context } from "../store/appContext"; 
+import { useNavigate, useLocation } from "react-router-dom";
+import { Context } from "../store/appContext";
 import "../../styles/routineOverview.css";
 import Timer from "./timer";
 
 const RoutineOverview = () => {
   const navigate = useNavigate();
   const { actions } = useContext(Context);
-
   const location = useLocation();
-  const { day, workout } = location.state || {}; 
-  
-
-  //Timer
+  const { day, workout } = location.state || {};
   const [trainings, setTrainings] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [timeLeft, setTimeLeft] = useState(0);
-  const [isRunning, setIsRunning] = useState(false);
-  const [message, setMessage] = useState(workout?.[0]?.name || "");
-  const [isResting, setIsResting] = useState(false);
+  const [timerState, setTimerState] = useState({
+    timeLeft: 0,
+    isRunning: false,
+    message: "Rest Day", // Mensaje predeterminado
+    isResting: false,
+  });
 
   const REST_PERIOD = 10;
+  const [soundCloudState, setSoundCloudState] = useState({
+    genre: "jazz",
+    tracks: [],
+    accessToken: "",
+    currentTrackUrl: "",
+    isPlayerReady: false,
+  });
 
-  //SoundCloud
-  const [genre, setGenre] = useState("jazz");
-  const [tracks, setTracks] = useState([]);
-  const [accessToken, setAccessToken] = useState("");
-  const [currentTrackUrl, setCurrentTrackUrl] = useState("");
-  const [isPlayerReady, setIsPlayerReady] = useState(false);
   const playerRef = useRef(null);
 
-  const clientId = process.env.REACT_APP_SOUNDCLOUD_CLIENT_ID;
-  const clientSecret = process.env.REACT_APP_SOUNDCLOUD_CLIENT_SECRET;
-
-  const isSoundCloudAPIAvailable = () => typeof window.SC !== "undefined";
-
-  //Metodos SoundCloud
   const loadSoundCloudAPI = () => {
-    if (!isSoundCloudAPIAvailable()) {
+    if (typeof window.SC === "undefined") {
       const script = document.createElement("script");
       script.src = "https://w.soundcloud.com/player/api.js";
       script.async = true;
@@ -47,7 +40,6 @@ const RoutineOverview = () => {
     }
   };
 
-
   useEffect(() => {
     loadSoundCloudAPI();
   }, []);
@@ -55,12 +47,9 @@ const RoutineOverview = () => {
   const waitForSoundCloudAPI = (callback) => {
     let attempts = 0;
     const maxAttempts = 50;
-
     const interval = setInterval(() => {
-      console.log(`Intento ${attempts + 1}: Verificando API de SoundCloud...`);
       if (typeof window.SC !== "undefined") {
         clearInterval(interval);
-        console.log("✅ API de SoundCloud está lista.");
         callback();
       }
       attempts++;
@@ -71,218 +60,165 @@ const RoutineOverview = () => {
     }, 100);
   };
 
-
-
   useEffect(() => {
-    const getAccessToken=async ()=>{
-      const token=await actions.getSoundCloudAccessToken()
-      setAccessToken(token)
-    }
+    const getAccessToken = async () => {
+      const token = await actions.getSoundCloudAccessToken();
+      setSoundCloudState(prev => ({ ...prev, accessToken: token }));
+    };
     getAccessToken();
   }, []);
 
   useEffect(() => {
-    if (accessToken) {
-        const getTracksByGenre = async () => {
-            const tracks = await actions.getSoundCloudTracksByGenre(genre);
-            setTracks(tracks);
-        };
-        getTracksByGenre();
-    }
-}, [accessToken]); 
-
-
+    const getTracksByGenre = async () => {
+      const tracks = await actions.getSoundCloudTracksByGenre(soundCloudState.genre);
+      setSoundCloudState(prev => ({ ...prev, tracks }));
+    };
+    if (soundCloudState.accessToken) getTracksByGenre();
+  }, [soundCloudState.accessToken]);
 
   useEffect(() => {
-    if (tracks.length > 0) {
-      const randomTrack = tracks[Math.floor(Math.random() * tracks.length)];
-      setCurrentTrackUrl(randomTrack.permalink_url);
-      console.log("URL de la canción seleccionada:", randomTrack.permalink_url);
+    if (soundCloudState.tracks.length > 0) {
+      const randomTrack = soundCloudState.tracks[Math.floor(Math.random() * soundCloudState.tracks.length)];
+      setSoundCloudState(prev => ({ ...prev, currentTrackUrl: randomTrack.permalink_url }));
     }
-  }, [tracks]);
-
+  }, [soundCloudState.tracks]);
 
   useEffect(() => {
-    if (currentTrackUrl) {
-      console.log("Esperando que la API de SoundCloud esté lista...");
+    if (soundCloudState.currentTrackUrl) {
       waitForSoundCloudAPI(() => {
         const iframe = document.getElementById("soundcloud-player");
         if (iframe) {
           playerRef.current = window.SC.Widget(iframe);
-          playerRef.current.load(currentTrackUrl, { auto_play: false });
-
+          playerRef.current.load(soundCloudState.currentTrackUrl, { auto_play: false });
           playerRef.current.bind(window.SC.Widget.Events.READY, () => {
-            console.log("Reproductor listo");
-            setIsPlayerReady(true);
+            setSoundCloudState(prev => ({ ...prev, isPlayerReady: true }));
           });
-
-          playerRef.current.bind(window.SC.Widget.Events.ERROR, (e) => {
-            console.error("Error en el reproductor de SoundCloud", e);
-          });
-        } else {
-          console.error("Iframe no encontrado");
         }
       });
     }
-  }, [currentTrackUrl]);
+  }, [soundCloudState.currentTrackUrl]);
 
   const startPlaying = () => {
-    if (isPlayerReady && playerRef.current) {
-      console.log("Reproduciendo la canción...");
+    if (soundCloudState.isPlayerReady && playerRef.current) {
       playerRef.current.play();
-    } else {
-      console.error("Reproductor no disponible");
     }
   };
-
-
-
- 
 
   useEffect(() => {
     let timer;
-    if (isRunning && timeLeft > 0) {
+    if (timerState.isRunning && timerState.timeLeft > 0) {
       timer = setInterval(() => {
-        setTimeLeft((prev) => prev - 1);
+        setTimerState(prev => ({ ...prev, timeLeft: prev.timeLeft - 1 }));
       }, 1000);
-    } else if (timeLeft === 0 && isRunning) {
-      clearInterval(timer);
-      getTimeLeft();
+    } else if (timerState.isRunning && timerState.timeLeft === 0) {
+      handleWorkDone();
     }
 
     return () => clearInterval(timer);
-  }, [isRunning, timeLeft]);
-
-  // const handleNextStep = () => {
-  //   if (isResting) {
-  //     // Si estamos descansando y no hemos completado todos los entrenamientos
-  //     if (currentIndex + 1 < trainings.length) {
-  //       setCurrentIndex((prev) => prev + 1);
-  //       setTimeLeft(parseInt(trainings[currentIndex + 1].duration, 10));
-  //       setIsResting(false);
-  //       setMessage(trainings[currentIndex + 1].name);
-  //     } else {
-  //       setIsRunning(false);
-  //       setMessage("✔️ ¡DO IT!");
-  //     }
-  //   } else {
-
-  //     setIsResting(true);
-  //     setTimeLeft(REST_PERIOD);
-  //     setMessage(`🛑 Interval...`);
-  //   }
-  // };
+  }, [timerState.isRunning, timerState.timeLeft]);
 
   const handleToggleTimer = () => {
-    setIsRunning((prev) => {
-      const newIsRunning = !prev;
-      if (newIsRunning) {
-
-        startPlaying();
-      }
-      return newIsRunning;
+    setTimerState(prev => {
+      const newIsRunning = !prev.isRunning;
+      if (newIsRunning) startPlaying();
+      return { ...prev, isRunning: newIsRunning };
     });
   };
 
-
-  const handleWorkDone = () => {
-    setIsRunning(false);
-    setMessage("");
-    navigate("/dashboard/statisticsscreen");
+  const handleWorkDone = async () => {
+    //TODO:actualizar el estado de workout.trainings[currentIndex] (Aqui aparece el workout_id, el id y el is_complete)
+    //Tambien hay que modificar el campo is_Active de workout. Cambiarlo a is_Completed 
+    //Y actualizarlo al porcentaje de todos sus trainings que se han completado. (Esto sacaría la estadística diaria)
+    //También habria que crear un campo en routine para hacer lo mismo con la estdística semanal
+    setTimerState(prev => ({ ...prev, isRunning: false, message: "" }));
+    handleNextTraining();
   };
 
-  const handleBack = () => {
-    navigate("/fitpageoverview");
+  const handleNextTraining = () => {
+    if (currentIndex < workout.trainings.length - 1) {
+      setCurrentIndex(currentIndex + 1);
+      getTimeLeft(currentIndex + 1, workout);
+    } else {
+      alert("¡Routine completed! 🎉");
+    }
   };
 
-  if(!day || ! workout){
-    return <span>There is no routine available for this day.</span>
+  const getTimeLeft = (index, workout) => {
+    if (!workout || !workout.trainings || !workout.trainings[index]) return;
+
+    const training = workout.trainings[index];
+    let trainingTime = training.duration || 60;
+
+    setTimerState({
+      timeLeft: trainingTime,
+      isRunning: false,
+      message: training.name || "Rest Day",
+      isResting: false,
+    });
+  };
+
+  useEffect(() => {
+    if (workout && workout.trainings) {
+      getTimeLeft(currentIndex, workout);
+    }
+  }, [currentIndex, workout]);
+
+  if (!day || !workout) {
+    return <span>There is no routine available for this day.</span>;
   }
-  const currentTraining = workout.trainings[currentIndex]; // Obtener el ejercicio actual
-  console.log("este objeto",currentTraining)
 
-    const handleNextTraining = () => {
-        if (currentIndex < workout.trainings.length - 1) {
-            setCurrentIndex(currentIndex + 1);
-            setTimeLeft(getTimeLeft(currentIndex));
-        
-        } else {
-            alert("¡Rutina completada! 🎉");
-            // TODO: mover hacia el workcomplete
-        }
-    };
-    const getTimeLeft = (currentIndex) => {
-      let trainingTime = 0;
-      if(workout.trainings[currentIndex].mode === "segundos"){
-        trainingTime = workout.trainings[currentIndex].duration;
-      };
-      if(workout.trainings[currentIndex].mode === "minutos"){
-        trainingTime  = workout.trainings[currentIndex].duration * 60;
-      };  
-      if(workout.trainings[currentIndex].mode === "hora"){
-        trainingTime  = workout.trainings[currentIndex].duration * 3600
-      }; 
-
-      setTimeLeft(trainingTime);
-
-    };
+  const currentTraining = workout.trainings[currentIndex];
 
   return (
     <div className="routine-page-container">
       <div className="soundcloud-player-container">
         <div className="soundcloud-player">
-          {currentTrackUrl && (
+          {soundCloudState.currentTrackUrl && (
             <iframe
               id="soundcloud-player"
               width="100%"
-              height="100" // Reducimos la altura aquí
+              height="100"
               scrolling="no"
               frameBorder="no"
               allow="autoplay"
-              src={`https://w.soundcloud.com/player/?url=${encodeURIComponent(
-                currentTrackUrl
-              )}&auto_play=true&hide_related=true&show_comments=false&show_user=false&show_reposts=false`}
+              src={`https://w.soundcloud.com/player/?url=${encodeURIComponent(soundCloudState.currentTrackUrl)}&auto_play=true&hide_related=true&show_comments=false&show_user=false&show_reposts=false`}
               onLoad={() => console.log("Iframe cargado con éxito")}
             />
           )}
         </div>
       </div>
 
-
-      {/* Routine Details ahora en la posición inferior */}
       <div className="bottom-container">
         <div className="music-timer-wrapper">
-
           <div className="routine-details">
-            
-            <div>
-              <h3>{currentTraining.name}</h3>
-              <button onClick={handleNextTraining}>Siguiente Ejercicio</button>
-            </div>
-
+            <h3>{currentTraining ? currentTraining.name : "Rest Day"}</h3>
+            <p>
+              {currentTraining?.repetitions > 0 && (
+                <span>Repeticiones: {currentTraining.repetitions}</span>
+              )}
+            </p>
           </div>
-
 
           <div className="timer-buttons-container">
             <Timer
-              timeLeft={timeLeft}
-              isResting={isResting}
+              timeLeft={timerState.timeLeft}
+              isResting={timerState.isResting}
               workout={workout}
               currentIndex={currentIndex}
-              handleToggleTimer={handleToggleTimer}
             />
-
-            <div className="buttons-container">
-              <button className="start-timer-button" onClick={handleToggleTimer}>
-                {isRunning ? "❚❚" : "▶️"}
-              </button>
-            </div>
+            {/* Ocultar el botón si el mensaje es "Rest Day" */}
+            {timerState.message !== "Rest Day" && (
+              <div className="buttons-container">
+                <button className="start-timer-button" onClick={handleToggleTimer}>
+                  {timerState.isRunning ? "❚❚" : "▶️"}
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>
     </div>
   );
-
 };
 
 export default RoutineOverview;

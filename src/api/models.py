@@ -123,7 +123,6 @@ class Workout(db.Model):
             "trainings": [training.serialize() for training in self.trainings],
             "completions": [completion.serialize() for completion in self.workout_completions]
         }
-
 class Training(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False) 
@@ -133,7 +132,7 @@ class Training(db.Model):
     repetitions = db.Column(db.Integer, nullable=True)  
     sets = db.Column(db.Integer, nullable=True)  
     rest = db.Column(db.Integer, nullable=True)  
-
+    day = db.Column(db.Date, nullable=False)  # Asegúrate de agregar el campo day
 
     workout_id = db.Column(db.Integer, db.ForeignKey('workout.id'), nullable=False)
     workout = db.relationship('Workout', back_populates='trainings')
@@ -141,13 +140,6 @@ class Training(db.Model):
     def __repr__(self):
         return f'<Training {self.name}>'
 
-    def is_using_duration(self):
-        """Check if the training uses duration."""
-        return self.mode == 'duration'
-
-    def is_using_series(self):
-        """Check if the training uses series."""
-        return self.mode == 'series'
     def serialize(self):
         return {
             "id": self.id,
@@ -158,8 +150,10 @@ class Training(db.Model):
             "repetitions": self.repetitions,
             "sets": self.sets,
             "rest": self.rest,
+            "day": self.day.isoformat() if self.day else None,  # Serializa la fecha
             "workout_id": self.workout_id
         }
+
 
 class WorkoutCompletion(db.Model):
     id = db.Column(db.Integer, primary_key=True)

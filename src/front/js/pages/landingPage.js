@@ -4,7 +4,7 @@ import Frases from "../component/motivationalPhrase";
 import AvatarEmotions from "../component/avatarEmotion";
 import Calendar from "../component/calendar";
 import StartRoutineButton from "../component/startRoutine";
-import '../../styles/landingPageOverview.css'
+import '../../styles/landingPageOverview.css';
 import { dispatcherUser } from "../store/dispatcher.js";
 import { Context } from "../store/appContext.js";
 
@@ -28,6 +28,7 @@ const LandingPage = () => {
 
     const today = new Date();
     const currentMonth = today.toLocaleString('en-US', { month: 'long' });
+    const currentDate = today.getDate(); // Obtiene el día actual
 
     const currentWeek = Array.from({ length: 7 }, (_, i) => {
         const date = new Date(today);
@@ -50,17 +51,14 @@ const LandingPage = () => {
         navigate("/dashboard");
     };
 
-    // Obtener workouts del store
     const workouts = store.userData?.routines?.[0]?.workouts || [];
     const weekDays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 
-    // Asignar workouts a los días de la semana según su índice
     const assignedWorkouts = workouts.map((workout, index) => ({
         ...workout,
-        day: weekDays[index % weekDays.length] // Se cicla entre los días de la semana
+        day: weekDays[index % weekDays.length] 
     }));
 
-    // Buscar el workout del día seleccionado
     const selectedWorkout = assignedWorkouts.find(workout => workout.day === selectedDate?.name);
 
     const routineTable = () => {
@@ -68,7 +66,23 @@ const LandingPage = () => {
             alert("No routine found for today.");
             return;
         }
-        navigate("/dashboard/routine", { state: { day: currentWeek, workout: selectedWorkout} });
+
+        const updatedWorkout = {
+            ...selectedWorkout,
+            trainings: selectedWorkout.trainings.map(exercise => ({
+                ...exercise,
+                duration: exercise.duration || 60 
+            }))
+        };
+        navigate("/dashboard/routine", { state: { day: currentWeek, workout: selectedWorkout } });
+    };
+
+    const handleStartRoutine = () => {
+        if (selectedDate?.date === currentDate) {
+            routineTable();
+        } else {
+            alert("You can only start the routine for today.");
+        }
     };
 
     return (
@@ -82,9 +96,12 @@ const LandingPage = () => {
                     <>
                         <h3 className="selected-day-title">{selectedDate.name}</h3>
                         <ul className="routine-list">
-                            {selectedWorkout ? (
+                            {selectedWorkout && selectedWorkout.trainings && selectedWorkout.trainings.length > 0 ? (
                                 selectedWorkout.trainings.map((exercise, i) => (
-                                    <li key={i}>{exercise.name}</li>
+                                    <li key={i}>
+                                        {console.log("Workout: ", selectedWorkout)}
+                                        {exercise.fitness_level === "Descanso" ? "Descanso" : exercise.name}
+                                    </li>
                                 ))
                             ) : (
                                 <p>No workout assigned for this day</p>
@@ -100,7 +117,10 @@ const LandingPage = () => {
             </div>
 
             <div className="main-content">
-                <StartRoutineButton onClick={routineTable} className="routine-button" />
+                <StartRoutineButton 
+                    onClick={handleStartRoutine} 
+                    className="routine-button" 
+                />
             </div>
 
             <div className="bottom-section">
