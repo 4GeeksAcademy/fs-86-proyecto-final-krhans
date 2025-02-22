@@ -59,7 +59,6 @@ export const SoundCloudDispatcher = {
             }
     
             const data = await response.json();
-            console.log("tracks: ",data)
             return Array.isArray(data) ? data : [];
         } catch (error) {
             console.error("❌ Error en getTracksByGenre:", error.message);
