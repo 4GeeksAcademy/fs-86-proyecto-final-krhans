@@ -10,11 +10,6 @@ const getQuestions = (answers) => [
         options: ["Lose fat", "Gain muscle", "Running endurance", "Improve flexibility"] 
     },
     { 
-        id: 2, 
-        question: "How many days a week can you train?", 
-        options: ["1 day", "2-3 days", "4 days", "5 or more days"] 
-    },
-    { 
         id: 3, 
         question: "Where do you prefer to train?", 
         options: answers[0] === "Running endurance" 
@@ -29,7 +24,7 @@ const getQuestions = (answers) => [
     { 
         id: 5, 
         question: "What motivates you most to keep training?", 
-        options: ["quick results", "Improve health", "Feel good mentally", "Train with others"] 
+        options: ["Quick results", "Improve health", "Feel good mentally", "Train with others"] 
     }
 ];
 
@@ -46,15 +41,15 @@ const FitInterviewOverview = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-            const fetchVideo = async () => {
-                const result = await dispatcherUser.fetchVideoUrl(videoId);
-                if (result.url) {
-                    setVideoUrl(result.url);
-                }
-            };
-    
-            fetchVideo();
-        }, [videoId]);
+        const fetchVideo = async () => {
+            const result = await dispatcherUser.fetchVideoUrl(videoId);
+            if (result.url) {
+                setVideoUrl(result.url);
+            }
+        };
+
+        fetchVideo();
+    }, [videoId]);
 
     useEffect(() => {
         setVisibleOptions([]);
@@ -77,12 +72,11 @@ const FitInterviewOverview = () => {
             setQuestions(getQuestions(newAnswers));
             setIndex(1);
         } else if (index === 1) {
-            setIndex(2);
-        } else if (index === 2) {
+            // Ahora `index 1` es la pregunta "Where do you prefer to train?"
             if (option === "At home" && answers[0] !== "Running endurance") {
-                setIndex(3);
+                setIndex(2); // Pasa a la pregunta sobre equipamiento
             } else {
-                setIndex(4);
+                setIndex(3); // Pasa a la pregunta sobre motivación
             }
         } else if (index < questions.length - 1) {
             setIndex(index + 1);
@@ -90,7 +84,6 @@ const FitInterviewOverview = () => {
             console.log("Completed answers:", newAnswers);
             navigate('/dashboard/generate-routine', { state: { answers: newAnswers } });
         }
-        
     };
 
     return (

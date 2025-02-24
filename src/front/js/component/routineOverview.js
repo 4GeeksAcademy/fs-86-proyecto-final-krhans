@@ -171,25 +171,24 @@ const RoutineOverview = () => {
 
   return (
     <div className="routine-page-container">
-      <div className="soundcloud-player-container">
-        <div className="soundcloud-player">
-          {soundCloudState.currentTrackUrl && (
-            <iframe
-              id="soundcloud-player"
-              width="100%"
-              height="100"
-              scrolling="no"
-              frameBorder="no"
-              allow="autoplay"
-              src={`https://w.soundcloud.com/player/?url=${encodeURIComponent(soundCloudState.currentTrackUrl)}&auto_play=true&hide_related=true&show_comments=false&show_user=false&show_reposts=false`}
-              onLoad={() => console.log("Iframe cargado con éxito")}
-            />
-          )}
-        </div>
-      </div>
 
       <div className="bottom-container">
+
         <div className="music-timer-wrapper">
+          <div className="soundcloud-player">
+            {soundCloudState.currentTrackUrl && (
+              <iframe
+                id="soundcloud-player"
+                width="100%"
+                height="100"
+                scrolling="no"
+                frameBorder="no"
+                allow="autoplay"
+                src={`https://w.soundcloud.com/player/?url=${encodeURIComponent(soundCloudState.currentTrackUrl)}&auto_play=true&hide_related=true&show_comments=false&show_user=false&show_reposts=false`}
+                onLoad={() => console.log("Iframe cargado con éxito")}
+              />
+            )}
+          </div>
           <div className="routine-details">
             <h3>{currentTraining ? currentTraining.name : "Rest Day"}</h3>
             <p>
