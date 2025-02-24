@@ -12,7 +12,7 @@
 }
 .routine-details {
     background-color: #BFE3F2;
-    border: 4px solid #5C2E91;
+    border: 10px solid #60388d;
     display:flex;
     flex-direction: column;
     justify-content: center;
@@ -24,6 +24,7 @@
     height: 8rem !important;
     margin-bottom: 20px;
     text-align: center;
+    font-family: Impact, sans-serif;
 }
 
 .routine-details p {
@@ -33,11 +34,12 @@
     text-transform: uppercase;
     letter-spacing: 2px;
     margin: 0;
+    font-family: Impact, sans-serif;
 }
 
 .soundcloud-player-container {
-    background-color: #5C2E91; /* Mismo fondo que el de abajo */
-    border: 6px solid #ad80ca; /* Mismo borde que abajo */
+    background-color: #c79fe1; /* Mismo fondo que el de abajo */
+    border: 6px solid  #5C2E91; /* Mismo borde que abajo */
     border-radius: 15px;
     padding: 18px; /* Espaciado interno */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Misma sombra */
@@ -64,8 +66,8 @@
     gap: 20px;
 }
 .music-timer-wrapper {
-    background-color: #DBB8F2;
-    border: 4px solid #5C2E91;
+    background-color:  #c79fe1; 
+    border: 6px solid #5C2E91;
     border-radius: 15px;
     padding: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -120,7 +122,7 @@
 .start-timer-button,
 .work-done-button {
     background-color: #BFE3F2;
-    border: 5px solid #5C2E91;
+    border: 6px solid #5C2E91;
     border-radius: 20px;
     padding: 8px 18px;
     cursor: pointer;
@@ -132,7 +134,7 @@
 }
 .start-routine-button {
     background-color: #DBB8F2;
-    border: 4px solid #5C2E91;
+    border: 6px solid #5C2E91;
     border-radius: 20px;
     padding: 8px 16px;
     cursor: pointer;
