@@ -1,4 +1,5 @@
 .routine-page-container {
+    margin: 0 20px 0 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -37,8 +38,8 @@
     font-family: Impact, sans-serif;
 }
 
-.soundcloud-player-container {
-    background-color: #c79fe1; /* Mismo fondo que el de abajo */
+.soundcloud-player {
+    background-color: #BFE3F2; /* Mismo fondo que el de abajo */
     border: 6px solid  #5C2E91; /* Mismo borde que abajo */
     border-radius: 15px;
     padding: 18px; /* Espaciado interno */
