@@ -161,19 +161,19 @@ const GenerateRoutine = () => {
       });
   
       setRutinaGenerada(JSON.stringify(rutinaJSON, null, 2));
-      setMensaje("Rutina generada correctamente");
+      setMensaje("Successfully generated routine");
   
       await dispatcherUser.postRoutine(token, rutinaJSON);
       navigate('/dashboard/landing');
   
     } catch (error) {
-      console.error("Error al generar la rutina:", error);
-      if (error.message === "Respuesta vacía de Gemini") {
-        setMensaje("No se recibió respuesta del servicio.");
-      } else if (error.message === "El formato de JSON no es válido.") {
-        setMensaje("La respuesta de Gemini no está en el formato esperado.");
+      console.error("Error generating the routine:", error);
+      if (error.message === "Gemini Empty Response") {
+        setMensaje("No response was received from the service.");
+      } else if (error.message === "The JSON format is invalid.") {
+        setMensaje("Gemini's response is not in the expected format.");
       } else {
-        setMensaje("Hubo un error generando la rutina.");
+        setMensaje("There was an error generating the routine.");
       }
     }
   };
