@@ -92,3 +92,19 @@ class TrainingRepository:
             return {"error": f"Error inesperado: {str(e)}"}, 500
 
 
+    @staticmethod
+    def update_training(workout_id,training_id,training):
+        
+        existing_training = Training.query.filter_by(workout_id=workout_id,id=training_id).first()
+    
+        if not existing_training:
+            return None
+
+        existing_training.is_completed =True
+
+        try:
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            raise Exception(f"Error al actualizar el entrenamiento: {str(e)}")
+        return existing_training

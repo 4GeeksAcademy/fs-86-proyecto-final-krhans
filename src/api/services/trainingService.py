@@ -19,7 +19,14 @@ class TrainingService:
         except Exception as e:
             raise e
             
-    
+    @staticmethod
+    def update_training(workout_id,training_id,training):
+        try:
+            print("Servicio: ",training)
+            updatedTraining=TrainingRepository.update_training(workout_id,training_id,training)
+            return updatedTraining;
+        except Exception as e:
+            raise e
 
            
             

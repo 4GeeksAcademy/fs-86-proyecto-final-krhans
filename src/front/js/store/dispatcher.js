@@ -245,12 +245,36 @@ export const dispatcherUser = {
                 return { url: decodedUrl };
             }
         } catch (error) {
-            console.error("Error al obtener el video:", error);
-    
-           
             return console.log("No hay video para mostar");
         }
     },
+    updateTraining: async (token,trainingData) => {
+        try {
+ 
+            const response = await fetch(
+                `${process.env.BACKEND_URL}/api/workout/${trainingData.workout_id}/${trainingData.id}`,
+                {
+                    method: "PUT", 
+                    headers: {
+                        "Authorization": `Bearer ${token}`,
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(trainingData) 
+                }
+            );
+    
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(`Error ${response.status}: ${errorData.error || response.statusText}`);
+            }
+    
+            return await response.json();
+        } catch (error) {
+            console.error("Error actualizando los datos del entrenamiento:", error);
+            return { error: error.message };
+        }
+    }
+    
 
 };
 
