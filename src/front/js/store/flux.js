@@ -79,15 +79,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 					throw error;
 				}
 			},
-			routineExists:()=>{
-				const store=getStore();
-				try {
-					console.log("Vamos a ver si hay rutinas en el usuario: ",store.userData)
-				} catch (error) {
-					console.error("Login failed:", error);
-					throw error;
-				}
-			},
 			getUserData: async (token) => {
 				const store = getStore();
 				try {
@@ -202,7 +193,30 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.error("Error al verificar los workouts:", error.message);
 					return false;
 				}
-			},			
+			},	
+			updateTraining: async (trainingData) => {
+				const store = getStore();
+				const { getUserData } = getActions();
+				try {
+					const token = localStorage.getItem("jwt-token");
+					if (!token) throw new Error("No hay token disponible.");
+			
+					const updateTraining = await dispatcherUser.updateTraining(token, trainingData);
+					console.log("Despues de enviar fetch", updateTraining);
+			
+					if (!updateTraining || updateTraining.error) {
+						throw new Error(updateTraining?.error || "No se pudo actualizar el entrenamiento del usuario.");
+					}
+			
+					await getUserData(token); 
+			
+					return updateTraining;
+				} catch (error) {
+					console.error("Error en la actualización:", error.message);
+					return false;
+				}
+			},
+			
 			getMessage: async () => {
 				try {
 					// fetching data from the backend

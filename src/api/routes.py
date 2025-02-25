@@ -304,4 +304,24 @@ def complete_workout(workout_id, workout_completion_id):
         return jsonify(complete_workout.serialize()), 200
     except Exception as e:
         return jsonify({"error": f"Error inesperado: {str(e)}"}), 500
+    
+@api.route('/workout/<int:workout_id>/<int:training_id>', methods=['PUT'])
+@jwt_required()
+def update_training(workout_id, training_id): 
+    user_id = get_jwt_identity()
+    try:
+        data = request.get_json()
+        print("Datos: ",data)
+        if not data:
+            return jsonify({"error": "Se requiere un cuerpo JSON válido"}), 400
+        print("Antes de actualizar: ")
+        updatedTraining = TrainingService.update_training(
+            workout_id, training_id, data
+        )
+        if not updatedTraining:
+            return jsonify({"message": "No se encontraron trainings"}), 404
 
+      
+        return jsonify(updatedTraining.serialize()), 200
+    except Exception as e:
+        return jsonify({"error": f"Error inesperado: {str(e)}"}), 500
