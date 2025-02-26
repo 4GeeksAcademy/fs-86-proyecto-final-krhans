@@ -22,9 +22,9 @@ const SecretVideo = () => {
     
     return (
         <div className="secret-video-container">
-            <h1>DEJA DE PASAR LOS DIAS Y ENTRENA!</h1>
+            <h1>STOP LETTING THE DAYS PASS AND TRAIN!!</h1>
             <video src={videoUrl} className="hans-video" autoPlay loop muted />
-            <button onClick={() => navigate("/dashboard/landing")} className="back-button">Volver</button>
+            <button onClick={() => navigate("/dashboard/landing")} className="back-button">Back</button>
         </div>
     );
 };

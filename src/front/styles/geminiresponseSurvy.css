@@ -90,7 +90,7 @@
     display:flex;
     position:absolute;
     left:-150px;
-    top:-10px;
+    top:-5px;
   }
 
   .khransRoutineCelebration-video{
@@ -106,18 +106,21 @@
     right: 10px;
     font-size: 20px;
     font-weight: bold;
+    animation: aparecer 1.5s ease-out forwards;
     color: purple;
   }
   
   .race-hint {
     font-size: 14px;
     color: darkgray;
+    animation: aparecer 1.5s ease-out forwards;
     margin-top: 5px;
   }
   
   .race-success {
     font-size: 18px;
     font-weight: bold;
+    animation: aparecer 1.5s ease-out forwards;
     color: green;
   }
 
