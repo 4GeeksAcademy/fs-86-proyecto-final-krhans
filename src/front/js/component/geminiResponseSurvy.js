@@ -20,19 +20,16 @@ const GenerateRoutine = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("jwt-token");
 
-  // Función para obtener las fechas de la semana actual
   const obtenerFechasDeLaSemana = (diasEntrenamiento) => {
     const hoy = new Date();
-    const diaDeLaSemana = hoy.getDay(); // 0 (domingo) a 6 (sábado)
+    const diaDeLaSemana = hoy.getDay();
     const fechas = [];
 
-    // Calcula la cantidad de días que faltan hasta el próximo domingo
     for (let i = 0; i < diasEntrenamiento; i++) {
       const fechaEntrenamiento = new Date(hoy);
       fechaEntrenamiento.setDate(hoy.getDate() + (i - diaDeLaSemana));
-      // Solo agrega hasta el domingo de la semana actual
       if (fechaEntrenamiento.getDay() <= 6) {
-        fechas.push(fechaEntrenamiento.toISOString().split('T')[0]); // Formato YYYY-MM-DD
+        fechas.push(fechaEntrenamiento.toISOString().split('T')[0]); 
       }
     }
 
@@ -41,7 +38,7 @@ const GenerateRoutine = () => {
 
   const generarPrompt = (responses, answers) => {
     let prompt = "";
-    const diasEntrenamiento = 7; // Cambia este valor según sea necesario
+    const diasEntrenamiento = 7;
     const fechas = obtenerFechasDeLaSemana(diasEntrenamiento).map(fecha => {
       return `"day": "${fecha}"`;
     }).join(", ");
@@ -112,13 +109,10 @@ const GenerateRoutine = () => {
 
   const generarRutina = async () => {
     const prompt = generarPrompt(coachResponse, fitAnswers);
-    console.log("Prompt generado:", prompt);
   
     try {
       const respuestaGemini = await getGeminiResponse(prompt);
       if (!respuestaGemini) throw new Error("Respuesta vacía de Gemini");
-  
-      console.log("Respuesta de Gemini:", respuestaGemini);
   
       const jsonMatch = respuestaGemini.match(/\{[\s\S]*\}/);
       if (!jsonMatch) throw new Error("El formato de JSON no es válido.");
@@ -130,27 +124,23 @@ const GenerateRoutine = () => {
       rutinaJSON.workout.forEach(workout => {
         workout.trainings.forEach(training => {
           if (training.mode === "tiempo") {
-            training.repetitions = null; // Dejar vacío para el modo tiempo
+            training.repetitions = null;
             training.duration = (typeof training.duration === 'string' && training.duration.includes(" ")) 
                 ? parseDurationToSeconds(training.duration) 
-                : null; // Convierte a segundos, o deja nulo
-            
-            // Asegúrate de que el tiempo de descanso sea válido
+                : null;
             training.rest = (typeof training.rest === 'string' && training.rest.trim() !== "") 
                 ? parseDurationToSeconds(training.rest) 
-                : 30; // Asigna un valor predeterminado si está vacío
+                : 30;
           } else if (training.mode === "repeticiones") {
-            // Asegúrate de que repeticiones tenga un valor exacto
-            if (typeof training.repetitions === 'string' && training.repetitions.includes('-')) {
-              // Si hay un rango, toma el valor mínimo (10-12 → 10)
+            if (typeof training.repetitions === 'string' && training.repetitions.includes('-')) {  
               training.repetitions = parseInt(training.repetitions.split('-')[0].trim(), 10); // Toma el primer valor
             } else {
-              training.repetitions = parseInt(training.repetitions, 10) || 0; // Asegura que sea un valor entero
+              training.repetitions = parseInt(training.repetitions, 10) || 0; 
             }
-            training.duration = null; // Dejar vacío si el modo es repeticiones
+            training.duration = null;
             training.rest = (typeof training.rest === 'string' && training.rest.trim() !== "") 
                 ? parseDurationToSeconds(training.rest) 
-                : 30; // Asigna un valor predeterminado si está vacío
+                : 30; 
           }
         });
       });
@@ -160,7 +150,7 @@ const GenerateRoutine = () => {
       const fechas = obtenerFechasDeLaSemana(7);
       rutinaJSON.workout.forEach((workout, workoutIndex) => {
         workout.trainings.forEach((training, trainingIndex) => {
-          training.day = fechas[trainingIndex]; // Asigna la fecha correspondiente a cada training
+          training.day = fechas[trainingIndex]; 
         });
       });
   
@@ -188,9 +178,9 @@ const GenerateRoutine = () => {
     if (match) {
       const value = parseInt(match[1], 10);
       const unit = match[2].toLowerCase();
-      return unit.startsWith('min') ? value * 60 : value; // Convierte a segundos
+      return unit.startsWith('min') ? value * 60 : value;
     }
-    return null; // Si no coincide, devuelve nulo
+    return null;
   };
 
   const videoIds = {
@@ -220,7 +210,7 @@ const GenerateRoutine = () => {
 
   const moverKhrans = () => {
     setPosicionKhrans(prev => {
-      if (prev >= 180) { 
+      if (prev >= 150) { 
         setHasFinished(true);
         return prev;
       }
@@ -237,10 +227,15 @@ const GenerateRoutine = () => {
         </div>
         <button className='gemini-button' onClick={generarRutina}>Create Routine</button>
         {/* {showRace &&( */}
-          {!hasFinished && <p className="race-hint">⬇️ Pulsa para llegar a la meta ⬇️</p>}
+          <div className="raceHint-container">
+            {!hasFinished ? (
+              <p className="race-hint">⬇️ Press to reach the goal ⬇️</p>
+            ) : (
+              <p className="race-success">🎉 You did it! 🎉</p>
+            )}
+          </div>
           <div className="race-container">
-            
-            <div className="meta">🏁 META</div>
+            {!hasFinished &&<div className="meta">🏁 GOAL</div>}
             <div 
               className="avatarGenerateRoutine-container" 
               style={{ transform: `translateX(${posicionKhrans}px)` }}
@@ -252,7 +247,6 @@ const GenerateRoutine = () => {
                 <video src={videoUrls.celebration} className="khransRoutineCelebration-video" autoPlay loop muted />
               )}
             </div>
-            {hasFinished && <p className="race-success">¡Lo lograste! 🎉</p>}
           </div>
         {/* )} */}
         <p>{mensaje}</p>
