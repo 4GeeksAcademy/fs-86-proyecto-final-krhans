@@ -128,12 +128,7 @@ const RoutineOverview = () => {
   const handleWorkDone = async () => {
     const trainingData=workout.trainings[currentIndex]
     const updatedTraining=await actions.updateTraining(trainingData)
-    console.log("Entrenamiento actualizado: ",updatedTraining)
-
-    //TODO: Hay que modificar el campo is_Active de workout. Cambiarlo a is_Completed 
-    
-    //Y actualizarlo al porcentaje de todos sus trainings que se han completado. (Esto sacaría la estadística diaria)
-    //También habria que crear un campo en routine para hacer lo mismo con la estdística semanal
+    const updatedWorkout=await actions.updatedWorkout(trainingData.workout_id)
     setTimerState(prev => ({ ...prev, isRunning: false, message: "" }));
     handleNextTraining();
   };
@@ -151,7 +146,7 @@ const RoutineOverview = () => {
     if (!workout || !workout.trainings || !workout.trainings[index]) return;
 
     const training = workout.trainings[index];
-    let trainingTime = 10 //TODO: DEJAR DE COMENTAR:     training.duration || 60;
+    let trainingTime = training.duration || 60;
 
     setTimerState({
       timeLeft: trainingTime,

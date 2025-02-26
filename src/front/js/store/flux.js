@@ -202,15 +202,48 @@ const getState = ({ getStore, getActions, setStore }) => {
 					if (!token) throw new Error("No hay token disponible.");
 			
 					const updateTraining = await dispatcherUser.updateTraining(token, trainingData);
-					console.log("Despues de enviar fetch", updateTraining);
 			
 					if (!updateTraining || updateTraining.error) {
 						throw new Error(updateTraining?.error || "No se pudo actualizar el entrenamiento del usuario.");
 					}
 			
+					return updateTraining;
+				} catch (error) {
+					console.error("Error en la actualización:", error.message);
+					return false;
+				}
+			},
+			updatedWorkout: async (workout_id) => {
+				const store = getStore();
+				const { getUserData } = getActions();
+				
+				try {
+					const token = localStorage.getItem("jwt-token");
+					if (!token) throw new Error("No hay token disponible.");
+			
+					
+					const workout = store.userData.routines
+						.flatMap(routine => routine.workouts) 
+						.find(workout => workout.id === workout_id); 
+			
+					if (!workout) throw new Error("Workout no encontrado en el store.");
+			
+					const totalTraining = workout.trainings.length;
+					const totalTrainingsCompleted = workout.trainings.filter(t => t.is_completed).length;
+			
+					const percentComplete = totalTraining > 0 ? (100 * totalTrainingsCompleted) / totalTraining : 0;
+			
+					console.log(`Workout ID: ${workout_id}, Total Trainings: ${totalTraining}, Completados: ${totalTrainingsCompleted}, Porcentaje: ${percentComplete}`);
+			
+					const updateWorkout = await dispatcherUser.updateWorkout(token, workout_id, percentComplete);
+			
+					if (!updateWorkout || updateWorkout.error) {
+						throw new Error(updateWorkout?.error || "No se pudo actualizar el entrenamiento del usuario.");
+					}
+			
 					await getUserData(token); 
 			
-					return updateTraining;
+					return updateWorkout;
 				} catch (error) {
 					console.error("Error en la actualización:", error.message);
 					return false;
