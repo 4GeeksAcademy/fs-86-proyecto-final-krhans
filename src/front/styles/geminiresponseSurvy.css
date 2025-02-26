@@ -44,8 +44,8 @@
 .gemini_title::after {
     content: "";
     position: absolute;
-    bottom: -15px;
-    left: 50%;
+    bottom: -40px;
+    left: 30%;
     transform: translateX(-50%);
     width: 0;
     height: 0;
@@ -65,6 +65,60 @@
         opacity: 1;
     }
 }
+
+.race-container {
+    position: relative;
+    width: 100%;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 20px;
+  }
+  
+  .avatarGenerateRoutine-container {
+    transition: transform 0.3s ease-out;
+  }
+
+  .khransRoutineRunning-video{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    animation: aparecer 1.5s ease-out forwards;
+    border: 5px solid var(--color-Button);
+    display:flex;
+    position:absolute;
+    left:-150px;
+    top:-10px;
+  }
+
+  .khransRoutineCelebration-video{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    animation: aparecer 1.5s ease-out forwards;
+    border: 5px solid var(--color-Button);
+  }
+  
+  .meta {
+    position: absolute;
+    right: 10px;
+    font-size: 20px;
+    font-weight: bold;
+    color: purple;
+  }
+  
+  .race-hint {
+    font-size: 14px;
+    color: darkgray;
+    margin-top: 5px;
+  }
+  
+  .race-success {
+    font-size: 18px;
+    font-weight: bold;
+    color: green;
+  }
 
 .gemini-button{
     padding: 10px ;

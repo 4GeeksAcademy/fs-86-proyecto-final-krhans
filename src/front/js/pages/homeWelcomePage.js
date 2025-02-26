@@ -4,25 +4,51 @@ import "../../styles/home.css";
 import { dispatcherUser } from "../store/dispatcher.js";
 import { Loader } from "../component/loader.js";
 
-
 export const HomeWelcomePage = () => {
     const { store, actions } = useContext(Context);
-    const [videoUrl, setVideoUrl] = useState(null);
+    const [videoUrls, setVideoUrls] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [showWelcome, setShowWelcome] = useState(false);
     const [showHelp, setShowHelp] = useState(false);
-    const videoId = "323171701139328";
+    const [visibleAvatars, setVisibleAvatars] = useState([]);
+
+    const videoIds = [
+        "323171701139328",
+        "324358958924032",
+        "324358873712576",
+        "324358804794560",
+        "324358727048384", 
+        "324358561612224"
+    ];
 
     useEffect(() => {
-        const fetchVideo = async () => {
-            const result = await dispatcherUser.fetchVideoUrl(videoId);
-            if (result.url) {
-                setVideoUrl(result.url);
-            }
+        const fetchVideos = async () => {
+            const videoRequests = videoIds.map(async (videoId) => {
+                const result = await dispatcherUser.fetchVideoUrl(videoId);
+                return result.url || null;
+            });
+
+            const urls = await Promise.all(videoRequests);
+            const validUrls = urls.filter(url => url !== null);
+            console.log("Videos Cargados", validUrls);
+            setVideoUrls(urls.filter(url => url !== null));
+            setVisibleAvatars(new Array(validUrls.length - 1).fill(false));
         };
 
-        fetchVideo();
-    }, [videoId]);
+        fetchVideos();
+    }, []);
+
+    useEffect(() => {
+        if (videoUrls.length <= 1) return;
+        const interval = setInterval(() => {
+            setVisibleAvatars(prev => {
+                const newVisibility = prev.map(() => Math.random() > 0.2);
+                return newVisibility;
+            });
+        }, 3000);
+
+        return () => clearInterval(interval);
+    }, [videoUrls]);
 
     useEffect(() => {
         const loadData = async () => {
@@ -32,10 +58,7 @@ export const HomeWelcomePage = () => {
 
         loadData();
 
-        const welcomeTimer = setTimeout(() => {
-            setShowWelcome(true);
-        }, 2000);
-
+        const welcomeTimer = setTimeout(() => setShowWelcome(true), 2000);
         const helpTimer = setTimeout(() => {
             setShowWelcome(false);
             setShowHelp(true);
@@ -58,9 +81,21 @@ export const HomeWelcomePage = () => {
                 {showHelp && <h2 className="help-message">¿How can I help you?</h2>}
             </div>
             <div className="avatar-container">
-                <video src={videoUrl} className="khransHome-video" autoPlay muted/>
+                <video src={videoUrls[0]} className="khransHome-video" autoPlay muted />
             </div>
 
+            <div className="background-avatars">
+                {videoUrls.slice(1).map((url, index) => (
+                    <video
+                        key={index}
+                        src={url}
+                        className={`floating-avatar avatar-${index} ${visibleAvatars[index] ? "visible" : "hidden"}`}
+                        autoPlay
+                        muted
+                        loop
+                    />
+                ))}
+            </div>
         </div>
     );
 };

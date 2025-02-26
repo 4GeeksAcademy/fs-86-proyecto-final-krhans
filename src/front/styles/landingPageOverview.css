@@ -9,6 +9,10 @@
     font-family: sans-serif;
 }
 
+.texto-secreto{
+    font-size:2px;
+}
+
 .calendar-container {
     display: flex;
     flex-direction: column;

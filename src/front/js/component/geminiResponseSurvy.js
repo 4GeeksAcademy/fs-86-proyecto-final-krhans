@@ -6,7 +6,10 @@ import { dispatcherUser } from '../store/dispatcher';
 import "../../styles/geminiresponseSurvy.css";
 
 const GenerateRoutine = () => {
-  const [videoUrl, setVideoUrl] = useState(null);
+  const [videoUrls, setVideoUrls] = useState({});
+  const [posicionKhrans, setPosicionKhrans] = useState(0);
+  const [hasFinished, setHasFinished] = useState(false);
+  const [showRace, setShowRace] = useState(false);
   const location = useLocation();
   const { responses: coachResponse = {}, answers: fitAnswers = {} } = location.state || {};
   
@@ -151,6 +154,7 @@ const GenerateRoutine = () => {
           }
         });
       });
+      setShowRace(true);
   
       // Asigna una única fecha a cada training
       const fechas = obtenerFechasDeLaSemana(7);
@@ -178,7 +182,6 @@ const GenerateRoutine = () => {
     }
   };
 
-  // Función para convertir duración en formato "X minutos" o "Y segundos" a segundos
   const parseDurationToSeconds = (duration) => {
     const regex = /(\d+)\s*(minutos?|segundos?)/i;
     const match = duration.match(regex);
@@ -190,26 +193,68 @@ const GenerateRoutine = () => {
     return null; // Si no coincide, devuelve nulo
   };
 
-  const videoId = "323170867849472";
+  const videoIds = {
+    static: "323170867849472", 
+    running: "324392158865024", 
+    celebration: "323171351359104" 
+  };
 
   useEffect(() => {
-    const fetchVideo = async () => {
-      const result = await dispatcherUser.fetchVideoUrl(videoId);
-      if (result.url) {
-        setVideoUrl(result.url);
-      }
+    const fetchVideos = async () => {
+      const videoRequests = Object.entries(videoIds).map(async ([key, videoId]) => {
+        const result = await dispatcherUser.fetchVideoUrl(videoId);
+        return { key, url: result.url || null };
+      });
+
+      const videos = await Promise.all(videoRequests);
+      const videoMap = videos.reduce((acc, { key, url }) => {
+        acc[key] = url;
+        return acc;
+      }, {});
+
+      setVideoUrls(videoMap);
     };
-    fetchVideo();
-  }, [videoId]);
+
+    fetchVideos();
+  }, []);
+
+  const moverKhrans = () => {
+    setPosicionKhrans(prev => {
+      if (prev >= 180) { 
+        setHasFinished(true);
+        return prev;
+      }
+      return prev + 20;
+    });
+  };
 
   return (
     <div className='gemini-container'>
       <div className='gemini-container_items'>
         <div className='gemini_title'>"You're just one step away from turning your effort into results! Click and start your journey towards a better version of yourself."</div>
         <div className="avatarGenerateRoutine-container">
-          <video src={videoUrl} className="khransRoutine-video" autoPlay loop muted />
+          <video src={videoUrls.static} className="khransRoutine-video" autoPlay loop muted />
         </div>
         <button className='gemini-button' onClick={generarRutina}>Create Routine</button>
+        {/* {showRace &&( */}
+          {!hasFinished && <p className="race-hint">⬇️ Pulsa para llegar a la meta ⬇️</p>}
+          <div className="race-container">
+            
+            <div className="meta">🏁 META</div>
+            <div 
+              className="avatarGenerateRoutine-container" 
+              style={{ transform: `translateX(${posicionKhrans}px)` }}
+              onClick={moverKhrans}>
+              {videoUrls.running && !hasFinished && (
+                <video src={videoUrls.running} className="khransRoutineRunning-video" autoPlay loop muted />
+              )}
+              {videoUrls.celebration && hasFinished && (
+                <video src={videoUrls.celebration} className="khransRoutineCelebration-video" autoPlay loop muted />
+              )}
+            </div>
+            {hasFinished && <p className="race-success">¡Lo lograste! 🎉</p>}
+          </div>
+        {/* )} */}
         <p>{mensaje}</p>
       </div>
     </div>
