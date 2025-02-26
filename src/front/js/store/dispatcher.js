@@ -273,6 +273,32 @@ export const dispatcherUser = {
             console.error("Error actualizando los datos del entrenamiento:", error);
             return { error: error.message };
         }
+    },
+    updateWorkout:async(token,workout_id,percentComplete)=>{
+        try {
+
+            const response = await fetch(
+                `${process.env.BACKEND_URL}/api/workout/${workout_id}`,
+                {
+                    method: "PUT", 
+                    headers: {
+                        "Authorization": `Bearer ${token}`,
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ percent_completed: percentComplete })
+                }
+            );
+    
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(`Error ${response.status}: ${errorData.error || response.statusText}`);
+            }
+    
+            return await response.json();
+        } catch (error) {
+            console.error("Error actualizando los datos del workout:", error);
+            return { error: error.message };
+        }
     }
     
 

@@ -99,7 +99,7 @@ class Workout(db.Model):
     category = db.Column(db.String, nullable=False)   
     goal = db.Column(db.String, nullable=False)  
     difficulty = db.Column(db.String)  
-    is_active = db.Column(db.Boolean(), nullable=False, default=True)
+    percent_completed = db.Column(db.Integer, nullable=False, default=True)
 
     trainings = db.relationship('Training', back_populates='workout', lazy=True, cascade="all, delete-orphan")
     workout_completions = db.relationship('WorkoutCompletion', back_populates='workout', lazy=True, cascade="all, delete-orphan")
@@ -119,7 +119,7 @@ class Workout(db.Model):
             "category": self.category,
             "goal": self.goal,
             "difficulty": self.difficulty,
-            "is_active": self.is_active,
+            "percent_completed": self.percent_completed,
             "trainings": [training.serialize() for training in self.trainings],
             "completions": [completion.serialize() for completion in self.workout_completions]
         }

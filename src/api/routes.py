@@ -268,7 +268,8 @@ def handle_workouts():
     except Exception as e:
         return jsonify({"error": f"Error inesperado: {str(e)}"}), 500
 
-@api.route('/workout/<int:workout_id>', methods=['GET'])
+
+@api.route('/workout/<int:workout_id>', methods=['GET', 'PUT'])
 @jwt_required()
 def handle_workout(workout_id):
     user_id = get_jwt_identity()
@@ -278,8 +279,21 @@ def handle_workout(workout_id):
             if not workouts:
                 return jsonify({"message": "No se encontraron workouts"}), 404
             return jsonify([workout.serialize() for workout in workouts]), 200
+        
+        elif request.method == 'PUT':
+            data = request.get_json()
+            if not data:
+                return jsonify({"error": "Se requiere un cuerpo JSON válido"}), 400
+            
+            updated_workout = WorkoutService.update_workout(user_id, workout_id, data)
+            if not updated_workout:
+                return jsonify({"message": "No se pudo actualizar el workout"}), 404
+            
+            return jsonify(updated_workout.serialize()), 200
+
     except Exception as e:
         return jsonify({"error": f"Error inesperado: {str(e)}"}), 500
+
 
 @api.route('/complete_workout', methods=['GET'])   
 @jwt_required()

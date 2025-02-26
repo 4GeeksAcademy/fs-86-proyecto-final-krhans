@@ -26,6 +26,12 @@ class WorkoutService:
         except Exception as e:
             raise e
            
-
+    @staticmethod
+    def update_workout(user_id,workout_id,data):
+        try:
+            update_workout=WorkoutRepository.update_workout(user_id,workout_id,data)
+            return update_workout
+        except Exception as e:
+            raise e
        
    
