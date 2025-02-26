@@ -39,6 +39,7 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     position: relative;
     margin-bottom: 20px;
+    border: 4px solid #6e36af;
 }
 
 .gemini_title::after {
@@ -132,6 +133,6 @@
     position: relative;
     text-decoration: none;
     display:inline-block;
-    border-color: var(--color-Button);
+    border-color: #bc90d9;
     border-radius: 10px;
 }
