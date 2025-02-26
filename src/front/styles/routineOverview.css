@@ -38,25 +38,24 @@
     font-family: Impact, sans-serif;
 }
 
-.soundcloud-player {
-    background-color: #BFE3F2; /* Mismo fondo que el de abajo */
-    border: 6px solid  #5C2E91; /* Mismo borde que abajo */
+.soundcloud-player-container {
+    background-color: #c79fe1;
+    border: 6px solid  #5C2E91;
     border-radius: 15px;
-    padding: 18px; /* Espaciado interno */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Misma sombra */
+    padding: 18px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     width: 100%;
-    max-width: 320px; /* Mismo ancho máximo que abajo */
-    margin-bottom: 20px; /* Separación del siguiente div */
-    box-sizing: border-box; /* incluye padding y border en el ancho */
+    margin-bottom: 10px;
+    max-width: 320px;
+    box-sizing: border-box;
     display: flex;
-    justify-content: center; /* centra el widget */
+    justify-content: center;
 }
 
-/* Aquí agregas lo siguiente */
 .soundcloud-player-container iframe {
-    max-width: 100%; /* que no se salga del contenedor */
-    height: 120px; /* ajusta altura, más pequeño que original */
-    border-radius: 10px; /* opcional, redondea bordes */
+    max-width: 100%; 
+    height: 120px;
+    border-radius: 10px;
 }
 
 
@@ -164,5 +163,34 @@
     }
     .routine-details {
         height: 220px;
+    }
+}
+
+.routineAvatar-container {
+    display: flex;
+    justify-content: center;
+    margin-top:-25px;
+    margin-bottom:25px;
+    /* opacity: 0; */
+    transform: translateY(20px);
+    transition: opacity 0.8s ease-in-out, transform 0.8s ease-in-out;
+}
+
+.routineOverview-avatar {
+    width: 100px;
+    height: 100px;
+    border:#5C2E91 4px solid;
+    border-radius: 50%;
+    animation: fadeIn 0.8s ease-in-out;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
     }
 }

@@ -14,6 +14,7 @@ const LandingPage = () => {
     const videoId = "322634554020544";
     const [selectedDate, setSelectedDate] = useState(null);
     const { store, actions } = useContext(Context);
+    const [selectedOddDays, setSelectedOddDays] = useState([]);
 
     useEffect(() => {
         const fetchVideo = async () => {
@@ -28,7 +29,7 @@ const LandingPage = () => {
 
     const today = new Date();
     const currentMonth = today.toLocaleString('en-US', { month: 'long' });
-    const currentDate = today.getDate(); // Obtiene el día actual
+    const currentDate = today.getDate();
 
     const currentWeek = Array.from({ length: 7 }, (_, i) => {
         const date = new Date(today);
@@ -40,6 +41,22 @@ const LandingPage = () => {
     });
 
     const handleDateClick = (day) => {
+        const isOdd = day.date % 2 !== 0;
+    
+        if (isOdd) {
+            setSelectedOddDays(prevDays => {
+                const newDays = [...prevDays, day.date];
+                if (newDays.length === 3) {
+                    navigate("/secret-video");
+                    return [];
+                }
+                return newDays;
+            });
+        } else {
+            setSelectedOddDays([]);
+        }
+    
+        // Mantiene la lógica original para seleccionar el día
         setSelectedDate(prevDate => (prevDate?.name === day.name ? null : day));
     };
 
@@ -106,6 +123,9 @@ const LandingPage = () => {
                             ) : (
                                 <p>No workout assigned for this day</p>
                             )}
+                            <li className="texto-secreto">
+                                Some days are more special than others... but only when they come in threes.
+                            </li>
                         </ul>
                     </>
                 ) : (

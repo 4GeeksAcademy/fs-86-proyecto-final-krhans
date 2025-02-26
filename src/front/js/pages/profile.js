@@ -2,16 +2,12 @@ import React, {useState, useEffect} from "react";
 import "../../styles/profile.css";
 import { Link, useParams } from "react-router-dom";
 import { dispatcherUser } from "../store/dispatcher.js";
-import gabrielImageUrl from "../../img/gabriel-foto.png";
-import cristianImageUrl from "../../img/cristian-foto.jpg";
-import albantaImageUrl from "../../img/albanta-foto.jpg";
-import marcoImageUrl from "../../img/marco-foto.jpg";
 
 const profiles = {
-    gabriel: { name: "Gabriel", age: "31 años", role: "Full Stack Developer", bio: "I am a complete developer who masters front and back,he's a fighter in life", github: "https://github.com/gabriel-jimenez93", linkedin: "https://www.linkedin.com/in/gabriel-angel-jim%C3%A9nez-montoya-b9b6a1320/", videoId: "323662863497984",  phrase: "Soy un puto y he dejado que mi maestro me llene este mensaje por que no le he contestado a tiempo"  },
-    marco: {name: "Marco", age: "27 años",role: "Full Stack Developer", bio: "I am in love with the front and with a lot of imagination to fulfill the dreams of my client", github: "https://github.com", linkedin: "https://linkedin.com", videoId: "323663645996416", phrase:"Una posibilidad de superación lleno de dificultades pero de la mano de gente que te ayuda a avanzar"},
-    cristian: {name: "Cristian", age: "29 años", role: "Full Stack Developer", bio: "I am a silent worker who solves all backend problems", github: "https://github.com/Cristian-svg598", linkedin: "https://www.linkedin.com/in/cristian-guirao-espin-5b5a77310/", videoId: "323664833803904", phrase:"Soy el macho machote del equipo, he sacado el back y no veo colores, que le vamoh a hacer" },
-    albanta: {name: "Albanta", age: "40 años", role: "Full Stack Developer", bio: "I am a front end creator with a lot of imagination", github: "https://github.com/Albanta22", linkedin: "https://www.linkedin.com/in/albanta-leon-delgado-521407316/", videoId: "323664567879552", phrase:"Un camino de disciplina y esfuerzo, de policia a programadora; empecemos con la aventura de nuestra app, motivación y deporte"}
+    gabriel: { name: "Gabriel", age: "31 años", role: "Full Stack Developer", bio: "I am a complete developer who masters front and back,he's a fighter in life", github: "https://github.com/gabriel-jimenez93", linkedin: "https://www.linkedin.com/in/gabriel-angel-jim%C3%A9nez-montoya-b9b6a1320/", videoId: "323662863497984",  phrase: "Soy un PUTO y he dejado que mi maestro me llene este mensaje por que no le he contestado a tiempo"  },
+    marco: {name: "Marco", age: "27 años",role: "Full Stack Developer", bio: "I am in love with the front and with a lot of imagination to fulfill the dreams of my client", github: "https://github.com", linkedin: "https://linkedin.com", videoId: "323663645996416", phrase:"Starting the journey... seeking self-improvement, chasing success."},
+    cristian: {name: "Cristian", age: "29 años", role: "Full Stack Developer", bio: "I am a silent worker who solves all backend problems", github: "https://github.com/Cristian-svg598", linkedin: "https://www.linkedin.com/in/cristian-guirao-espin-5b5a77310/", videoId: "323664833803904", phrase:"Programming is like writing a book... except that if you forget a comma on one page, the dragon explodes. 🐉💥" },
+    albanta: {name: "Albanta", age: "40 años", role: "Full Stack Developer", bio: "I am a front end creator with a lot of imagination", github: "https://github.com/Albanta22", linkedin: "https://www.linkedin.com/in/albanta-leon-delgado-521407316/", videoId: "323664567879552", phrase:"A journey of discipline and effort, from police officer to programmer; let's begin the adventure of our app, motivation, and sports."}
 };
 
 export const Profile = () => {

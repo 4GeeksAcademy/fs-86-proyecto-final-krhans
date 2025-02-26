@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Context } from "../store/appContext";
 import "../../styles/routineOverview.css";
+import { dispatcherUser } from "../store/dispatcher.js";
 import Timer from "./timer";
 
 const RoutineOverview = () => {
@@ -11,10 +12,12 @@ const RoutineOverview = () => {
   const { day, workout } = location.state || {};
   const [trainings, setTrainings] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [videoUrl, setVideoUrl] = useState(null);
+  const [showAvatar, setShowAvatar] = useState(false);
   const [timerState, setTimerState] = useState({
     timeLeft: 0,
     isRunning: false,
-    message: "Rest Day", 
+    message: "Rest Day",
     isResting: false,
   });
 
@@ -104,14 +107,22 @@ const RoutineOverview = () => {
     }
   };
 
+  const pausePlaying = () => {
+    if (playerRef.current) {
+        playerRef.current.pause();
+    }
+};
+
   useEffect(() => {
     let timer;
     if (timerState.isRunning && timerState.timeLeft > 0) {
       timer = setInterval(() => {
         setTimerState(prev => ({ ...prev, timeLeft: prev.timeLeft - 1 }));
       }, 1000);
-    } else if (timerState.isRunning && timerState.timeLeft === 0) {
-      handleWorkDone();
+    } else if (timerState.timeLeft === 0) {
+      clearInterval(timer);
+      setTimerState(prev => ({ ...prev, isRunning: false }));
+      setShowAvatar(false);
     }
 
     return () => clearInterval(timer);
@@ -120,7 +131,13 @@ const RoutineOverview = () => {
   const handleToggleTimer = () => {
     setTimerState(prev => {
       const newIsRunning = !prev.isRunning;
-      if (newIsRunning) startPlaying();
+      if (newIsRunning) {
+        startPlaying();
+        setShowAvatar(true);
+      }else{
+        setShowAvatar(false);
+        pausePlaying();
+      }
       return { ...prev, isRunning: newIsRunning };
     });
   };
@@ -173,8 +190,42 @@ const RoutineOverview = () => {
 
   const currentTraining = workout.trainings[currentIndex];
 
+  const videoId = "323665558860352";
+
+  useEffect(() => {
+              const fetchVideo = async () => {
+                  const result = await dispatcherUser.fetchVideoUrl(videoId);
+                  if (result.url) {
+                      setVideoUrl(result.url);
+                  }
+              };
+      
+              fetchVideo();
+          }, [videoId]);
+
   return (
     <div className="routine-page-container">
+      <div className="soundcloud-player-container">
+        <div className="soundcloud-player">
+          {soundCloudState.currentTrackUrl && (
+            <iframe
+              id="soundcloud-player"
+              width="100%"
+              height="100"
+              scrolling="no"
+              frameBorder="no"
+              allow="autoplay"
+              src={`https://w.soundcloud.com/player/?url=${encodeURIComponent(soundCloudState.currentTrackUrl)}&auto_play=true&hide_related=true&show_comments=false&show_user=false&show_reposts=false`}
+              onLoad={() => console.log("Iframe cargado con éxito")}
+            />
+          )}
+        </div>
+      </div>
+      {showAvatar && videoUrl && (
+        <div className="routineAvatar-container">
+          <video src={videoUrl} className="routineOverview-avatar" autoPlay loop muted />
+        </div>
+      )}
 
       <div className="bottom-container">
 
@@ -209,7 +260,6 @@ const RoutineOverview = () => {
               workout={workout}
               currentIndex={currentIndex}
             />
-            {/* Ocultar el botón si el mensaje es "Rest Day" */}
             {timerState.message !== "Rest Day" && (
               <div className="buttons-container">
                 <button className="start-timer-button" onClick={handleToggleTimer}>

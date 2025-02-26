@@ -21,6 +21,7 @@ import StatisticsScreen from "./component/statisticsScreen";
 import GenerateRoutine from "./component/geminiResponseSurvy";
 import ExerciseTable from "./pages/accessRoutine";
 import RoutineOverview from "./component/routineOverview";
+import SecretVideo from "./pages/secretVideo.js";
 
 
 const Layout = () => {
@@ -41,6 +42,7 @@ const Layout = () => {
                         <Route element={<WelcomePage />} path="/welcome" />
                         <Route element={<About />} path="/about" />
                         <Route element={<Profile />} path="/profile/:member" />
+                        <Route path="/secret-video" element={<SecretVideo />} />
 						<Route element={<IsLogIn />} path="/dashboard">
                             <Route Index element={<Dashboard />} path="" />
                             <Route path="fit-interview" element={<FitInterview />}/>
