@@ -23,7 +23,7 @@
     font-weight: bold;
     color: #1c3a4f;
     border-radius:20px;
-    border: 2px solid #41009c;
+    border: 3px solid #41009c;
     background-color: #e3cfff;
     opacity: 0;
     animation: fadeInOut 6s ease-in-out;
@@ -94,7 +94,7 @@
     width: 130px;
     height: 40px;
     background-color: #fff;
-    border: 2px solid #e3cfff;
+    border: 3px solid #e3cfff;
     border-radius: 20px;
     text-align: center;
     line-height: 40px;
@@ -151,7 +151,7 @@
     font-weight: bold;
     color: #1c3a4f;
     background-color: #fff;
-    border: 2px solid #6a0dad;
+    border: 3px solid #6a0dad;
     padding: 10px 20px;
     border-radius: 20px;
     position: absolute;
