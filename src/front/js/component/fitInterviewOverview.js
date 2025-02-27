@@ -72,11 +72,10 @@ const FitInterviewOverview = () => {
             setQuestions(getQuestions(newAnswers));
             setIndex(1);
         } else if (index === 1) {
-            // Ahora `index 1` es la pregunta "Where do you prefer to train?"
             if (option === "At home" && answers[0] !== "Running endurance") {
-                setIndex(2); // Pasa a la pregunta sobre equipamiento
+                setIndex(2); 
             } else {
-                setIndex(3); // Pasa a la pregunta sobre motivación
+                setIndex(3); 
             }
         } else if (index < questions.length - 1) {
             setIndex(index + 1);

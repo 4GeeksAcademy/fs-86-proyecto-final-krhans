@@ -9,10 +9,10 @@
 .profile-phrase {
     position: absolute;
     top:85px;
-    background: rgb(255, 199, 255);
-    color: rgb(0, 0, 0);
+    background: rgb(204, 173, 226);
+    color: rgb(82, 30, 124);
     padding: 5px 10px;
-    border: 3px solid rgb(118, 0, 128);
+    border: 3px solid rgb(123, 69, 157);
     border-radius: 15px;
     font-size: 12px;
     font-weight: bold;

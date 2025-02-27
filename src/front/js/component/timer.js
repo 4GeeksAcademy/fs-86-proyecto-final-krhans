@@ -1,9 +1,8 @@
 import React from "react";
 
 const Timer = ({ timeLeft, workout, currentIndex }) => {
-  // Verifica si workout y currentIndex son válidos
   if (!workout || !workout.trainings || !workout.trainings[currentIndex]) {
-    return null; // No renderiza nada si los datos no están disponibles
+    return null; 
   }
 
   const duration = workout.trainings[currentIndex]?.duration || 60;
@@ -19,7 +18,7 @@ const Timer = ({ timeLeft, workout, currentIndex }) => {
           r="40"
           style={{
             strokeDasharray: 251,
-            strokeDashoffset: (251-(timeLeft / duration) * 251),// Cierra el círculo conforme pasa el tiempo
+            strokeDashoffset: (251-(timeLeft / duration) * 251),
            
           }}
         />
