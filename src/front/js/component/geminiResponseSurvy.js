@@ -36,6 +36,7 @@ const GenerateRoutine = () => {
     const diasEntrenamiento = 7;
     const fechas = obtenerFechasDeLaSemana(diasEntrenamiento).map(fecha => `"day": "${fecha}"`).join(", ");
 
+
     if (Object.keys(responses).length > 0 || Object.keys(answers).length > 0) {
       prompt = `Genera una rutina de entrenamiento personalizada en formato JSON basado en las respuestas del usuario, con 7 workout para los 7 días de la semana. 
       Formato esperado:
@@ -84,16 +85,17 @@ const GenerateRoutine = () => {
 
   const generarRutina = async () => {
     const prompt = generarPrompt(coachResponse, fitAnswers);
-    console.log("Prompt generado:", prompt);
   
     try {
       const respuestaGemini = await getGeminiResponse(prompt);
       if (!respuestaGemini) throw new Error("Respuesta vacía de Gemini");
   
+
       console.log("Respuesta de Gemini:", respuestaGemini);
       // const rutinaJSON = extraerJSON(respuestaGemini);
   
       setRutinaGenerada(JSON.stringify(respuestaGemini, null, 2));
+
       setMensaje("Successfully generated routine");
   
       await dispatcherUser.postRoutine(token, respuestaGemini);
@@ -103,6 +105,25 @@ const GenerateRoutine = () => {
       console.error("Error generating the routine:", error);
       setMensaje(error.message);
     }
+
+   
+
+  const parseDurationToSeconds = (duration) => {
+    const regex = /(\d+)\s*(minutos?|segundos?)/i;
+    const match = duration.match(regex);
+    if (match) {
+      const value = parseInt(match[1], 10);
+      const unit = match[2].toLowerCase();
+      return unit.startsWith('min') ? value * 60 : value;
+    }
+    return null;
+  };
+
+  const videoIds = {
+    static: "323170867849472", 
+    running: "324392158865024", 
+    celebration: "323171351359104" 
+
   };
 
   useEffect(() => {
@@ -121,6 +142,17 @@ const GenerateRoutine = () => {
     fetchVideos();
   }, []);
 
+
+  const moverKhrans = () => {
+    setPosicionKhrans(prev => {
+      if (prev >= 150) { 
+        setHasFinished(true);
+        return prev;
+      }
+      return prev + 20;
+    });
+  };
+
   return (
     <div className='gemini-container'>
       <div className='gemini-container_items'>
@@ -129,6 +161,31 @@ const GenerateRoutine = () => {
           <video src={videoUrls.static} className="khransRoutine-video" autoPlay loop muted />
         </div>
         <button className='gemini-button' onClick={generarRutina}>Create Routine</button>
+
+        {/* {showRace &&( */}
+          <div className="raceHint-container">
+            {!hasFinished ? (
+              <p className="race-hint">⬇️ Press to reach the goal ⬇️</p>
+            ) : (
+              <p className="race-success">🎉 You did it! 🎉</p>
+            )}
+          </div>
+          <div className="race-container">
+            {!hasFinished &&<div className="meta">🏁 GOAL</div>}
+            <div 
+              className="avatarGenerateRoutine-container" 
+              style={{ transform: `translateX(${posicionKhrans}px)` }}
+              onClick={moverKhrans}>
+              {videoUrls.running && !hasFinished && (
+                <video src={videoUrls.running} className="khransRoutineRunning-video" autoPlay loop muted />
+              )}
+              {videoUrls.celebration && hasFinished && (
+                <video src={videoUrls.celebration} className="khransRoutineCelebration-video" autoPlay loop muted />
+              )}
+            </div>
+          </div>
+        {/* )} */}
+
         <p>{mensaje}</p>
       </div>
     </div>

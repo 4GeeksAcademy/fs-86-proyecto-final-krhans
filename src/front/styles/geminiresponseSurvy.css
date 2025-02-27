@@ -25,24 +25,30 @@
 }
 
 .gemini_title {
-    background-color: #c65def;
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: var(--color-font);
-    width: 90%;
-    overflow: hidden;
-    white-space: normal;
-    animation: move-up-to-down 4s 1 forwards;
-    text-align: center;
-    border-radius: 15px;
-    text-align: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    position: relative;
-    margin-bottom: 20px;
-    border: 4px solid #6e36af;
+  background-color: var(--color-Button);
+  font-size: 1.1rem; 
+  font-weight: bold;
+  color: var(--color-font);
+  width: 90%;
+  max-width: 400px; 
+  padding: 12px 20px; 
+  overflow: hidden;
+  white-space: normal;
+  animation: move-up-to-down 4s 1 forwards;
+  text-align: center;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  position: relative;
+  margin: -10px auto 10px;
+  border: 4px solid #8551c0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  line-height: 1.4; 
 }
 
-.gemini_title::after {
+
+/* .gemini_title::after {
     content: "";
     position: absolute;
     bottom: -40px;
@@ -52,8 +58,8 @@
     height: 0;
     border-left: 12px solid transparent;
     border-right: 12px solid transparent;
-    border-top: 12px solid #c65def;
-}
+    border-top: 12px solid #892aae;
+} */
 
 @keyframes move-up-to-down {
     from {
@@ -90,7 +96,7 @@
     display:flex;
     position:absolute;
     left:-150px;
-    top:-10px;
+    top:-5px;
   }
 
   .khransRoutineCelebration-video{
@@ -106,25 +112,28 @@
     right: 10px;
     font-size: 20px;
     font-weight: bold;
+    animation: aparecer 1.5s ease-out forwards;
     color: purple;
   }
   
   .race-hint {
     font-size: 14px;
     color: darkgray;
+    animation: aparecer 1.5s ease-out forwards;
     margin-top: 5px;
   }
   
   .race-success {
     font-size: 18px;
     font-weight: bold;
+    animation: aparecer 1.5s ease-out forwards;
     color: green;
   }
 
-.gemini-button{
-    padding: 10px ;
-    margin:10px 4px;
-    color:var( --color-font);
+  .gemini-button {
+    padding: 10px;
+    margin: 10px 4px;
+    color: var(--color-font);
     background-color: var(--color-Button);
     font-family: sans-serif;
     font-weight: 550;
@@ -132,7 +141,12 @@
     text-align: center;
     position: relative;
     text-decoration: none;
-    display:inline-block;
-    border-color: #bc90d9;
-    border-radius: 10px;
+    display: inline-block;
+    border-radius: 15px; 
+    border: 3px solid transparent; 
+    background-clip: padding-box, border-box;
+    background-origin: border-box;
+    background-image: linear-gradient(var(--color-Button), var(--color-Button)), 
+                      linear-gradient(45deg, #bc90d9, #8551c0); 
 }
+

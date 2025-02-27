@@ -155,7 +155,7 @@
     padding: 10px 20px;
     border-radius: 20px;
     position: absolute;
-    top: 20%;
+    top: 27%;
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
@@ -177,7 +177,7 @@
 
 .slider-widget {
     position: absolute;
-    top: 65%;
+    top: 70%;
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
@@ -231,11 +231,11 @@
 .next-button {
     padding: 10px 20px;
     position:absolute;
-    bottom: 120px;
+    bottom: 80px;
     font-size: 16px;
     font-weight: bold;
     background-color: #c3a6ff;
-    border: none;
+    border: solid rgb(82, 0, 182);
     border-radius: 10px;
     color: white;
     transition: background-color 0.3s ease;

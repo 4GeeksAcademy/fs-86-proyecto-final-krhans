@@ -10,9 +10,25 @@ const StatisticsScreen = () => {
     const [dailyProgress, setDailyProgress] = useState(0);
     const [showStats, setShowStats] = useState(false);
     const [videoUrl, setVideoUrl] = useState(null);
-    const [motivationalPhrase, setMotivationalPhrase] = useState("");
+    const [motivationalPhrase, setMotivationalPhrase] = useState(""); 
 
     const videoId = "322909542675840";
+
+    useEffect(() => {
+        const fetchVideo = async () => {
+            const result = await dispatcherUser.fetchVideoUrl(videoId);
+            if (result.url) {
+                setVideoUrl(result.url);
+            }
+        };
+        fetchVideo();
+    }, [videoId]);
+
+    useEffect(() => {
+        setTimeout(() => {
+            setShowStats(true);
+        }, 2000); 
+    }, []);
 
     const phrases = {
         beginner: [
@@ -32,34 +48,21 @@ const StatisticsScreen = () => {
         ]
     };
 
-    useEffect(() => {
-        const fetchVideo = async () => {
-            const result = await dispatcherUser.fetchVideoUrl(videoId);
-            if (result.url) {
-                setVideoUrl(result.url);
-            }
-        };
-        fetchVideo();
-    }, [videoId]);
+    const getRandomPhrase = (level) => {
+        const levelPhrases = phrases[level];
+        return levelPhrases[Math.floor(Math.random() * levelPhrases.length)];
+    };
 
     useEffect(() => {
-        setTimeout(() => {
-            setShowStats(true);
-        }, 2000); 
-    }, []);
+        let level = "beginner"; 
 
-    useEffect(() => {
-        let level;
-        if (dailyProgress < 20) {
-            level = "beginner";
-        } else if (dailyProgress < 40) {
-            level = "intermediate";
-        } else {
+        if (dailyProgress > 40) {
             level = "advanced";
+        } else if (dailyProgress > 20) {
+            level = "intermediate";
         }
 
-        const randomPhrase = phrases[level][Math.floor(Math.random() * phrases[level].length)];
-        setMotivationalPhrase(randomPhrase);
+        setMotivationalPhrase(getRandomPhrase(level)); 
     }, [dailyProgress]); 
 
     return (
@@ -78,4 +81,3 @@ const StatisticsScreen = () => {
 };
 
 export default StatisticsScreen;
-
