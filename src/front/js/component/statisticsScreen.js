@@ -9,20 +9,34 @@ const StatisticsScreen = () => {
     const { store } = useContext(Context);
     const [dailyProgress, setDailyProgress] = useState(0);
     const [showStats, setShowStats] = useState(false);
+    const [videoUrls, setVideoUrls] = useState({});
     const [videoUrl, setVideoUrl] = useState(null);
     const [motivationalPhrase, setMotivationalPhrase] = useState(""); 
 
-    const videoId = "322909542675840";
+    const videoIds = {
+        beginner: "324499025909376",
+        intermediate: "322909542675840",
+        advanced: "324498284724544"
+    };
 
     useEffect(() => {
-        const fetchVideo = async () => {
-            const result = await dispatcherUser.fetchVideoUrl(videoId);
-            if (result.url) {
-                setVideoUrl(result.url);
-            }
+        const fetchVideos = async () => {
+            const videoRequests = Object.entries(videoIds).map(async ([level, videoId]) => {
+                const result = await dispatcherUser.fetchVideoUrl(videoId);
+                return { level, url: result.url || null };
+            });
+
+            const videos = await Promise.all(videoRequests);
+            const videoMap = videos.reduce((acc, { level, url }) => {
+                acc[level] = url;
+                return acc;
+            }, {});
+
+            setVideoUrls(videoMap);
         };
-        fetchVideo();
-    }, [videoId]);
+
+        fetchVideos();
+    }, []);
 
     useEffect(() => {
         setTimeout(() => {
@@ -63,13 +77,14 @@ const StatisticsScreen = () => {
         }
 
         setMotivationalPhrase(getRandomPhrase(level)); 
-    }, [dailyProgress]); 
+        setVideoUrl(videoUrls[level]); 
+    }, [dailyProgress, videoUrls]); 
 
     return (
         <div className="statistics-container">
             <div className="motivational-phrase">
                 <h2>{motivationalPhrase}</h2>
-                <video src={videoUrl} className="khrans-video" autoPlay loop muted />
+                {videoUrl && <video src={videoUrl} className="khrans-video" autoPlay loop muted />}
             </div>
 
             <div className="progress-container">
