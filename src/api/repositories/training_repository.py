@@ -5,16 +5,17 @@ from datetime import datetime
 class TrainingRepository:
     @staticmethod
     def create_training(training_data, workout_id):
+      
         name = training_data.get("name")
         is_completed = training_data.get("is_completed")
-        mode = training_data.get("mode", "duration")
+        mode = training_data.get("mode")
         duration = training_data.get("duration")
         repetitions = training_data.get("repetitions")
         sets = training_data.get("sets")
         rest = training_data.get("rest")
-        day = training_data.get("day")
+        day = training_data["day"]
+      
 
-        # Función para convertir duración o descanso a segundos
         def convertir_a_segundos(tiempo):
             if isinstance(tiempo, str) and " " in tiempo:
                 value, unit = tiempo.split()
@@ -26,25 +27,22 @@ class TrainingRepository:
                 elif "segundos" in unit or "seg" in unit:
                     return value
                 else:
-                    return None  # Unidad de tiempo no válida
+                    return None 
             elif isinstance(tiempo, (int, float)):
-                return int(tiempo)  # Asegúrate de devolver como entero
-            return None  # No es un formato válido
+                return int(tiempo)  
+            return None 
 
-
-        # Convertir duración
         if duration is not None:
             duration = convertir_a_segundos(duration)
             if duration is None:
                 return {"error": "Unidad de duración no válida."}, 400
 
-        # Convertir descanso
+
         if rest is not None:
             rest = convertir_a_segundos(rest)
             if rest is None:
                 return {"error": "Unidad de descanso no válida."}, 400
 
-        # Validaciones basadas en el modo
         if mode == "reps":
             if repetitions is None or sets is None or rest is None:
                 return {"error": "Faltan campos obligatorios para entrenamientos basados en repeticiones"}, 400
@@ -54,11 +52,10 @@ class TrainingRepository:
 
         if day is not None:
             try:
-                day = datetime.strptime(day, "%Y-%m-%d").date()
+                day = datetime.strptime(day[0], "%Y-%m-%d").date() 
             except ValueError:
                 return {"error": "Formato de fecha no válido. Usa 'YYYY-MM-DD'."}, 400
         
-        # Crear el objeto Training
         training = Training(
             name=name,
             is_completed=is_completed,
@@ -70,7 +67,7 @@ class TrainingRepository:
             day=day,
             workout_id=workout_id
         )
-        print("Entrenamiento",training)
+       
         db.session.add(training)
 
         try:

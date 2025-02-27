@@ -14,7 +14,7 @@ class WorkoutRepository:
                 percent_completed=0
             )
             db.session.add(new_routine)
-            db.session.flush() #El commit se hace en la session creada en la ruta
+            db.session.flush()
             return new_routine
         except Exception as e:
             db.session.rollback()

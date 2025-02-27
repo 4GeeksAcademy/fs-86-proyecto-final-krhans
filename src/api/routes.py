@@ -184,9 +184,8 @@ def handle_routines():
 
             routine_data = data.get('routine')
             workout_data = data.get('workout')
-      
             
-            db.session = db.session
+           
             try:
                 with db.session.begin():
                     routine = RoutineService.create_routine(routine_data, user_id)
@@ -200,7 +199,6 @@ def handle_routines():
                         workout_ids.append(created_workout.id)
                         trainings = workout.get("trainings", [])
                         for training in trainings:
-                            print("Creando entrenamiento:", training)  # Mensaje de depuración
                             TrainingService.create_training(training, created_workout.id)
 
                         WorkoutCompletionService.create_workout_completion(user_id, created_workout.id)
