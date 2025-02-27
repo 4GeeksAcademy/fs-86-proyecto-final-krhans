@@ -27,7 +27,6 @@ const WeeklyProgress = ({ routine, dailyProgress }) => {
       });
     });
 
-    // Actualizar el progreso del día actual con DailyProgress
     let todayEntry = weeklyData.find(entry => entry.day === todayName);
     if (todayEntry) {
       todayEntry.progress = dailyProgress;
