@@ -326,7 +326,7 @@ def update_training(workout_id, training_id):
         print("Datos: ",data)
         if not data:
             return jsonify({"error": "Se requiere un cuerpo JSON válido"}), 400
-        print("Antes de actualizar: ")
+       
         updatedTraining = TrainingService.update_training(
             workout_id, training_id, data
         )

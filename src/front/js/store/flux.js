@@ -202,11 +202,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 					if (!token) throw new Error("No hay token disponible.");
 			
 					const updateTraining = await dispatcherUser.updateTraining(token, trainingData);
-			
 					if (!updateTraining || updateTraining.error) {
 						throw new Error(updateTraining?.error || "No se pudo actualizar el entrenamiento del usuario.");
 					}
-			
+					await getUserData(token); 
 					return updateTraining;
 				} catch (error) {
 					console.error("Error en la actualización:", error.message);

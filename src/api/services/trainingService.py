@@ -21,8 +21,8 @@ class TrainingService:
     @staticmethod
     def update_training(workout_id,training_id,training):
         try:
-            print("Servicio: ",training)
             updatedTraining=TrainingRepository.update_training(workout_id,training_id,training)
+            print("Entrenamiento acabado: ",updatedTraining)
             return updatedTraining;
         except Exception as e:
             raise e

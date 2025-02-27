@@ -113,39 +113,55 @@ const RoutineOverview = () => {
     }
 };
 
-  useEffect(() => {
-    let timer;
-    if (timerState.isRunning && timerState.timeLeft > 0) {
-      timer = setInterval(() => {
-        setTimerState(prev => ({ ...prev, timeLeft: prev.timeLeft - 1 }));
-      }, 1000);
-    } else if (timerState.timeLeft === 0) {
-      clearInterval(timer);
-      setTimerState(prev => ({ ...prev, isRunning: false }));
-      setShowAvatar(false);
-    }
+useEffect(() => {
+  let timer;
+  if (timerState.isRunning && timerState.timeLeft > 0) {
+    timer = setInterval(() => {
+      setTimerState(prev => {
+        const newTimeLeft = prev.timeLeft - 1;
+        if (newTimeLeft === 0) {
+          handleWorkDone();
+          return { ...prev, isRunning: false, timeLeft: 0 }; 
+        }
+        return { ...prev, timeLeft: newTimeLeft }; 
+      });
+    }, 1000);
+  } else if (timerState.timeLeft === 0) {
+    clearInterval(timer);
+    setShowAvatar(false);
+  }
 
-    return () => clearInterval(timer);
-  }, [timerState.isRunning, timerState.timeLeft]);
+  return () => clearInterval(timer);
+}, [timerState.isRunning, timerState.timeLeft]);
 
-  const handleToggleTimer = () => {
+
+  const handleToggleTimer = async () => {
     setTimerState(prev => {
       const newIsRunning = !prev.isRunning;
       if (newIsRunning) {
         startPlaying();
         setShowAvatar(true);
-      }else{
+      } else {
         setShowAvatar(false);
         pausePlaying();
       }
       return { ...prev, isRunning: newIsRunning };
     });
+  
+   
+  
   };
+
+
 
   const handleWorkDone = async () => {
     const trainingData=workout.trainings[currentIndex]
     const updatedTraining=await actions.updateTraining(trainingData)
-    const updatedWorkout=await actions.updatedWorkout(trainingData.workout_id)
+    console.log("Entrenamiento completado: ",updatedTraining)
+    if (updatedTraining) {
+      const updatedWorkout = await actions.updatedWorkout(trainingData.workout_id);
+      console.log("Workout actualizado: ", updatedWorkout);
+    }
     setTimerState(prev => ({ ...prev, isRunning: false, message: "" }));
     handleNextTraining();
   };
@@ -163,7 +179,7 @@ const RoutineOverview = () => {
     if (!workout || !workout.trainings || !workout.trainings[index]) return;
 
     const training = workout.trainings[index];
-    let trainingTime = training.duration || 60;
+    let trainingTime = 10 //training.duration || 60;
 
     setTimerState({
       timeLeft: trainingTime,
@@ -200,22 +216,7 @@ const RoutineOverview = () => {
 
   return (
     <div className="routine-page-container">
-      <div className="soundcloud-player-container">
-        <div className="soundcloud-player">
-          {soundCloudState.currentTrackUrl && (
-            <iframe
-              id="soundcloud-player"
-              width="100%"
-              height="100"
-              scrolling="no"
-              frameBorder="no"
-              allow="autoplay"
-              src={`https://w.soundcloud.com/player/?url=${encodeURIComponent(soundCloudState.currentTrackUrl)}&auto_play=true&hide_related=true&show_comments=false&show_user=false&show_reposts=false`}
-              onLoad={() => console.log("Iframe cargado con éxito")}
-            />
-          )}
-        </div>
-      </div>
+      
       {showAvatar && videoUrl && (
         <div className="routineAvatar-container">
           <video src={videoUrl} className="routineOverview-avatar" autoPlay loop muted />
