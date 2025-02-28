@@ -337,3 +337,7 @@ def update_training(workout_id, training_id):
         return jsonify(updatedTraining.serialize()), 200
     except Exception as e:
         return jsonify({"error": f"Error inesperado: {str(e)}"}), 500
+
+@api.route('/hello', methods=['GET']):
+def hello():
+     return jsonify({"message": "No se encontraron trainings"}), 200
