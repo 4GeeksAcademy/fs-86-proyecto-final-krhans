@@ -27,40 +27,283 @@ const GenerateRoutine = () => {
       return fecha.toISOString().split("T")[0];
     });
   };
+  const generateDates = () => {
+    const today = new Date();
+    const dates = [];
+  
+    // Generar las fechas para los próximos 7 días (incluyendo hoy)
+    for (let i = 0; i < 8; i++) {
+      const date = new Date(today);
+      date.setDate(today.getDate() + i); // Ajustar la fecha sumando días
+      const formattedDate = date.toISOString().split('T')[0]; // Formato YYYY-MM-DD
+      dates.push(formattedDate);
+    }
+  
+    return dates; // Devuelve un array con las fechas
+  };
 
   const generarPrompt = (responses, answers) => {
     const diasEntrenamiento = 7;
+    const dates = generateDates();
     const fechas = obtenerFechasDeLaSemana(diasEntrenamiento).map(fecha => `"day": "${fecha}"`).join(", ");
 
-    return `Genera una rutina de entrenamiento personalizada en formato JSON basado en las respuestas del usuario, con 7 workout para los 7 días de la semana. 
-    Formato esperado:
-    {
-        "routine": {
-            "name": "Nombre",
-            "description": "Descripción",
-            "days_per_week": Número
+    return `Genera una rutina de entrenamiento personalizada en formato JSON basada en las respuestas del usuario, con 7 workouts para los 7 días de la semana.
+Formato esperado:
+{
+    "routine": {
+        "name": "Nombre",
+        "description": "Descripción",
+        "days_per_week": Número
+    },
+    "workout": [
+        {
+            "fitness_level": "Nivel",
+            "category": "Categoría",
+            "goal": "Objetivo",
+            "difficulty": "Dificultad",
+            "trainings": [
+                {
+                    "name": "Ejercicio",
+                    "is_complete": false,
+                    "mode": "tiempo o repeticiones",
+                    "duration": "Duración o null",
+                    "repetitions": "un único Número o null
+                    "rest": "Tiempo",
+                    "day": "${dates[0]}" // Día 1
+                },
+                {
+                    "name": "Ejercicio",
+                    "is_complete": false,
+                    "mode": "tiempo o repeticiones",
+                    "duration": "Duración o null",
+                    "repetitions": "un único Número o null
+                    "rest": "Tiempo",
+                    "day": "${dates[0]}" // Día 1, igual que el anterior
+                },
+                {
+                    "name": "Ejercicio",
+                    "is_complete": false,
+                    "mode": "tiempo o repeticiones",
+                    "duration": "Duración o null",
+                    "repetitions": "un único Número o null
+                    "rest": "Tiempo",
+                    "day": "${dates[0]}" // Día 1, igual que el anterior
+                }
+            ]
         },
-        "workout": [
-            {
-                "fitness_level": "Nivel",
-                "category": "Categoría",
-                "goal": "Objetivo",
-                "difficulty": "Dificultad",
-                "trainings": [
-                    {
-                        "name": "Ejercicio",
-                        "is_complete": false,
-                        "mode": "tiempo o repeticiones",
-                        "duration": "Duración o null",
-                        "repetitions": "Número o null",
-                        "rest": "Tiempo",
-                        "day": [${fechas}]
-                    }
-                ]
-            }
-        ]
-    }
-    Devuelve solo el JSON sin explicaciones.`;
+        {
+            "fitness_level": "Nivel",
+            "category": "Categoría",
+            "goal": "Objetivo",
+            "difficulty": "Dificultad",
+            "trainings": [
+                {
+                    "name": "Ejercicio",
+                    "is_complete": false,
+                    "mode": "tiempo o repeticiones",
+                    "duration": "Duración o null",
+                    "repetitions": "un único Número o null
+                    "rest": "Tiempo",
+                    "day": "${dates[1]}" // Día 2
+                },
+                {
+                    "name": "Ejercicio",
+                    "is_complete": false,
+                    "mode": "tiempo o repeticiones",
+                    "duration": "Duración o null",
+                    "repetitions": "un único Número o null
+                    "rest": "Tiempo",
+                    "day": "${dates[1]}" // Día 2
+                },
+                {
+                    "name": "Ejercicio",
+                    "is_complete": false,
+                    "mode": "tiempo o repeticiones",
+                    "duration": "Duración o null",
+                    "repetitions": "un único Número o null
+                    "rest": "Tiempo",
+                    "day": "${dates[1]}" // Día 2
+                }
+            ]
+        },
+        {
+            "fitness_level": "Nivel",
+            "category": "Categoría",
+            "goal": "Objetivo",
+            "difficulty": "Dificultad",
+            "trainings": [
+                {
+                    "name": "Ejercicio",
+                    "is_complete": false,
+                    "mode": "tiempo o repeticiones",
+                    "duration": "Duración o null",
+                    "repetitions": "un único Número o null
+                    "rest": "Tiempo",
+                    "day": "${dates[2]}" // Día 3
+                },
+                {
+                    "name": "Ejercicio",
+                    "is_complete": false,
+                    "mode": "tiempo o repeticiones",
+                    "duration": "Duración o null",
+                    "repetitions": "un único Número o null
+                    "rest": "Tiempo",
+                    "day": "${dates[2]}" // Día 3
+                },
+                {
+                    "name": "Ejercicio",
+                    "is_complete": false,
+                    "mode": "tiempo o repeticiones",
+                    "duration": "Duración o null",
+                    "repetitions": "un único Número o null
+                    "rest": "Tiempo",
+                    "day": "${dates[2]}" // Día 3
+                }
+            ]
+        },
+        {
+            "fitness_level": "Nivel",
+            "category": "Categoría",
+            "goal": "Objetivo",
+            "difficulty": "Dificultad",
+            "trainings": [
+                {
+                    "name": "Ejercicio",
+                    "is_complete": false,
+                    "mode": "tiempo o repeticiones",
+                    "duration": "Duración o null",
+                    "repetitions": "un único Número o null
+                    "rest": "Tiempo",
+                    "day": "${dates[3]}" // Día 4
+                },
+                {
+                    "name": "Ejercicio",
+                    "is_complete": false,
+                    "mode": "tiempo o repeticiones",
+                    "duration": "Duración o null",
+                    "repetitions": "un único Número o null
+                    "rest": "Tiempo",
+                    "day": "${dates[3]}" // Día 4
+                },
+                {
+                    "name": "Ejercicio",
+                    "is_complete": false,
+                    "mode": "tiempo o repeticiones",
+                    "duration": "Duración o null",
+                    "repetitions": "un único Número o null
+                    "rest": "Tiempo",
+                    "day": "${dates[3]}" // Día 4
+                }
+            ]
+        },
+        {
+            "fitness_level": "Nivel",
+            "category": "Categoría",
+            "goal": "Objetivo",
+            "difficulty": "Dificultad",
+            "trainings": [
+                {
+                    "name": "Ejercicio",
+                    "is_complete": false,
+                    "mode": "tiempo o repeticiones",
+                    "duration": "Duración o null",
+                    "repetitions": "un único Número o null
+                    "rest": "Tiempo",
+                    "day": "${dates[4]}" // Día 5
+                },
+                {
+                    "name": "Ejercicio",
+                    "is_complete": false,
+                    "mode": "tiempo o repeticiones",
+                    "duration": "Duración o null",
+                    "repetitions": "un único Número o null
+                    "rest": "Tiempo",
+                    "day": "${dates[4]}" // Día 5
+                },
+                {
+                    "name": "Ejercicio",
+                    "is_complete": false,
+                    "mode": "tiempo o repeticiones",
+                    "duration": "Duración o null",
+                    "repetitions": "un único Número o null
+                    "rest": "Tiempo",
+                    "day": "${dates[4]}" // Día 5
+                }
+            ]
+        },
+        {
+            "fitness_level": "Nivel",
+            "category": "Categoría",
+            "goal": "Objetivo",
+            "difficulty": "Dificultad",
+            "trainings": [
+                {
+                    "name": "Ejercicio",
+                    "is_complete": false,
+                    "mode": "tiempo o repeticiones",
+                    "duration": "Duración o null",
+                    "repetitions": "un único Número o null
+                    "rest": "Tiempo",
+                    "day": "${dates[5]}" // Día 6
+                },
+                {
+                    "name": "Ejercicio",
+                    "is_complete": false,
+                    "mode": "tiempo o repeticiones",
+                    "duration": "Duración o null",
+                    "repetitions": "un único Número o null
+                    "rest": "Tiempo",
+                    "day": "${dates[5]}" // Día 6
+                },
+                {
+                    "name": "Ejercicio",
+                    "is_complete": false,
+                    "mode": "tiempo o repeticiones",
+                    "duration": "Duración o null",
+                    "repetitions": "un único Número o null
+                    "rest": "Tiempo",
+                    "day": "${dates[5]}" // Día 6
+                }
+            ]
+        },
+        {
+            "fitness_level": "Nivel",
+            "category": "Categoría",
+            "goal": "Objetivo",
+            "difficulty": "Dificultad",
+            "trainings": [
+                {
+                    "name": "Ejercicio",
+                    "is_complete": false,
+                    "mode": "tiempo o repeticiones",
+                    "duration": "Duración o null",
+                    "repetitions": "un único Número o null
+                    "rest": "Tiempo",
+                    "day": "${dates[6]}" // Día 7
+                },
+                {
+                    "name": "Ejercicio",
+                    "is_complete": false,
+                    "mode": "tiempo o repeticiones",
+                    "duration": "Duración o null",
+                    "repetitions": "un único Número o null
+                    "rest": "Tiempo",
+                    "day": "${dates[6]}" // Día 7
+                },
+                {
+                    "name": "Ejercicio",
+                    "is_complete": false,
+                    "mode": "tiempo o repeticiones",
+                    "duration": "Duración o null",
+                    "repetitions": "un único Número o null
+                    "rest": "Tiempo",
+                    "day": "${dates[6]}" // Día 7
+                }
+            ]
+        }
+    ]
+}
+Devuelve solo el JSON sin explicaciones.`;
   };
 
   const extraerJSON = (respuesta) => {

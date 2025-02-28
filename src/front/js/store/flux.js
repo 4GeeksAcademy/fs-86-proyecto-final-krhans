@@ -26,7 +26,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 						category: "",
 						goal: "",
 						difficulty: "",
-						is_active: "",
+						percent_completed: "",
 						trainings: {
 							name: "",
 							is_completed: "",

@@ -15,18 +15,20 @@ const WeeklyProgress = ({ routine, dailyProgress }) => {
     let weeklyData = daysOfWeek.map(day => ({ day, progress: 0 }));
 
     routine.workouts.forEach(workout => {
-      workout.completions.forEach(completion => {
-        if (completion.completed && completion.date_completed) {
-          let completedDate = new Date(completion.date_completed);
-          let dayName = daysOfWeek[completedDate.getDay()];
-          let dayEntry = weeklyData.find(entry => entry.day === dayName);
-          if (dayEntry) {
-            dayEntry.progress += 100 / routine.workouts.length;
-          }
+      workout.trainings.forEach(training => {
+        const completedDate = new Date(training.day);
+        const dayName = daysOfWeek[completedDate.getDay()];
+
+        // Si el día del entrenamiento coincide con algún día de la semana, actualizamos el progreso
+        const dayEntry = weeklyData.find(entry => entry.day === dayName);
+        if (dayEntry) {
+          const percentCompleted = workout.percent_completed || 0;
+          dayEntry.progress += percentCompleted;  // Sumar el porcentaje completado de ese entrenamiento
         }
       });
     });
 
+    // Asegurarse de que el progreso de hoy esté actualizado con el valor de `dailyProgress`
     let todayEntry = weeklyData.find(entry => entry.day === todayName);
     if (todayEntry) {
       todayEntry.progress = dailyProgress;
