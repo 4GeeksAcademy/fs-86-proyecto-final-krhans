@@ -12,7 +12,7 @@ from flask_jwt_extended import JWTManager
 
 ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='public', static_url_path='/static')
 app.url_map.strict_slashes = False
 
 db_url = os.getenv("DATABASE_URL")
