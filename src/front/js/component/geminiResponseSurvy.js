@@ -9,6 +9,7 @@ const GenerateRoutine = () => {
   const [videoUrls, setVideoUrls] = useState({});
   const [posicionKhrans, setPosicionKhrans] = useState(0);
   const [hasFinished, setHasFinished] = useState(false);
+  const [showRace, setShowRace] = useState(false);
   const location = useLocation();
   const { responses: coachResponse = {}, answers: fitAnswers = {} } = location.state || {};
 
@@ -313,6 +314,8 @@ Devuelve solo el JSON sin explicaciones.`;
 
       setMensaje("Successfully generated routine");
 
+      setShowRace(true);
+
       await dispatcherUser.postRoutine(token, respuestaGemini);
       navigate("/dashboard/landing");
     } catch (error) {
@@ -364,31 +367,33 @@ Devuelve solo el JSON sin explicaciones.`;
         <button className="gemini-button" onClick={generarRutina}>
           Create Routine
         </button>
+        {showRace && (
+          <>
+            <div className="raceHint-container">
+              {!hasFinished ? (
+                <p className="race-hint">⬇️ Press to reach the goal ⬇️</p>
+              ) : (
+                <p className="race-success">🎉 You did it! 🎉</p>
+              )}
+            </div>
 
-        <div className="raceHint-container">
-          {!hasFinished ? (
-            <p className="race-hint">⬇️ Press to reach the goal ⬇️</p>
-          ) : (
-            <p className="race-success">🎉 You did it! 🎉</p>
-          )}
-        </div>
-
-        <div className="race-container">
-          {!hasFinished && <div className="meta">🏁 GOAL</div>}
-          <div
-            className="avatarGenerateRoutine-container"
-            style={{ transform: `translateX(${posicionKhrans}px)` }}
-            onClick={moverKhrans}
-          >
-            {videoUrls.running && !hasFinished && (
-              <video src={videoUrls.running} className="khransRoutineRunning-video" autoPlay loop muted />
-            )}
-            {videoUrls.celebration && hasFinished && (
-              <video src={videoUrls.celebration} className="khransRoutineCelebration-video" autoPlay loop muted />
-            )}
-          </div>
-        </div>
-
+            <div className="race-container">
+              {!hasFinished && <div className="meta">🏁 GOAL</div>}
+              <div
+                className="avatarGenerateRoutine-container"
+                style={{ transform: `translateX(${posicionKhrans}px)` }}
+                onClick={moverKhrans}
+              >
+                {videoUrls.running && !hasFinished && (
+                  <video src={videoUrls.running} className="khransRoutineRunning-video" autoPlay loop muted />
+                )}
+                {videoUrls.celebration && hasFinished && (
+                  <video src={videoUrls.celebration} className="khransRoutineCelebration-video" autoPlay loop muted />
+                )}
+              </div>
+            </div>
+          </>
+         )}
         <p>{mensaje}</p>
       </div>
     </div>
