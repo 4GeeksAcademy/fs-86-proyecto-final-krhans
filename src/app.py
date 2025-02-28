@@ -10,9 +10,12 @@ from api.commands import setup_commands
 from flask_jwt_extended import JWTManager
 
 
+static_file_dir = os.path.join(os.path.dirname(
+    os.path.realpath(__file__)), '../public/')
+
 ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
 
-app = Flask(__name__, static_folder='public', static_url_path='/static')
+app = Flask(__name__)
 app.url_map.strict_slashes = False
 
 db_url = os.getenv("DATABASE_URL")
@@ -33,8 +36,8 @@ setup_commands(app)
 
 app.register_blueprint(api, url_prefix='/api')
 
-# Define the static file directory
-static_file_dir = os.path.join(app.root_path, 'static')
+
+
 
 
 @app.errorhandler(APIException)
@@ -44,18 +47,17 @@ def handle_invalid_usage(error):
 
 @app.route('/')
 def sitemap():
-    return send_from_directory(os.path.join(app.root_path, 'public'), 'index.html')
-
-
+    if ENV == "development":
+        return generate_sitemap(app)
+    return send_from_directory(static_file_dir, 'index.html')
 
 @app.route('/<path:path>', methods=['GET'])
 def serve_any_other_file(path):
-    file_path = os.path.abspath(os.path.join(static_file_dir, path))
-
-    if not os.path.isfile(file_path):
-        return jsonify({"error": "Archivo no encontrado"}), 404
-
-    return send_from_directory(static_file_dir, path)
+    if not os.path.isfile(os.path.join(static_file_dir, path)):
+        path = 'index.html'
+    response = send_from_directory(static_file_dir, path)
+    response.cache_control.max_age = 0  # avoid cache memory
+    return response
 
 
 if __name__ == '__main__':
