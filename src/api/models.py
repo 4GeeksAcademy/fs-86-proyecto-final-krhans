@@ -99,6 +99,7 @@ class Workout(db.Model):
     category = db.Column(db.String, nullable=False)   
     goal = db.Column(db.String, nullable=False)  
     difficulty = db.Column(db.String)  
+    day = db.Column(db.Date, nullable=False)  
     percent_completed = db.Column(db.Integer, nullable=False, default=True)
 
     trainings = db.relationship('Training', back_populates='workout', lazy=True, cascade="all, delete-orphan")
@@ -119,6 +120,7 @@ class Workout(db.Model):
             "category": self.category,
             "goal": self.goal,
             "difficulty": self.difficulty,
+            "day": self.day.isoformat() if self.day else None, 
             "percent_completed": self.percent_completed,
             "trainings": [training.serialize() for training in self.trainings],
             "completions": [completion.serialize() for completion in self.workout_completions]
@@ -132,7 +134,7 @@ class Training(db.Model):
     repetitions = db.Column(db.Integer, nullable=True)  
     sets = db.Column(db.Integer, nullable=True)  
     rest = db.Column(db.Integer, nullable=True)  
-    day = db.Column(db.Date, nullable=False)  # Asegúrate de agregar el campo day
+   
 
     workout_id = db.Column(db.Integer, db.ForeignKey('workout.id'), nullable=False)
     workout = db.relationship('Workout', back_populates='trainings')
@@ -150,7 +152,6 @@ class Training(db.Model):
             "repetitions": self.repetitions,
             "sets": self.sets,
             "rest": self.rest,
-            "day": self.day.isoformat() if self.day else None,  # Serializa la fecha
             "workout_id": self.workout_id
         }
 

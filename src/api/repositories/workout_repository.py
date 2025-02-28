@@ -1,9 +1,18 @@
 from api.models import db, Workout
+from datetime import datetime
 
 class WorkoutRepository:
     @staticmethod
     def create_workout(workout_data,user_id,routine_id):
+        
         try:
+            if workout_data.get("day"):
+                try:
+                    day = datetime.strptime(workout_data["day"], "%Y-%m-%d").date()
+                except ValueError:
+                    return {"error": "Formato de fecha no válido. Usa 'YYYY-MM-DD'."}, 400
+
+
             new_routine = Workout(
                 user_id=user_id,
                 routine_id=routine_id,
@@ -11,8 +20,12 @@ class WorkoutRepository:
                 category=workout_data["category"],
                 goal=workout_data["goal"],
                 difficulty=workout_data["difficulty"],
+                day = workout_data["day"],
                 percent_completed=0
             )
+
+           
+            
             db.session.add(new_routine)
             db.session.flush()
             return new_routine

@@ -13,7 +13,7 @@ class TrainingRepository:
         repetitions = training_data.get("repetitions")
         sets = training_data.get("sets")
         rest = training_data.get("rest")
-        day = training_data["day"]
+      
       
 
         def convertir_a_segundos(tiempo):
@@ -50,13 +50,6 @@ class TrainingRepository:
             if duration is None:
                 return {"error": "Falta el campo 'duration' para entrenamientos por tiempo"}, 400
 
-        if day is not None:
-            try:
-                day = datetime.strptime(day, "%Y-%m-%d").date()
-                
-            except ValueError:
-                return {"error": "Formato de fecha no válido. Usa 'YYYY-MM-DD'."}, 400
-        
         training = Training(
             name=name,
             is_completed=is_completed,
@@ -65,7 +58,6 @@ class TrainingRepository:
             repetitions=repetitions,
             sets=sets,
             rest=rest,
-            day=day,
             workout_id=workout_id
         )
         db.session.add(training)

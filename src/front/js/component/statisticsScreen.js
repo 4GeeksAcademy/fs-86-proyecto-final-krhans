@@ -89,7 +89,7 @@ const StatisticsScreen = () => {
 
             <div className="progress-container">
                 <DailyProgress routine={store.userData.routines[0]} onDailyProgressUpdate={setDailyProgress} />
-                <WeeklyProgress routine={store.userData.routines[0]} dailyProgress={dailyProgress} />
+                <WeeklyProgress routine={store.userData.routines[0]} />
             </div>
         </div>
     );
