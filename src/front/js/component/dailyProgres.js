@@ -1,32 +1,47 @@
 import React, { useEffect, useState } from "react";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
-import "../../styles/DailyProgress.css"; 
+import "../../styles/DailyProgress.css";
 
 const DailyProgress = ({ routine, onDailyProgressUpdate }) => {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    if (!routine || !routine.workouts) return;
+    if (!routine || !routine.workouts || routine.workouts.length === 0) {
+      console.log("⚠️ No hay entrenamientos en routine");
+      return;
+    }
 
-    const today = new Date().toISOString().split("T")[0]; // Fecha actual en formato YYYY-MM-DD
-    let totalTrainings = 0;
-    let completedTrainings = 0;
+    // Obtener la fecha actual en formato "YYYY-MM-DD"
+    const today = new Date().toISOString().split("T")[0];
 
-    // Recorrer workouts y entrenamientos
-    routine.workouts.forEach(workout => {
-      workout.trainings.forEach(training => {
-        totalTrainings++;
-        if (training.is_complete && training.date_completed.startsWith(today)) {
-          completedTrainings++;
+    console.log("📆 Fecha de hoy:", today);
+    console.log("🔍 Workouts en routine:", routine.workouts);
+
+    // Recorrer los workouts y los trainings dentro de cada workout para buscar el día correspondiente
+    let todayWorkout = null;
+
+    routine.workouts.forEach((workout, index) => {
+      // Recorrer los trainings dentro de cada workout
+      workout.trainings.forEach((training, trainingIndex) => {
+        if (training.day === today) {
+          console.log(`✅ Entrenamiento encontrado en workout #${index + 1}, training #${trainingIndex + 1}`);
+          todayWorkout = training; // Asignamos el training correspondiente
         }
       });
     });
 
-    const dailyProgress = totalTrainings > 0 ? (completedTrainings / totalTrainings) * 100 : 0;
-    setProgress(dailyProgress);
-    onDailyProgressUpdate(dailyProgress); // Enviar el progreso a WeeklyProgress
-  }, [routine]);
+    if (todayWorkout) {
+      console.log("🏋️‍♂️ Workout de hoy:", todayWorkout);
+      // Obtener el porcentaje completado directamente de percent_completed del training
+      const percentCompleted = todayWorkout.percent_completed ?? 0;
+      setProgress(percentCompleted);
+      onDailyProgressUpdate(percentCompleted);
+    } else {
+      console.log("❌ No se encontró entrenamiento para HOY");
+      setProgress(0);
+    }
+  }, [routine, onDailyProgressUpdate]);
 
   return (
     <div className="daily-progress-container">
@@ -44,7 +59,9 @@ const DailyProgress = ({ routine, onDailyProgressUpdate }) => {
           })}
         />
       </div>
-      <p className="daily-progress-text">Training Completed: {Math.round(progress)}%</p>
+      <p className="daily-progress-text">
+        Training Completed: {Math.round(progress)}%
+      </p>
     </div>
   );
 };
