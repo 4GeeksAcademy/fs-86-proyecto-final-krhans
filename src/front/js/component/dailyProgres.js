@@ -12,28 +12,22 @@ const DailyProgress = ({ routine, onDailyProgressUpdate }) => {
       return;
     }
 
-    // Obtener la fecha actual en formato "YYYY-MM-DD"
     const today = new Date().toISOString().split("T")[0];
 
     console.log("📆 Fecha de hoy:", today);
     console.log("🔍 Workouts en routine:", routine.workouts);
 
-    // Recorrer los workouts y los trainings dentro de cada workout para buscar el día correspondiente
     let todayWorkout = null;
 
     routine.workouts.forEach((workout, index) => {
-      // Recorrer los trainings dentro de cada workout
-      workout.trainings.forEach((training, trainingIndex) => {
-        if (training.day === today) {
-          console.log(`✅ Entrenamiento encontrado en workout #${index + 1}, training #${trainingIndex + 1}`);
-          todayWorkout = training; // Asignamos el training correspondiente
-        }
-      });
+      if (workout.day === today) {
+        console.log(`✅ Entrenamiento encontrado en workout #${index + 1}`);
+        todayWorkout = workout;
+      }
     });
 
     if (todayWorkout) {
       console.log("🏋️‍♂️ Workout de hoy:", todayWorkout);
-      // Obtener el porcentaje completado directamente de percent_completed del training
       const percentCompleted = todayWorkout.percent_completed ?? 0;
       setProgress(percentCompleted);
       onDailyProgressUpdate(percentCompleted);

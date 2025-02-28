@@ -61,6 +61,7 @@ Formato esperado:
             "category": "Categoría",
             "goal": "Objetivo",
             "difficulty": "Dificultad",
+            "day": "${dates[0]}", // Día 1
             "trainings": [
                 {
                     "name": "Ejercicio",
@@ -68,8 +69,7 @@ Formato esperado:
                     "mode": "tiempo o repeticiones",
                     "duration": "Duración o null",
                     "repetitions": "un único valor Numérico (No quiero strings) o null
-                    "rest": "Tiempo",
-                    "day": "${dates[0]}" // Día 1
+                    "rest": "Tiempo"
                 },
                 {
                     "name": "Ejercicio",
@@ -77,8 +77,7 @@ Formato esperado:
                     "mode": "tiempo o repeticiones",
                     "duration": "Duración o null",
                      "repetitions": "un único valor Numérico (No quiero strings) o null
-                    "rest": "Tiempo",
-                    "day": "${dates[0]}" // Día 1, igual que el anterior
+                    "rest": "Tiempo"  
                 },
                 {
                     "name": "Ejercicio",
@@ -86,8 +85,7 @@ Formato esperado:
                     "mode": "tiempo o repeticiones",
                     "duration": "Duración o null",
                     "repetitions": "un único valor Numérico (No quiero strings) o null
-                    "rest": "Tiempo",
-                    "day": "${dates[0]}" // Día 1, igual que el anterior
+                    "rest": "Tiempo"
                 }
             ]
         },
@@ -96,6 +94,7 @@ Formato esperado:
             "category": "Categoría",
             "goal": "Objetivo",
             "difficulty": "Dificultad",
+            "day": "${dates[1]}" ,// Día 2
             "trainings": [
                 {
                     "name": "Ejercicio",
@@ -103,8 +102,7 @@ Formato esperado:
                     "mode": "tiempo o repeticiones",
                     "duration": "Duración o null",
                     "repetitions": "un único valor Numérico (No quiero strings) o null
-                    "rest": "Tiempo",
-                    "day": "${dates[1]}" // Día 2
+                    "rest": "Tiempo"
                 },
                 {
                     "name": "Ejercicio",
@@ -112,8 +110,7 @@ Formato esperado:
                     "mode": "tiempo o repeticiones",
                     "duration": "Duración o null",
                      "repetitions": "un único valor Numérico (No quiero strings) o null
-                    "rest": "Tiempo",
-                    "day": "${dates[1]}" // Día 2
+                    "rest": "Tiempo"
                 },
                 {
                     "name": "Ejercicio",
@@ -121,8 +118,7 @@ Formato esperado:
                     "mode": "tiempo o repeticiones",
                     "duration": "Duración o null",
                     "repetitions": "un único valor Numérico (No quiero strings) o null
-                    "rest": "Tiempo",
-                    "day": "${dates[1]}" // Día 2
+                    "rest": "Tiempo"
                 }
             ]
         },
@@ -131,6 +127,7 @@ Formato esperado:
             "category": "Categoría",
             "goal": "Objetivo",
             "difficulty": "Dificultad",
+            "day": "${dates[2]}", // Día 3
             "trainings": [
                 {
                     "name": "Ejercicio",
@@ -138,8 +135,7 @@ Formato esperado:
                     "mode": "tiempo o repeticiones",
                     "duration": "Duración o null",
                     "repetitions": "un único valor Numérico (No quiero strings) o null
-                    "rest": "Tiempo",
-                    "day": "${dates[2]}" // Día 3
+                    "rest": "Tiempo"
                 },
                 {
                     "name": "Ejercicio",
@@ -147,8 +143,7 @@ Formato esperado:
                     "mode": "tiempo o repeticiones",
                     "duration": "Duración o null",
                     "repetitions": "un único valor Numérico (No quiero strings) o null
-                    "rest": "Tiempo",
-                    "day": "${dates[2]}" // Día 3
+                    "rest": "Tiempo"
                 },
                 {
                     "name": "Ejercicio",
@@ -156,8 +151,7 @@ Formato esperado:
                     "mode": "tiempo o repeticiones",
                     "duration": "Duración o null",
                     "repetitions": "un único valor Numérico (No quiero strings) o null
-                    "rest": "Tiempo",
-                    "day": "${dates[2]}" // Día 3
+                    "rest": "Tiempo"
                 }
             ]
         },
@@ -166,6 +160,7 @@ Formato esperado:
             "category": "Categoría",
             "goal": "Objetivo",
             "difficulty": "Dificultad",
+            "day": "${dates[3]}", // Día 4
             "trainings": [
                 {
                     "name": "Ejercicio",
@@ -173,8 +168,7 @@ Formato esperado:
                     "mode": "tiempo o repeticiones",
                     "duration": "Duración o null",
                     "repetitions": "un único valor Numérico (No quiero strings) o null
-                    "rest": "Tiempo",
-                    "day": "${dates[3]}" // Día 4
+                    "rest": "Tiempo"
                 },
                 {
                     "name": "Ejercicio",
@@ -182,8 +176,7 @@ Formato esperado:
                     "mode": "tiempo o repeticiones",
                     "duration": "Duración o null",
                     "repetitions": "un único valor Numérico (No quiero strings) o null
-                    "rest": "Tiempo",
-                    "day": "${dates[3]}" // Día 4
+                    "rest": "Tiempo"
                 },
                 {
                     "name": "Ejercicio",
@@ -191,8 +184,7 @@ Formato esperado:
                     "mode": "tiempo o repeticiones",
                     "duration": "Duración o null",
                     "repetitions": "un único valor Numérico (No quiero strings) o null
-                    "rest": "Tiempo",
-                    "day": "${dates[3]}" // Día 4
+                    "rest": "Tiempo"
                 }
             ]
         },
@@ -201,6 +193,7 @@ Formato esperado:
             "category": "Categoría",
             "goal": "Objetivo",
             "difficulty": "Dificultad",
+            "day": "${dates[4]}", // Día 5
             "trainings": [
                 {
                     "name": "Ejercicio",
@@ -208,8 +201,7 @@ Formato esperado:
                     "mode": "tiempo o repeticiones",
                     "duration": "Duración o null",
                     "repetitions": "un único valor Numérico (No quiero strings) o null
-                    "rest": "Tiempo",
-                    "day": "${dates[4]}" // Día 5
+                    "rest": "Tiempo"
                 },
                 {
                     "name": "Ejercicio",
@@ -217,8 +209,7 @@ Formato esperado:
                     "mode": "tiempo o repeticiones",
                     "duration": "Duración o null",
                     "repetitions": "un único valor Numérico (No quiero strings) o null
-                    "rest": "Tiempo",
-                    "day": "${dates[4]}" // Día 5
+                    "rest": "Tiempo"
                 },
                 {
                     "name": "Ejercicio",
@@ -226,8 +217,7 @@ Formato esperado:
                     "mode": "tiempo o repeticiones",
                     "duration": "Duración o null",
                     "repetitions": "un único valor Numérico (No quiero strings) o null
-                    "rest": "Tiempo",
-                    "day": "${dates[4]}" // Día 5
+                    "rest": "Tiempo"
                 }
             ]
         },
@@ -236,6 +226,7 @@ Formato esperado:
             "category": "Categoría",
             "goal": "Objetivo",
             "difficulty": "Dificultad",
+            "day": "${dates[5]}", // Día 6
             "trainings": [
                 {
                     "name": "Ejercicio",
@@ -243,8 +234,7 @@ Formato esperado:
                     "mode": "tiempo o repeticiones",
                     "duration": "Duración o null",
                      "repetitions": "un único valor Numérico (No quiero strings) o null
-                    "rest": "Tiempo",
-                    "day": "${dates[5]}" // Día 6
+                    "rest": "Tiempo"
                 },
                 {
                     "name": "Ejercicio",
@@ -252,8 +242,7 @@ Formato esperado:
                     "mode": "tiempo o repeticiones",
                     "duration": "Duración o null",
                     "repetitions": "un único valor Numérico (No quiero strings) o null
-                    "rest": "Tiempo",
-                    "day": "${dates[5]}" // Día 6
+                    "rest": "Tiempo"
                 },
                 {
                     "name": "Ejercicio",
@@ -261,8 +250,7 @@ Formato esperado:
                     "mode": "tiempo o repeticiones",
                     "duration": "Duración o null",
                    "repetitions": "un único valor Numérico (No quiero strings) o null
-                    "rest": "Tiempo",
-                    "day": "${dates[5]}" // Día 6
+                    "rest": "Tiempo"
                 }
             ]
         },
@@ -271,6 +259,7 @@ Formato esperado:
             "category": "Categoría",
             "goal": "Objetivo",
             "difficulty": "Dificultad",
+            "day": "${dates[6]}", // Día 7
             "trainings": [
                 {
                     "name": "Ejercicio",
@@ -278,8 +267,7 @@ Formato esperado:
                     "mode": "tiempo o repeticiones",
                     "duration": "Duración o null",
                     "repetitions": "un único valor Numérico (No quiero strings) o null
-                    "rest": "Tiempo",
-                    "day": "${dates[6]}" // Día 7
+                    "rest": "Tiempo"
                 },
                 {
                     "name": "Ejercicio",
@@ -287,8 +275,7 @@ Formato esperado:
                     "mode": "tiempo o repeticiones",
                     "duration": "Duración o null",
                     "repetitions": "un único valor Numérico (No quiero strings) o null
-                    "rest": "Tiempo",
-                    "day": "${dates[6]}" // Día 7
+                    "rest": "Tiempo"
                 },
                 {
                     "name": "Ejercicio",
@@ -296,8 +283,7 @@ Formato esperado:
                     "mode": "tiempo o repeticiones",
                     "duration": "Duración o null",
                     "repetitions": "un único valor Numérico (No quiero strings) o null
-                    "rest": "Tiempo",
-                    "day": "${dates[6]}" // Día 7
+                    "rest": "Tiempo"
                 }
             ]
         }
