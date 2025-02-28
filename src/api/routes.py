@@ -176,49 +176,46 @@ def handle_routines():
     try:
         if request.method == 'POST':
             data = request.get_json()
-        
-
+            
             required_fields = ["routine", "workout"]
             if not all(field in data for field in required_fields):
                 return jsonify({"error": "Faltan campos obligatorios"}), 400
 
             routine_data = data.get('routine')
             workout_data = data.get('workout')
-            
+
            
+
             try:
-                with db.session.begin():
+                with db.session.begin():  # Inicia la transacción
                     routine = RoutineService.create_routine(routine_data, user_id)
-               
 
                     workout_ids = []
                     for workout in workout_data:
                         created_workout = WorkoutService.create_workout(workout, user_id, routine.id)
-                       
-                        
                         workout_ids.append(created_workout.id)
+                        
                         trainings = workout.get("trainings", [])
+                        
                         for training in trainings:
                             TrainingService.create_training(training, created_workout.id)
 
                         WorkoutCompletionService.create_workout_completion(user_id, created_workout.id)
-                
-                return jsonify({
-                    "message": "Rutina creada exitosamente",
-                    "routine_id": routine.id,
-                    "workout_ids": workout_ids
-                }), 201
-            
-            except SQLAlchemyError as e:
+
+            except Exception as e:  # Manejar cualquier error
                 db.session.rollback()
-                print("Error de base de datos:", str(e))  # Mensaje de depuración
-                return jsonify({"error": f"Error de base de datos: {str(e)}"}), 500
-        
+                print("Error en la transacción:", str(e))
+                return jsonify({"error": f"Error en la transacción: {str(e)}"}), 500
+
+            return jsonify({
+                "message": "Rutina creada exitosamente",
+                "routine_id": routine.id,
+                "workout_ids": workout_ids
+            }), 201
+
         elif request.method == 'GET':
             routines = RoutineService.get_routine_list(user_id)
             workouts = WorkoutService.get_workout_list(user_id)
-            print("Rutinas obtenidas:", routines)  # Mensaje de depuración
-            print("Entrenamientos obtenidos:", workouts)  # Mensaje de depuración
             
             return jsonify([{
                 "id": routine.id,
@@ -227,11 +224,12 @@ def handle_routines():
                 "days_per_week": routine.days_per_week,
                 "workout": [workout.serialize() for workout in workouts]
             } for routine in routines]), 200
-    
+
     except Exception as e:
         db.session.rollback()
-        print("Error inesperado:", str(e))  # Mensaje de depuración
+        print("Error inesperado:", str(e))
         return jsonify({"error": f"Error inesperado: {str(e)}"}), 500
+
 
 @api.route('/routine/<int:routine_id>', methods=['GET', 'PUT'])   
 @jwt_required()

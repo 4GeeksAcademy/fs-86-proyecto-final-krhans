@@ -67,7 +67,7 @@ Formato esperado:
                     "is_complete": false,
                     "mode": "tiempo o repeticiones",
                     "duration": "Duración o null",
-                    "repetitions": "un único Número o null
+                    "repetitions": "un único valor Numérico (No quiero strings) o null
                     "rest": "Tiempo",
                     "day": "${dates[0]}" // Día 1
                 },
@@ -76,7 +76,7 @@ Formato esperado:
                     "is_complete": false,
                     "mode": "tiempo o repeticiones",
                     "duration": "Duración o null",
-                    "repetitions": "un único Número o null
+                     "repetitions": "un único valor Numérico (No quiero strings) o null
                     "rest": "Tiempo",
                     "day": "${dates[0]}" // Día 1, igual que el anterior
                 },
@@ -85,7 +85,7 @@ Formato esperado:
                     "is_complete": false,
                     "mode": "tiempo o repeticiones",
                     "duration": "Duración o null",
-                    "repetitions": "un único Número o null
+                    "repetitions": "un único valor Numérico (No quiero strings) o null
                     "rest": "Tiempo",
                     "day": "${dates[0]}" // Día 1, igual que el anterior
                 }
@@ -102,7 +102,7 @@ Formato esperado:
                     "is_complete": false,
                     "mode": "tiempo o repeticiones",
                     "duration": "Duración o null",
-                    "repetitions": "un único Número o null
+                    "repetitions": "un único valor Numérico (No quiero strings) o null
                     "rest": "Tiempo",
                     "day": "${dates[1]}" // Día 2
                 },
@@ -111,7 +111,7 @@ Formato esperado:
                     "is_complete": false,
                     "mode": "tiempo o repeticiones",
                     "duration": "Duración o null",
-                    "repetitions": "un único Número o null
+                     "repetitions": "un único valor Numérico (No quiero strings) o null
                     "rest": "Tiempo",
                     "day": "${dates[1]}" // Día 2
                 },
@@ -120,7 +120,7 @@ Formato esperado:
                     "is_complete": false,
                     "mode": "tiempo o repeticiones",
                     "duration": "Duración o null",
-                    "repetitions": "un único Número o null
+                    "repetitions": "un único valor Numérico (No quiero strings) o null
                     "rest": "Tiempo",
                     "day": "${dates[1]}" // Día 2
                 }
@@ -137,7 +137,7 @@ Formato esperado:
                     "is_complete": false,
                     "mode": "tiempo o repeticiones",
                     "duration": "Duración o null",
-                    "repetitions": "un único Número o null
+                    "repetitions": "un único valor Numérico (No quiero strings) o null
                     "rest": "Tiempo",
                     "day": "${dates[2]}" // Día 3
                 },
@@ -146,7 +146,7 @@ Formato esperado:
                     "is_complete": false,
                     "mode": "tiempo o repeticiones",
                     "duration": "Duración o null",
-                    "repetitions": "un único Número o null
+                    "repetitions": "un único valor Numérico (No quiero strings) o null
                     "rest": "Tiempo",
                     "day": "${dates[2]}" // Día 3
                 },
@@ -155,7 +155,7 @@ Formato esperado:
                     "is_complete": false,
                     "mode": "tiempo o repeticiones",
                     "duration": "Duración o null",
-                    "repetitions": "un único Número o null
+                    "repetitions": "un único valor Numérico (No quiero strings) o null
                     "rest": "Tiempo",
                     "day": "${dates[2]}" // Día 3
                 }
@@ -172,7 +172,7 @@ Formato esperado:
                     "is_complete": false,
                     "mode": "tiempo o repeticiones",
                     "duration": "Duración o null",
-                    "repetitions": "un único Número o null
+                    "repetitions": "un único valor Numérico (No quiero strings) o null
                     "rest": "Tiempo",
                     "day": "${dates[3]}" // Día 4
                 },
@@ -181,7 +181,7 @@ Formato esperado:
                     "is_complete": false,
                     "mode": "tiempo o repeticiones",
                     "duration": "Duración o null",
-                    "repetitions": "un único Número o null
+                    "repetitions": "un único valor Numérico (No quiero strings) o null
                     "rest": "Tiempo",
                     "day": "${dates[3]}" // Día 4
                 },
@@ -190,7 +190,7 @@ Formato esperado:
                     "is_complete": false,
                     "mode": "tiempo o repeticiones",
                     "duration": "Duración o null",
-                    "repetitions": "un único Número o null
+                    "repetitions": "un único valor Numérico (No quiero strings) o null
                     "rest": "Tiempo",
                     "day": "${dates[3]}" // Día 4
                 }
@@ -207,7 +207,7 @@ Formato esperado:
                     "is_complete": false,
                     "mode": "tiempo o repeticiones",
                     "duration": "Duración o null",
-                    "repetitions": "un único Número o null
+                    "repetitions": "un único valor Numérico (No quiero strings) o null
                     "rest": "Tiempo",
                     "day": "${dates[4]}" // Día 5
                 },
@@ -216,7 +216,7 @@ Formato esperado:
                     "is_complete": false,
                     "mode": "tiempo o repeticiones",
                     "duration": "Duración o null",
-                    "repetitions": "un único Número o null
+                    "repetitions": "un único valor Numérico (No quiero strings) o null
                     "rest": "Tiempo",
                     "day": "${dates[4]}" // Día 5
                 },
@@ -225,7 +225,7 @@ Formato esperado:
                     "is_complete": false,
                     "mode": "tiempo o repeticiones",
                     "duration": "Duración o null",
-                    "repetitions": "un único Número o null
+                    "repetitions": "un único valor Numérico (No quiero strings) o null
                     "rest": "Tiempo",
                     "day": "${dates[4]}" // Día 5
                 }
@@ -242,7 +242,7 @@ Formato esperado:
                     "is_complete": false,
                     "mode": "tiempo o repeticiones",
                     "duration": "Duración o null",
-                    "repetitions": "un único Número o null
+                     "repetitions": "un único valor Numérico (No quiero strings) o null
                     "rest": "Tiempo",
                     "day": "${dates[5]}" // Día 6
                 },
@@ -251,7 +251,7 @@ Formato esperado:
                     "is_complete": false,
                     "mode": "tiempo o repeticiones",
                     "duration": "Duración o null",
-                    "repetitions": "un único Número o null
+                    "repetitions": "un único valor Numérico (No quiero strings) o null
                     "rest": "Tiempo",
                     "day": "${dates[5]}" // Día 6
                 },
@@ -260,7 +260,7 @@ Formato esperado:
                     "is_complete": false,
                     "mode": "tiempo o repeticiones",
                     "duration": "Duración o null",
-                    "repetitions": "un único Número o null
+                   "repetitions": "un único valor Numérico (No quiero strings) o null
                     "rest": "Tiempo",
                     "day": "${dates[5]}" // Día 6
                 }
@@ -277,7 +277,7 @@ Formato esperado:
                     "is_complete": false,
                     "mode": "tiempo o repeticiones",
                     "duration": "Duración o null",
-                    "repetitions": "un único Número o null
+                    "repetitions": "un único valor Numérico (No quiero strings) o null
                     "rest": "Tiempo",
                     "day": "${dates[6]}" // Día 7
                 },
@@ -286,7 +286,7 @@ Formato esperado:
                     "is_complete": false,
                     "mode": "tiempo o repeticiones",
                     "duration": "Duración o null",
-                    "repetitions": "un único Número o null
+                    "repetitions": "un único valor Numérico (No quiero strings) o null
                     "rest": "Tiempo",
                     "day": "${dates[6]}" // Día 7
                 },
@@ -295,7 +295,7 @@ Formato esperado:
                     "is_complete": false,
                     "mode": "tiempo o repeticiones",
                     "duration": "Duración o null",
-                    "repetitions": "un único Número o null
+                    "repetitions": "un único valor Numérico (No quiero strings) o null
                     "rest": "Tiempo",
                     "day": "${dates[6]}" // Día 7
                 }

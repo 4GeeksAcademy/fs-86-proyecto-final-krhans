@@ -52,7 +52,8 @@ class TrainingRepository:
 
         if day is not None:
             try:
-                day = datetime.strptime(day[0], "%Y-%m-%d").date() 
+                day = datetime.strptime(day, "%Y-%m-%d").date()
+                
             except ValueError:
                 return {"error": "Formato de fecha no válido. Usa 'YYYY-MM-DD'."}, 400
         
@@ -67,7 +68,6 @@ class TrainingRepository:
             day=day,
             workout_id=workout_id
         )
-       
         db.session.add(training)
 
         try:
