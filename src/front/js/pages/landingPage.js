@@ -15,7 +15,7 @@ const LandingPage = () => {
     const [selectedDate, setSelectedDate] = useState(null);
     const { store, actions } = useContext(Context);
     const [selectedOddDays, setSelectedOddDays] = useState([]);
-    
+
     useEffect(() => {
         const fetchVideo = async () => {
             const result = await dispatcherUser.fetchVideoUrl(videoId);
@@ -25,7 +25,7 @@ const LandingPage = () => {
         };
 
         fetchVideo();
-    }, [videoId]);
+    }, [videoId, store.userData]);
 
     const today = new Date();
     const currentMonth = today.toLocaleString('en-US', { month: 'long' });
@@ -43,7 +43,6 @@ const LandingPage = () => {
 
     const handleDateClick = (day) => {
         const isOdd = day.date % 2 !== 0;
-        console.log("Fecha seleccionada: ",day)
         if (isOdd) {
             setSelectedOddDays(prevDays => {
                 const newDays = [...prevDays, day.date];
@@ -68,18 +67,17 @@ const LandingPage = () => {
         navigate("/dashboard");
     };
 
-    const workouts = (store.userData?.routines?.[0]?.workouts || []).sort((a, b) => {
+    const workouts = (store.userData?.routines?.[0]?.workouts || []);
+    const sortedWorkouts = workouts.sort((a, b) => {
         const dateA = new Date(a.day);
         const dateB = new Date(b.day);
         return dateA - dateB; 
     });
-    
 
-    const assignedWorkouts = workouts.map((workout, index) => {
-        const baseDate = new Date("2025-02-28"); 
-
-        const day = new Date(baseDate.setDate(baseDate.getDate() + index)); 
-        
+    const assignedWorkouts = sortedWorkouts.map((workout, index) => {
+        const today = new Date(); 
+        const day = new Date(today); 
+        day.setDate(today.getDate() + index);  
         return {
             ...workout,
             day: day.toISOString().split('T')[0] 
@@ -87,29 +85,26 @@ const LandingPage = () => {
     });
     
 
+    console.log("Assigned Workouts:", assignedWorkouts);
+
     const selectedWorkout = assignedWorkouts.find(workout => {
-        if (selectedDate?.fullDate instanceof Date && !isNaN(selectedDate.fullDate)) {
-            const workoutDate = new Date(workout.day);
-            return workoutDate.toISOString().split('T')[0] === selectedDate.fullDate.toISOString().split('T')[0];
+        if (selectedDate?.fullDate) {
+            const workoutDate = new Date(workout.day).toISOString().split('T')[0];
+            const selectedWorkoutDate = selectedDate.fullDate.toISOString().split('T')[0];
+            console.log(`Comparando: Workout Day ${workoutDate} con Selected Day ${selectedWorkoutDate}`);
+            return workoutDate === selectedWorkoutDate;
         }
         return false;
     });
 
+    console.log("Selected Workout:", selectedWorkout);
 
-   
     const routineTable = () => {
         if (!selectedWorkout) {
             alert("No routine found for today.");
             return;
         }
 
-        const updatedWorkout = {
-            ...selectedWorkout,
-            trainings: selectedWorkout.trainings.map(exercise => ({
-                ...exercise,
-                duration: exercise.duration || 60 
-            }))
-        };
         navigate("/dashboard/routine", { state: { day: currentWeek, workout: selectedWorkout } });
     };
 
@@ -122,11 +117,19 @@ const LandingPage = () => {
     };
 
     const getWorkoutForDate = (date) => {
-        return workouts.find(workout => {
-            const workoutDate = new Date(workout.day);
-            return workoutDate.toISOString().split('T')[0] === date.toISOString().split('T')[0];
+        const formattedDate = date.toISOString().split('T')[0];  // Convertir a YYYY-MM-DD
+        return assignedWorkouts.find(workout => {
+            const workoutDate = new Date(workout.day).toISOString().split('T')[0]; // Asegurar formato
+            console.log(`Comparando workoutDate ${workoutDate} con formattedDate ${formattedDate}`);
+            return workoutDate === formattedDate;
         });
     };
+    
+
+    console.log("Días en currentWeek:", currentWeek);
+    currentWeek.forEach(day => {
+        console.log(`Buscando workout para ${day.fullDate}:`, getWorkoutForDate(day.fullDate));
+    });
 
     return (
         <div className="landing-container">
